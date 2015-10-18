@@ -154,7 +154,7 @@ public class ManualTransactionEntryFragment extends Fragment implements
 										.toString());
 
 						transaction.setCategory(transactionCategory);
-					}
+					} 
 					dbHelper.addTransaction(transaction);
 					getActivity().onBackPressed();
 				} catch (Exception e) {
@@ -167,7 +167,7 @@ public class ManualTransactionEntryFragment extends Fragment implements
 		} else if (v.getId() == textViewTransactionCategory.getId()) {
 			showCategoryChooser();
 		}
-		
+
 		// dialog controls for category selection and creation
 		else if (v.getId() == buttonCreateNewCategory.getId()) {
 			showCategoryCreationDialog();
@@ -187,7 +187,6 @@ public class ManualTransactionEntryFragment extends Fragment implements
 		}
 	}
 
-	
 	private void showCategoryChooser() {
 
 		builderCategoryChooser = new Builder(getActivity());
@@ -226,7 +225,7 @@ public class ManualTransactionEntryFragment extends Fragment implements
 
 	}
 
-	// show dialog to create new category 
+	// show dialog to create new category
 	private void showCategoryCreationDialog() {
 		AlertDialog.Builder categoryCreationBuilder = new Builder(getActivity());
 		categoryCreationBuilder.setTitle("Create new category");

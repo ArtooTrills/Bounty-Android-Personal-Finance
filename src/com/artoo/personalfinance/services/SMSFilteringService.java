@@ -153,6 +153,7 @@ public class SMSFilteringService extends IntentService {
 											new Date());
 									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
 											+ "\n" + msgBody);
+									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
 									dbHelper.addTransaction(transaction);
@@ -243,6 +244,7 @@ public class SMSFilteringService extends IntentService {
 											new Date());
 									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
 											+ "\n" + msgBody);
+									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
 									dbHelper.addTransaction(transaction);
@@ -331,6 +333,7 @@ public class SMSFilteringService extends IntentService {
 									transaction = new Transaction(amount,
 											Transaction.INCOME, senderName,
 											new Date());
+									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
 									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
@@ -418,6 +421,7 @@ public class SMSFilteringService extends IntentService {
 									transaction = new Transaction(amount,
 											Transaction.INCOME, senderName,
 											new Date());
+									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
 									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)

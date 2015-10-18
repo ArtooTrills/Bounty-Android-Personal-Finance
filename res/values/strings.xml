@@ -16,7 +16,7 @@
     <color name="expense_color">#ef5350</color>
     
     <string name="show_tran_source">SHOW SOURCE</string>
-    <string name="default_category">UNDEFINED</string>
+    <string name="default_category">Select Category</string>
     <string name="summary">Summary</string>
     <string name="image_option_nav_row">image_option_nav_row</string>
     <string name="enter_transaction_amount">Amount</string>
@@ -40,5 +40,11 @@
     <string name="ignore_this_sender">Ignore this sender</string>
     <string name="enter_sender_address">Enter Sender Address</string>
     <string name="ignore_sender">IGNORE SENDER</string>
+    <string name="delete_ignore_item">delete ignore item</string>
+    <string name="view_your_preference">View your preference</string>
+    <string name="view_more">View more</string>
+    <string name="how_it_works_content">Almost every transaction SMS contains a pattern. This App analyzes incoming messages for such patterns and there is match we make it a transaction. You can allow or refuse from granting this permission any time. You can always change your preference and view your current preference by clicking on View your preference and SMS permission from the option menu.\nIf you feel we should not analyze SMS of any sender, you can put them under ignore list.\nYou can create a transaction manually by clicking on the + button available on top. Transactions belong to categories and we have added some categories but you can always personalize them by adding more.\nOn the home screen you can click first block to view reports of incomes and expenses separately and if there are more than two categories of transaction report will be presented in Pie-chart for clearer view.</string>
+    <string name="ok">OK</string>
+    <string name="get_started">GET STARTED</string>
 
 </resources>

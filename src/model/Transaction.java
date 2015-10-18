@@ -11,20 +11,33 @@ public class Transaction implements Cloneable {
 	private String desc;
 	private Date transactionDate;
 	private String source;
+	private String sender;
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
 	TransactionCategory category;
 	private List<TransactionHistory> transactionHistories;
 
 	public Transaction(Transaction t) {
 		super();
+
 		this.amount = t.amount;
 		this.type = t.type;
 		this.desc = t.desc;
 		this.transactionDate = t.transactionDate;
 		this.source = t.source;
+		this.sender = t.sender;
 	}
 
 	public Transaction(float amount, int type, String desc, Date transactionDate) {
 		super();
+		sender = "";
 		this.amount = amount;
 		this.type = type;
 		this.desc = desc;

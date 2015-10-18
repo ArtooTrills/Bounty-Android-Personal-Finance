@@ -4,6 +4,15 @@ import java.util.Date;
 
 public class IgnoreItem {
 	
+	private int id;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private String source;
 	private Date date;
 

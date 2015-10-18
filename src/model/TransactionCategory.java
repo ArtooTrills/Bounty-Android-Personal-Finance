@@ -5,7 +5,7 @@ public class TransactionCategory {
 	public TransactionCategory(int transactionType) {
 		super();
 		this.transactionType = transactionType;
-		this.categoryName = "UNDEFINED";
+		this.categoryName = "NONE";
 	}
 
 	int transactionType;

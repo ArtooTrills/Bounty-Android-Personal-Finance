@@ -8,6 +8,13 @@
         android:orderInCategory="8"
         android:showAsAction="never"
         android:title="@string/change_sms_pref"/>
+    
+    
+    <item
+        android:id="@+id/current_permission"
+        android:orderInCategory="8"
+        android:showAsAction="never"
+        android:title="@string/view_your_preference"/>
     <item
         
         android:id="@+id/new_tran_menu_item"

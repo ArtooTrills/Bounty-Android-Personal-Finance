@@ -58,7 +58,6 @@ public class TransactionHistoryAdapter extends
 			List<TransactionHistory> transactionHistoryList,
 			Transaction transaction) {
 		super();
-
 		this.context = context;
 		this.transactionHistoryList = transactionHistoryList;
 		this.transaction = transaction;
@@ -130,14 +129,7 @@ public class TransactionHistoryAdapter extends
 			if (v.getId() == textViewIgnoreItem.getId()) {
 				IgnoreItem ignoreItem = new IgnoreItem();
 				ignoreItem.setDate(new Date());
-				String sender = "";
-				for (int i = 0; i < transaction.getSource().length(); i++) {
-					if (transaction.getSource().charAt(i) == '\n')
-						break;
-					sender += transaction.getSource().charAt(i);
-				}
-				ignoreItem.setSource(transaction.getSource().substring(0,
-						sender.length()));
+				ignoreItem.setSource(transaction.getSender());
 				new IgnoreItemSaver(ignoreItem).execute();
 			}
 			if (v.getId() == textViewTransactionCategory.getId()) {
@@ -547,6 +539,7 @@ public class TransactionHistoryAdapter extends
 
 	/**
 	 * saves sender in the ignore list
+	 * 
 	 * @author nayan
 	 *
 	 */
@@ -567,16 +560,16 @@ public class TransactionHistoryAdapter extends
 			}
 			return null;
 		}
+
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			if(isException)
-			{
-				Toast.makeText(context, "Preference could not be saved", Toast.LENGTH_SHORT).show();
-			}
-			else
-			{
-				Toast.makeText(context, "Preference has been saved", Toast.LENGTH_SHORT).show();
+			if (isException) {
+				Toast.makeText(context, "Preference could not be saved",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(context, "Preference has been saved",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 

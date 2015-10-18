@@ -29,10 +29,10 @@ import android.widget.Toast;
 
 public class TransactionRecyclerViewAdapter extends
 		RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder> {
-	LayoutInflater inflater;
-	List<Transaction> transactionList;
-	Context context;
-	TransactionDetailsPresenter transactionDetailsPresenter;
+	private LayoutInflater inflater;
+	private List<Transaction> transactionList;
+	private Context context;
+	private TransactionDetailsPresenter transactionDetailsPresenter;
 
 	private static final String NO_RECORD_STRING = "<h1>No Transaction found.</h1><br/>"
 			+ "<h3>Use the + button on the top to add a transaction</h3>";
@@ -58,7 +58,7 @@ public class TransactionRecyclerViewAdapter extends
 		// controls for recycler view header
 		TextView textViewheaderRow, textViewTransactionPeriod,
 				textViewTotalIncome, textViewTotalExepense,
-				TextViewTotalTransaction;
+				TextViewTotalTransaction, textViewViewMore;
 		LinearLayout headerMainLayout, incomelayout, expenseLayout;
 
 		public ViewHolder(View itemView, int itemType) {
@@ -80,6 +80,8 @@ public class TransactionRecyclerViewAdapter extends
 						.findViewById(R.id.transaction_first_row_main_layout);
 				incomelayout = (LinearLayout) itemView
 						.findViewById(R.id.income_layout);
+				textViewViewMore = (TextView) itemView
+						.findViewById(R.id.transaction_first_row_header_view_more_textView);
 				expenseLayout = (LinearLayout) itemView
 						.findViewById(R.id.expense_layout);
 				itemView.setOnClickListener(this);
@@ -121,6 +123,7 @@ public class TransactionRecyclerViewAdapter extends
 
 			// if there is no transaction
 			if (getItemCount() == 1) {
+				holder.textViewViewMore.setVisibility(View.GONE);
 				holder.incomelayout.setVisibility(View.GONE);
 				holder.expenseLayout.setVisibility(View.GONE);
 				holder.textViewheaderRow.setVisibility(View.GONE);
@@ -130,6 +133,7 @@ public class TransactionRecyclerViewAdapter extends
 				holder.headerMainLayout.setBackground(null);
 			}// if there are transactions
 			else {
+				holder.textViewViewMore.setVisibility(View.VISIBLE);
 				holder.incomelayout.setVisibility(View.VISIBLE);
 				holder.expenseLayout.setVisibility(View.VISIBLE);
 				holder.textViewheaderRow.setVisibility(View.VISIBLE);

@@ -37,13 +37,16 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		TransactionDetailsPresenter {
 
 	private RecyclerView navRecyclerView;
-
+	private static final String[] userPermissionText = {
+			"You have allowed us to extract your transactions from your sms",
+			"We are not extracting your transactions from your sms" };
 	private static final String[] navItems = { "Home", "Ignore List",
-			"SMS Permission"};
+			"SMS Permission", "How it works" };
 
 	private SMSTransactionReceiver receiver;
 	private static final int[] navMenuDrawableIds = { R.drawable.home,
-			R.drawable.ignore_item, R.drawable.sms_pref};
+			R.drawable.ignore_item, R.drawable.sms_pref,
+			R.drawable.how_it_works };
 
 	private RecyclerView.LayoutManager navLayoutManager; // layout manager for
 															// recyclerview to
@@ -62,7 +65,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 	public static final int NEW_TRANSACTION_FRAGMENT_ID = 100,
 			FRAGMENT_IGNORE = 1, FRAGMENT_HOME = 0, FRAGMENT_HISTORY = 101,
-			FRAGMENT_REPORT = 109;
+			FRAGMENT_REPORT = 109, FRAGMENT_HOW_IT_WORKS = 3;
 
 	private static final int SMS_PREF_OPTION = 2;
 
@@ -85,7 +88,6 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 				LinearLayoutManager.VERTICAL, false);
 		navRecyclerView.setAdapter(navigationDrawerAdapter);
 		navRecyclerView.setLayoutManager(navLayoutManager);
-
 		navRecyclerView
 				.addItemDecoration(new DividerItemDecoration(this, null));
 		mDrawerToggle = new ActionBarDrawerToggle(this, mNavDrawer, toolBar,
@@ -108,8 +110,10 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 		// checks if user has not set any preference about sms analysis
 		// permission and if not show a dialog seeking user consent
-		if (UtilitySharedpref.getSMSPermission(this) == SMSReceiver.SMS_DEFAULT_PERMISSION) {
+		int userPermission = UtilitySharedpref.getSMSPermission(this);
+		if (userPermission == SMSReceiver.SMS_DEFAULT_PERMISSION) {
 			showUserConsentDialog();
+		} else {
 		}
 		receiver = new SMSTransactionReceiver();
 		// show home fragment by default on load of activity
@@ -121,6 +125,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	 */
 	private void showUserConsentDialog() {
 		AlertDialog.Builder builder = new Builder(this);
+
 		builder.setMessage("Allow us to read your SMS and extract your transactions automatically.");
 
 		builder.setNegativeButton("Not now", new OnClickListener() {
@@ -130,6 +135,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 				UtilitySharedpref.setSMSPermission(Home.this,
 						SMSReceiver.USER_DENIED_SMS_INTERCEPTION);
 				SMSReceiver.disableBroadcastReceiver(getApplicationContext());
+
 				showConsentPreferenceChangerDialog();
 			}
 		});
@@ -151,10 +157,10 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 						.getSMSPermission(Home.this);
 				UtilitySharedpref
 						.setSMSPermission(Home.this, currentPermission);
-				if (currentPermission != SMSReceiver.USER_ALLOWED_SMS_INTERCEPTION)
+				if (currentPermission != SMSReceiver.USER_ALLOWED_SMS_INTERCEPTION) {
 					SMSReceiver
 							.disableBroadcastReceiver(getApplicationContext());
-				// showConsentPreferenceChangerDialog();
+				}
 			}
 		});
 		builder.show();
@@ -188,7 +194,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	private void showConsentPreferenceChangerDialog() {
 
 		AlertDialog.Builder preferenceChangeDialog = new Builder(this);
-		preferenceChangeDialog.setMessage("We have saved you preference!"
+		preferenceChangeDialog.setMessage("We have saved your preference!"
 				+ " You can always change this from settings option.");
 		preferenceChangeDialog.setPositiveButton("OK", new OnClickListener() {
 
@@ -286,7 +292,12 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 						ignoreListCreateFragment);
 				fragmentTransaction.commit();
 				break;
-
+			case FRAGMENT_HOW_IT_WORKS:
+				FragmentHowItWorks fragmentHowItWorks = new FragmentHowItWorks();
+				fragmentTransaction.addToBackStack(FRAGMENT_HOW_IT_WORKS + "");
+				fragmentTransaction.replace(R.id.content_frame,
+						fragmentHowItWorks);
+				fragmentTransaction.commit();
 			}
 
 			// hide the new transaction icon if current fragment is new
@@ -305,8 +316,36 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			showFragment(NEW_TRANSACTION_FRAGMENT_ID);
 		} else if (id == R.id.sms_settings) {
 			showUserConsentDialog();
+		} else if (id == R.id.current_permission) {
+			showUserSelectedPreference();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showUserSelectedPreference() {
+		int userPref = UtilitySharedpref.getSMSPermission(this);
+		String msg = userPermissionText[1];
+		if (userPref == SMSReceiver.USER_ALLOWED_SMS_INTERCEPTION) {
+			msg = userPermissionText[0];
+		}
+		AlertDialog.Builder prefBuilder = new Builder(this);
+		prefBuilder.setTitle("SMS Preference");
+		prefBuilder.setMessage(msg);
+		prefBuilder.setPositiveButton("OK", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			}
+		});
+		prefBuilder.setNegativeButton("Change", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				showUserConsentDialog();
+			}
+		});
+		prefBuilder.show();
 	}
 
 	@Override
@@ -329,7 +368,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 		Toast.makeText(this,
 				"New transaction of Rs." + transaction.getAmount() + " found",
-				Toast.LENGTH_SHORT).show();
+				Toast.LENGTH_LONG).show();
 	}
 
 	// ---------------broadcast receiver if any new transaction from sms has

@@ -43,21 +43,19 @@ public class TransactionReportAdapter extends
 	static {
 		INCOME_COLORS = new ArrayList<Integer>();
 		EXPENSE_COLORS = new ArrayList<Integer>();
-		for (int c : ColorTemplate.VORDIPLOM_COLORS)
-			INCOME_COLORS.add(c);
 
 		for (int c : ColorTemplate.JOYFUL_COLORS)
 			INCOME_COLORS.add(c);
-
-		for (int c : ColorTemplate.COLORFUL_COLORS)
+		for (int c : ColorTemplate.LIBERTY_COLORS)
 			INCOME_COLORS.add(c);
 
-		for (int c : ColorTemplate.LIBERTY_COLORS)
+		for (int c : ColorTemplate.VORDIPLOM_COLORS)
 			INCOME_COLORS.add(c);
 
 		for (int c : ColorTemplate.PASTEL_COLORS)
 			INCOME_COLORS.add(c);
-
+		for (int c : ColorTemplate.COLORFUL_COLORS)
+			INCOME_COLORS.add(c);
 		for (int i = INCOME_COLORS.size() - 1; i > -1; i--) {
 			EXPENSE_COLORS.add(INCOME_COLORS.get(i));
 		}
@@ -201,7 +199,7 @@ public class TransactionReportAdapter extends
 		List<Entry> yValues = new ArrayList<Entry>();
 		for (int i = 0; i < categories.size(); i++) {
 			yValues.add(new Entry(
-					 ((amountCategoryWise.get(i))/totalTransaction)*100, i));
+					((amountCategoryWise.get(i)) / totalTransaction) * 100, i));
 		}
 		PieDataSet dataSet = new PieDataSet(yValues, "");
 
@@ -213,7 +211,7 @@ public class TransactionReportAdapter extends
 		else {
 			dataSet.setColors(INCOME_COLORS);
 		}
-		
+
 		data.setValueFormatter(new PercentFormatter());
 		data.setValueTextSize(11f);
 		data.setDrawValues(true);

@@ -40,7 +40,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			"tran_id", "modification_date", "message" };
 
 	private static final String[] TRANSACTION_TABLE_COLUMNS = { "id", "amount",
-			"type", "description", "date", "source", "transaction_type" };
+			"type", "description", "date", "source", "transaction_type",
+			"sender" };
 
 	private static final String TRANSACTION_CATEGORIES_TABLE_NAME = "transaction_category";
 
@@ -56,8 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// adding default categories
 
 		// -----------------expense-----------//
-		CATEGORIES
-				.add(new TransactionCategory(Transaction.EXPENSE, "UNDEFINED"));
+		CATEGORIES.add(new TransactionCategory(Transaction.EXPENSE, "NONE"));
 		CATEGORIES.add(new TransactionCategory(Transaction.EXPENSE, "BILLS"));
 		CATEGORIES
 				.add(new TransactionCategory(Transaction.EXPENSE, "CLOTHING"));
@@ -83,8 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				"INCOME TAX"));
 
 		// ---------income--------------//
-		CATEGORIES
-				.add(new TransactionCategory(Transaction.INCOME, "UNDEFINED"));
+		CATEGORIES.add(new TransactionCategory(Transaction.INCOME, "NONE"));
 		CATEGORIES.add(new TransactionCategory(Transaction.INCOME, "SALARY"));
 		CATEGORIES.add(new TransactionCategory(Transaction.INCOME, "GIFT"));
 		CATEGORIES.add(new TransactionCategory(Transaction.INCOME,
@@ -168,6 +167,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public boolean deleteIgnoreItem(int id) {
+		boolean returnValue = true;
+		SQLiteDatabase db = getWritableDatabase();
+		try {
+			int res = db.delete(IGNORE_LIST_TABLE_NAME, IGNORE_LIST_COLUMNS[0]
+					+ "=?", new String[] { id + "" });
+			if (res > -1) {
+				for (int i=0;i<IGNORE_ITEMS.size();i++){
+					if(IGNORE_ITEMS.get(i).getId()==id){
+						res=i;
+						break;
+					}
+				}
+				IGNORE_ITEMS.remove(res);
+			}
+			
+		} catch (Exception e) {
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+
+	/**
 	 * delete a transaction with history
 	 * 
 	 * @param transactionId
@@ -198,6 +225,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<IgnoreItem> getIgnoreItemList() {
+		List<IgnoreItem> retList=new ArrayList<IgnoreItem>();
+		
 		if (IGNORE_ITEMS.isEmpty()) {
 
 			SQLiteDatabase db = getReadableDatabase();
@@ -209,6 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 					do {
 						IgnoreItem ignoreItem = new IgnoreItem();
+						ignoreItem.setId(dbCursor.getInt(0));
 						ignoreItem
 								.setDate(CommonUtility.DATE_FORMATTER_WITHOUT_TIME
 										.parse(dbCursor.getString(2)));
@@ -220,7 +250,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			}
 		}
-		return IGNORE_ITEMS;
+		retList.addAll(IGNORE_ITEMS);
+		return retList;
 	}
 
 	/**
@@ -315,10 +346,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					} catch (Exception e) {
 						System.out.println(e);
 					}
+
 					transaction.setSource(dbCursor.getString(5));
 
 					transaction.setCategory(new TransactionCategory(transaction
 							.getType(), dbCursor.getString(6)));
+					transaction.setSender(dbCursor.getString(7));
 				} while (dbCursor.moveToPrevious());
 			}
 		} catch (Exception e) {
@@ -350,7 +383,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			values.put(TRANSACTION_TABLE_COLUMNS[5], transaction.getSource());
 			values.put(TRANSACTION_TABLE_COLUMNS[6], transaction.getCategory()
 					.getCategoryName());
+			values.put(TRANSACTION_TABLE_COLUMNS[7], transaction.getSender());
 			returnValue = db.insert(TRANSACTION_TABLE_NAME, null, values);
+
 			System.out.println("transaction added- " + transaction.getAmount());
 		} catch (Exception e) {
 			returnValue = -1;
@@ -411,6 +446,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			values.put(TRANSACTION_TABLE_COLUMNS[5], transaction.getSource());
 			values.put(TRANSACTION_TABLE_COLUMNS[6], transaction.getCategory()
 					.getCategoryName());
+			values.put(TRANSACTION_TABLE_COLUMNS[7], transaction.getSender());
 			// updating transaction information
 			returnValue = db.update(TRANSACTION_TABLE_NAME, values,
 					TRANSACTION_TABLE_COLUMNS[0] + "=?",
@@ -458,7 +494,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						CommonUtility.DATE_FORMATTER_WITHOUT_TIME
 								.format(ignoreItems.getDate()));
 				returnValue = db.insert(IGNORE_LIST_TABLE_NAME, null, values);
-				IGNORE_ITEMS.add(ignoreItems);
+				if (returnValue >= 0)
+					IGNORE_ITEMS.add(ignoreItems);
 			} catch (Exception e) {
 				returnValue = -1;
 			} finally {
