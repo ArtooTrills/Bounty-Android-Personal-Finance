@@ -34,7 +34,7 @@ import android.view.View;
 import android.widget.Toast;
 
 public class Home extends AppCompatActivity implements FragmentPresenter,
-		TransactionDetailsPresenter {
+		TransactionDetailsPresenter, HomeFragmentPresenter {
 
 	private RecyclerView navRecyclerView;
 	private static final String[] userPermissionText = {
@@ -236,11 +236,16 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 	@Override
 	public void onBackPressed() {
-		fragmentStack.pop();
-		if (!fragmentStack.isEmpty())
-			toggleTranIcon();
 
-		super.onBackPressed();
+		if(getSupportFragmentManager().getBackStackEntryCount()==1)
+		{
+			finish();
+		}
+		else if (!fragmentStack.isEmpty()) {
+			fragmentStack.pop();
+			toggleTranIcon();
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -276,12 +281,15 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			case NEW_TRANSACTION_FRAGMENT_ID:
 				ManualTransactionEntryFragment entryFragment = new ManualTransactionEntryFragment();
 				fragmentTransaction.replace(R.id.content_frame, entryFragment);
-				fragmentTransaction.addToBackStack(position + "");
+				fragmentTransaction.addToBackStack(NEW_TRANSACTION_FRAGMENT_ID
+						+ "");
 				fragmentTransaction.commit();
 				break;
 			case FRAGMENT_HOME:
 				FragmentHome fragmentHome = new FragmentHome(this);
 				fragmentTransaction.replace(R.id.content_frame, fragmentHome);
+				fragmentTransaction.addToBackStack(FRAGMENT_HOME
+						+ "");
 				fragmentTransaction.commit();
 				break;
 
@@ -290,10 +298,11 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 				fragmentTransaction.addToBackStack(FRAGMENT_IGNORE + "");
 				fragmentTransaction.replace(R.id.content_frame,
 						ignoreListCreateFragment);
+				fragmentTransaction.addToBackStack(FRAGMENT_IGNORE + "");
 				fragmentTransaction.commit();
 				break;
 			case FRAGMENT_HOW_IT_WORKS:
-				FragmentHowItWorks fragmentHowItWorks = new FragmentHowItWorks();
+				FragmentHowItWorks fragmentHowItWorks = new FragmentHowItWorks(this);
 				fragmentTransaction.addToBackStack(FRAGMENT_HOW_IT_WORKS + "");
 				fragmentTransaction.replace(R.id.content_frame,
 						fragmentHowItWorks);
@@ -321,7 +330,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	private void showUserSelectedPreference() {
 		int userPref = UtilitySharedpref.getSMSPermission(this);
 		String msg = userPermissionText[1];
@@ -361,7 +370,6 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			fragmentTransaction.commit();
 			toggleTranIcon();
 		}
-
 	}
 
 	private void notifyWhenBroadCast(Transaction transaction) {
@@ -404,5 +412,10 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			fragmentTransaction.addToBackStack(FRAGMENT_REPORT + "");
 			fragmentTransaction.commit();
 		}
+	}
+
+	@Override
+	public void showHomeFragment() {
+		showFragment(FRAGMENT_HOME);
 	}
 }
