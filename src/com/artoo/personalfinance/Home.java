@@ -1,8 +1,6 @@
 package com.artoo.personalfinance;
 
 import java.util.List;
-import java.util.Stack;
-
 import com.artoo.personalfinance.broadcastReceiver.SMSReceiver;
 import com.artoo.personalfinance.services.ArchiveSMSReaderService;
 import com.artoo.personalfinance.services.SMSFilteringService;
@@ -61,9 +59,6 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 	private Toolbar toolBar;
 
-	// fragment stack to manage option menu
-	private Stack<Integer> fragmentStack;
-
 	public static final int NEW_TRANSACTION_FRAGMENT_ID = 100,
 			FRAGMENT_IGNORE = 1, FRAGMENT_HOME = 0, FRAGMENT_HISTORY = 101,
 			FRAGMENT_REPORT = 109, FRAGMENT_HOW_IT_WORKS = 3;
@@ -71,6 +66,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	private static final int SMS_PREF_OPTION = 2;
 
 	private MenuItem newTrasactionItem;
+	private int currentFragmentId = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +102,6 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 		mNavDrawer.setDrawerListener(mDrawerToggle);
 		mDrawerToggle.syncState();
-		fragmentStack = new Stack<Integer>();// Initializing fragment stack to
-												// manage option menu
 
 		// checks if user has not set any preference about sms analysis
 		// permission and if not show a dialog seeking user consent
@@ -266,9 +260,8 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	 */
 	private void toggleTranIcon() {
 		if (newTrasactionItem != null) {
-			if (!fragmentStack.isEmpty()
-					&& (fragmentStack.peek() == NEW_TRANSACTION_FRAGMENT_ID || fragmentStack
-							.peek() == FRAGMENT_HISTORY)) {
+			if (currentFragmentId == NEW_TRANSACTION_FRAGMENT_ID
+					|| currentFragmentId == FRAGMENT_HISTORY) {
 				newTrasactionItem.setVisible(false);
 			} else {
 				if (!newTrasactionItem.isVisible()) {
@@ -279,15 +272,18 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	}
 
 	/**
-	 * close app when user is finally on home screen
+	 * close app when user is finally on home screen, if not bring home screen
+	 * to the front
+	 * 
 	 */
 	@Override
 	public void onBackPressed() {
-		if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-			finish();
-		} else if (!fragmentStack.isEmpty()) {
-			fragmentStack.pop();
+
+		if (currentFragmentId != FRAGMENT_HOME) {
+			showFragment(FRAGMENT_HOME);
+			currentFragmentId = FRAGMENT_HOME;
 			toggleTranIcon();
+		} else {
 			super.onBackPressed();
 		}
 	}
@@ -315,8 +311,8 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		// do not do anything if currently pressed position is same as what is
 		// currently being
 		// shown, otherwise show the item
-		if (fragmentStack.isEmpty() || fragmentStack.peek() != position) {
-			fragmentStack.push(position);
+		if (currentFragmentId != position) {
+			currentFragmentId = position;
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 					.beginTransaction();
 
@@ -325,14 +321,11 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			case NEW_TRANSACTION_FRAGMENT_ID:
 				ManualTransactionEntryFragment entryFragment = new ManualTransactionEntryFragment();
 				fragmentTransaction.replace(R.id.content_frame, entryFragment);
-				fragmentTransaction.addToBackStack(NEW_TRANSACTION_FRAGMENT_ID
-						+ "");
 				fragmentTransaction.commit();
 				break;
 			case FRAGMENT_HOME:
 				FragmentHome fragmentHome = new FragmentHome(this);
 				fragmentTransaction.replace(R.id.content_frame, fragmentHome);
-				fragmentTransaction.addToBackStack(FRAGMENT_HOME + "");
 				fragmentTransaction.commit();
 				break;
 
@@ -341,13 +334,11 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 				fragmentTransaction.addToBackStack(FRAGMENT_IGNORE + "");
 				fragmentTransaction.replace(R.id.content_frame,
 						ignoreListCreateFragment);
-				fragmentTransaction.addToBackStack(FRAGMENT_IGNORE + "");
 				fragmentTransaction.commit();
 				break;
 			case FRAGMENT_HOW_IT_WORKS:
 				FragmentHowItWorks fragmentHowItWorks = new FragmentHowItWorks(
 						this);
-				fragmentTransaction.addToBackStack(FRAGMENT_HOW_IT_WORKS + "");
 				fragmentTransaction.replace(R.id.content_frame,
 						fragmentHowItWorks);
 				fragmentTransaction.commit();
@@ -403,14 +394,13 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 	@Override
 	public void showHistoryFragment(Transaction transaction) {
-		if (fragmentStack.isEmpty() || fragmentStack.peek() != FRAGMENT_HISTORY) {
-			fragmentStack.push(FRAGMENT_HISTORY);
+		if (currentFragmentId != FRAGMENT_HISTORY) {
+			currentFragmentId = FRAGMENT_HISTORY;
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 					.beginTransaction();
 			TransactionHistoryFragment historyFragment = new TransactionHistoryFragment(
 					transaction);
 			fragmentTransaction.replace(R.id.content_frame, historyFragment);
-			fragmentTransaction.addToBackStack(FRAGMENT_HISTORY + "");
 			fragmentTransaction.commit();
 			toggleTranIcon();
 		}
@@ -447,15 +437,14 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 	@Override
 	public void showReportFragment(List<Transaction> transactions) {
-		if (fragmentStack.isEmpty() || fragmentStack.peek() != FRAGMENT_REPORT) {
-			fragmentStack.push(FRAGMENT_REPORT);
+		if (currentFragmentId != FRAGMENT_REPORT) {
+			currentFragmentId = FRAGMENT_REPORT;
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 					.beginTransaction();
 			FragmentTransactionReport fragmentTransactionReport = new FragmentTransactionReport(
 					transactions);
 			fragmentTransaction.replace(R.id.content_frame,
 					fragmentTransactionReport);
-			fragmentTransaction.addToBackStack(FRAGMENT_REPORT + "");
 			fragmentTransaction.commit();
 		}
 	}

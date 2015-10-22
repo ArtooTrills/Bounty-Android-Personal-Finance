@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:layout_margin="10dp"
     android:orientation="horizontal" >
 
@@ -16,8 +17,10 @@
         android:id="@+id/ignore_list_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="10dp"
         android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 
@@ -31,7 +34,7 @@
             android:id="@+id/delete_ignore_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/bin" />
+            android:background="@drawable/unignore" />
     </LinearLayout>
 
 </LinearLayout>

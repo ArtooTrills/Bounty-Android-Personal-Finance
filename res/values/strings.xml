@@ -12,7 +12,7 @@
     <color name="drawer_base_color">#171717</color>
     <color name="divider_color">#e0f2f1</color>
     <color name="header_text_view_color">#0d47a1</color>
-    <color name="income_color">#0091ea</color>
+    <color name="income_color">#43a047</color>
     <color name="expense_color">#ef5350</color>
     
     <string name="show_tran_source">SHOW SOURCE</string>

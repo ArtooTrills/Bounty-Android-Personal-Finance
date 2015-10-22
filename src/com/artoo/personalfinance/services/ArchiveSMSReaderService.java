@@ -35,7 +35,7 @@ public class ArchiveSMSReaderService extends IntentService {
 		Uri message = Uri.parse("content://sms/inbox");
 		Cursor smsCursor = contentResolver.query(message, REQUIRED_SMS_FIELDS,
 				null, null, null);
-		if (smsCursor.moveToFirst()) {
+		if (smsCursor.moveToLast()) {
 			do {
 				try {
 					SMS sms = new SMS();
@@ -46,7 +46,7 @@ public class ArchiveSMSReaderService extends IntentService {
 				} catch (Exception e) {
 
 				}
-			} while (smsCursor.moveToNext());
+			} while (smsCursor.moveToPrevious());
 		}
 	}
 

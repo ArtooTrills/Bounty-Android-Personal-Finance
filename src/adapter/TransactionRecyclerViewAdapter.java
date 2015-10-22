@@ -160,7 +160,7 @@ public class TransactionRecyclerViewAdapter extends
 				totalTran = (float) Math.round(totalTran * 100) / 100;
 				if (totalTran >= 0) {
 					holder.TextViewTotalTransaction.setTextColor(Color
-							.parseColor("#0091ea"));
+							.parseColor("#43a047"));
 					if (totalTran == 0)
 						holder.TextViewTotalTransaction.setText(totalTran + "");
 					else

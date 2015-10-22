@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ignore_sender"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/expense_color" />
 
         <Button
             android:id="@+id/btn_tran_source_show"
