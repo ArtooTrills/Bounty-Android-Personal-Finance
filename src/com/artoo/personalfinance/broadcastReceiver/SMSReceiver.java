@@ -57,7 +57,6 @@ public class SMSReceiver extends BroadcastReceiver {
 
 					SmsMessage currentMessage = SmsMessage
 							.createFromPdu((byte[]) o);
-
 					String senderAddress = currentMessage
 							.getDisplayOriginatingAddress();
 					dbHelper = new DatabaseHelper(context);

@@ -10,7 +10,7 @@
         android:id="@+id/pie_chart_expense"
         android:layout_width="match_parent"
         android:visibility="gone"
-        android:layout_height="200dp"
+        android:layout_height="230dp"
         android:layout_margin="10dp" />
 
 </LinearLayout>

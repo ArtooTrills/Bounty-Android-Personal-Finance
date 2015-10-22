@@ -152,8 +152,7 @@ public class TransactionHistoryAdapter extends
 			}
 			if (buttonDeleteTransaction != null
 					&& v.getId() == buttonDeleteTransaction.getId()) {
-
-				new DeleteTransactionAsync(context, transaction).execute();
+				showConfirmationDialogOnDelete(transaction);
 
 			} else if (buttonUpdateTransaction != null
 					&& v.getId() == buttonUpdateTransaction.getId()) {
@@ -573,5 +572,34 @@ public class TransactionHistoryAdapter extends
 			}
 		}
 
+	}
+
+	/**
+	 * shows a dialog seeking user confirmation if user really wants to delete
+	 * the transaction
+	 * 
+	 * @param transaction
+	 */
+	private void showConfirmationDialogOnDelete(final Transaction transaction) {
+		AlertDialog.Builder conBuilder = new Builder(context);
+		conBuilder.setMessage("Do you really want to delete this transaction");
+		conBuilder.setNegativeButton("No",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				});
+		conBuilder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						new DeleteTransactionAsync(context, transaction)
+								.execute();
+					}
+				});
+		conBuilder.show();
 	}
 }

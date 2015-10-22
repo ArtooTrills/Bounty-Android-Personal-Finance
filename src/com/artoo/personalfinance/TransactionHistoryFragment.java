@@ -8,7 +8,6 @@ import model.Transaction;
 import model.TransactionCategory;
 import model.TransactionHistory;
 import adapter.TransactionHistoryAdapter;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class TransactionHistoryFragment extends Fragment {
+	
 	private RecyclerView recyclerViewTransactionHistory;
 	private RecyclerView.LayoutManager transactionHistoryLayoutManager;
 	private List<TransactionHistory> transactionHistoryList;
@@ -44,9 +44,9 @@ public class TransactionHistoryFragment extends Fragment {
 				getActivity(), LinearLayoutManager.VERTICAL, false);
 		recyclerViewTransactionHistory
 				.setLayoutManager(transactionHistoryLayoutManager);
-		
+
 		categoryNames = new ArrayList<String>();
-		dbHelper=new DatabaseHelper(getActivity());
+		dbHelper = new DatabaseHelper(getActivity());
 		new TransactionHistoryAndCategoryLoader().execute();
 		return view;
 	}
@@ -54,15 +54,10 @@ public class TransactionHistoryFragment extends Fragment {
 	class TransactionHistoryAndCategoryLoader extends
 			AsyncTask<Void, Void, Void> {
 		List<TransactionHistory> tempList;
-		ProgressDialog pDialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			pDialog = new ProgressDialog(getActivity());
-			pDialog.setMessage("Loading history");
-			pDialog.setCancelable(false);
-			pDialog.show();
 		}
 
 		@Override
@@ -81,7 +76,6 @@ public class TransactionHistoryFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			pDialog.dismiss();
 			if (transactionHistoryList == null)
 				transactionHistoryList = new ArrayList<TransactionHistory>();
 			transaction.setTransactionHistories(transactionHistoryList);

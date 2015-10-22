@@ -35,6 +35,8 @@
 
         <service android:name="com.artoo.personalfinance.services.SMSFilteringService" >
         </service>
+        <service android:name="com.artoo.personalfinance.services.ArchiveSMSReaderService" >
+        </service>
 
         <activity
             android:name=".SplashScreen"

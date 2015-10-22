@@ -23,20 +23,19 @@ public class SMSFilteringService extends IntentService {
 
 	public static final String TRANSACTION_KEY = "tran";
 	public static final String BROADCAST_ACTION_KEY = "com.artoo.personalfinance.services.inernal_sms_broadcast";
-	private static final String[] EXPENSE_PATTERNS_AMOUNT_BEFORE = {
+	static final String[] EXPENSE_PATTERNS_AMOUNT_BEFORE = {
 			"has been withdrawn", "have been withdrawn", "was withdrawn",
 			"is withdrawn", "is debited", "was debited", "has been debited" };
 
-	private static final String[] EXPENSE_PATTERNS_AMOUNT_AFTER = {
-			"have withdrawn", "paid", "paid an amount of" };
+	static final String[] EXPENSE_PATTERNS_AMOUNT_AFTER = { "have withdrawn",
+			"paid", "paid an amount of" };
 
-	private static final String[] INCOME_PATTERNS_AMOUNT_BEFORE = {
+	static final String[] INCOME_PATTERNS_AMOUNT_BEFORE = {
 			"has been depositted", "have been depositted", "was depositted",
 			"is depositted", "was credited", "is credited", "has been credited" };
 
-	private static final String[] INCOME_PATTERNS_AMOUNT_AFTER = {
-			"have dopsitted", "have withdrawn an amount of", "received",
-			"received an amount of" };
+	static final String[] INCOME_PATTERNS_AMOUNT_AFTER = { "have dopsitted",
+			"have withdrawn an amount of", "received", "received an amount of" };
 
 	/**
 	 * class performs message filtering and transaction extraction on a worker
@@ -151,8 +150,10 @@ public class SMSFilteringService extends IntentService {
 									transaction = new Transaction(amount,
 											Transaction.EXPENSE, senderName,
 											new Date());
-									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
-											+ "\n" + msgBody);
+									transaction.setSource(senderName
+											.toUpperCase(Locale.ENGLISH)
+											+ "\n"
+											+ msgBody);
 									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
@@ -242,8 +243,10 @@ public class SMSFilteringService extends IntentService {
 									transaction = new Transaction(amount,
 											Transaction.EXPENSE, senderName,
 											new Date());
-									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
-											+ "\n" + msgBody);
+									transaction.setSource(senderName
+											.toUpperCase(Locale.ENGLISH)
+											+ "\n"
+											+ msgBody);
 									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
@@ -336,8 +339,10 @@ public class SMSFilteringService extends IntentService {
 									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
-									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
-											+ "\n" + msgBody);
+									transaction.setSource(senderName
+											.toUpperCase(Locale.ENGLISH)
+											+ "\n"
+											+ msgBody);
 									dbHelper.addTransaction(transaction);
 									isTransaction = true;
 									return null;
@@ -424,8 +429,10 @@ public class SMSFilteringService extends IntentService {
 									transaction.setSender(senderName);
 									DatabaseHelper dbHelper = new DatabaseHelper(
 											getBaseContext());
-									transaction.setSource(senderName.toUpperCase(Locale.ENGLISH)
-											+ "\n" + msgBody);
+									transaction.setSource(senderName
+											.toUpperCase(Locale.ENGLISH)
+											+ "\n"
+											+ msgBody);
 									dbHelper.addTransaction(transaction);
 									isTransaction = true;
 									return null;

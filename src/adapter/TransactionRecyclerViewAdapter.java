@@ -10,8 +10,11 @@ import model.Transaction;
 import com.artoo.personalfinance.TransactionDetailsPresenter;
 import com.artoo.personalfinance.R;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -189,10 +192,9 @@ public class TransactionRecyclerViewAdapter extends
 					.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							if (accessPosition > -1)
-								new DeleteTransactionAsync(context,
-										transactionList.get(accessPosition))
-										.execute();
+							if (accessPosition >= 0)
+								showConfirmationDialogOnDelete(transactionList
+										.get(accessPosition));
 						}
 					});
 
@@ -225,6 +227,35 @@ public class TransactionRecyclerViewAdapter extends
 				}
 			}
 		}
+	}
+
+	/**
+	 * shows a dialog seeking user confirmation if user really wants to delete
+	 * the transaction
+	 * 
+	 * @param transaction
+	 */
+	private void showConfirmationDialogOnDelete(final Transaction transaction) {
+		AlertDialog.Builder conBuilder = new Builder(context);
+		conBuilder.setMessage("Do you really want to delete this transaction");
+		conBuilder.setNegativeButton("No",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				});
+		conBuilder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						new DeleteTransactionAsync(context, transaction)
+								.execute();
+					}
+				});
+		conBuilder.show();
 	}
 
 	@Override

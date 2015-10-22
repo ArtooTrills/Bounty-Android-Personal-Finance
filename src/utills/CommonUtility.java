@@ -1,6 +1,8 @@
 package utills;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -15,4 +17,16 @@ public final class CommonUtility {
 	 */
 	public static final SimpleDateFormat DATE_FORMATTER_WITHOUT_TIME = new SimpleDateFormat(
 			"dd-MM-yyyy", Locale.ENGLISH);
+	
+	/**
+	 * utility method to convert long to date
+	 * @param currentTime
+	 * @return
+	 */
+	public static Date millisToDate(long currentTime) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTimeInMillis(currentTime);
+	    Date date = calendar.getTime();
+	    return date;
+	}
 }

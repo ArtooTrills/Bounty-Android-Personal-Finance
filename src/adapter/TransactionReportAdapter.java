@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import com.artoo.personalfinance.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendDirection;
+import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -17,8 +18,8 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import model.Transaction;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -83,6 +84,7 @@ public class TransactionReportAdapter extends
 		if (!transactions.isEmpty()) {
 			categories.add(transactions.get(0).getCategory().getCategoryName());
 			amountCategoryWise.add(transactions.get(0).getAmount());
+			totalTransaction+=transactions.get(0).getAmount();
 			for (int i = 1; i < transactions.size(); i++) {
 				if (transactions.get(i).getCategory().getCategoryName()
 						.equals(categories.get(categories.size() - 1))) {
@@ -113,7 +115,6 @@ public class TransactionReportAdapter extends
 		amountCategoryWise = new ArrayList<Float>();
 		setDataValues();
 	}
-
 	class ViewHolder extends RecyclerView.ViewHolder {
 		PieChart pieChart;
 		TextView textViewPeriodChooser;
@@ -145,39 +146,36 @@ public class TransactionReportAdapter extends
 		}
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		if (position == 0) {
 			// showing pie chart when categories are more than 2
-			if (categories.isEmpty() || categories.size() > 2) {
+			// if (categories.isEmpty() || categories.size() > 2) {
+			//holder.pieChart.getChartBitmap().reconfigure(150, 230, Config.ALPHA_8);
+			
+			holder.pieChart.setVisibility(View.VISIBLE);
+			holder.pieChart.setUsePercentValues(true);
+			holder.pieChart.setExtraOffsets(5, 5, 5, 5);
+			holder.pieChart.setDragDecelerationFrictionCoef(.95f);
+			holder.pieChart.setDrawHoleEnabled(true);
+			holder.pieChart.setHoleColorTransparent(true);
+			tf = Typeface.createFromAsset(context.getAssets(),
+					"OpenSans-Regular.ttf");
+			holder.pieChart.setTransparentCircleColor(Color.WHITE);
+			holder.pieChart.setTransparentCircleAlpha(150);
+			holder.pieChart.setHoleRadius(58f);
+			holder.pieChart.setTransparentCircleRadius(60f);
+			holder.pieChart.setDrawCenterText(true);
+			holder.pieChart.setRotationAngle(0);
+			holder.pieChart.setRotationEnabled(true);
+			holder.pieChart.setHighlightEnabled(true);
+			holder.pieChart.animateY(1400, Easing.EasingOption.EaseInOutCirc);
 
-				holder.pieChart.setVisibility(View.VISIBLE);
-				holder.pieChart.setUsePercentValues(true);
-				holder.pieChart.setExtraOffsets(5, 5, 5, 5);
-				holder.pieChart.setDragDecelerationFrictionCoef(.95f);
-				holder.pieChart.setDrawHoleEnabled(true);
-				holder.pieChart.setHoleColorTransparent(true);
-				tf = Typeface.createFromAsset(context.getAssets(),
-						"OpenSans-Regular.ttf");
-				holder.pieChart.setTransparentCircleColor(Color.WHITE);
-				holder.pieChart.setTransparentCircleAlpha(110);
-				holder.pieChart.setHoleRadius(58f);
-				holder.pieChart.setTransparentCircleRadius(60f);
-				holder.pieChart.setDrawCenterText(true);
-				holder.pieChart.setRotationAngle(0);
-				holder.pieChart.setRotationEnabled(true);
-				holder.pieChart.setHighlightEnabled(true);
-				holder.pieChart.animateY(1400,
-						Easing.EasingOption.EaseInOutQuad);
-				Legend l = holder.pieChart.getLegend();
-				l.setPosition(LegendPosition.RIGHT_OF_CHART);
-				l.setXEntrySpace(7f);
-				l.setYEntrySpace(0f);
-				l.setYOffset(0f);
-				setData(holder.pieChart);
-			} else {
-				holder.pieChart.setVisibility(View.GONE);
-			}
+			setData(holder.pieChart);
+			// } else {
+			// holder.pieChart.setVisibility(View.GONE);
+			// }
 		} else {
 			holder.textViewTransactionCategoryName.setText(categories
 					.get(position - 1));
@@ -195,8 +193,11 @@ public class TransactionReportAdapter extends
 	/**
 	 * sets data into pie chart and displays transaction by category
 	 */
+	@SuppressLint("NewApi")
 	private void setData(final PieChart pieChart) {
+		
 		List<Entry> yValues = new ArrayList<Entry>();
+		
 		for (int i = 0; i < categories.size(); i++) {
 			yValues.add(new Entry(
 					((amountCategoryWise.get(i)) / totalTransaction) * 100, i));
@@ -204,7 +205,7 @@ public class TransactionReportAdapter extends
 		PieDataSet dataSet = new PieDataSet(yValues, "");
 
 		dataSet.setSliceSpace(3.4f);
-		dataSet.setSelectionShift(5f);
+		dataSet.setSelectionShift(8f);
 		PieData data = new PieData(categories, dataSet);
 		if (type == Transaction.EXPENSE)
 			dataSet.setColors(EXPENSE_COLORS);
@@ -221,6 +222,7 @@ public class TransactionReportAdapter extends
 		else {
 			noDataText = "NO INCOME FOUND";
 		}
+		pieChart.setDrawHoleEnabled(true);
 		pieChart.setNoDataText(noDataText);
 		pieChart.setDrawSliceText(false);
 		data.setValueTypeface(tf);
@@ -238,8 +240,23 @@ public class TransactionReportAdapter extends
 						.get(e.getXIndex()) + ""));
 			}
 		});
+		//pieChart.setHovered(true);
+		
+		//pieChart.getChartBitmap().setWidth(280);
+		
+		Legend l = pieChart.getLegend();
+		l.setFormToTextSpace(2);
+		l.setWordWrapEnabled(true);
+		l.setPosition(LegendPosition.BELOW_CHART_CENTER);
+		l.setForm(LegendForm.CIRCLE);
+		l.setDirection(LegendDirection.LEFT_TO_RIGHT);
+		l.setXEntrySpace(2f);
+		l.setYEntrySpace(0);
+		l.setYOffset(2f);
 		pieChart.highlightValues(null);
 		pieChart.invalidate();
+		
+	//pieChart.getChartBitmap().setDensity(60*200);
 	}
 
 	@Override

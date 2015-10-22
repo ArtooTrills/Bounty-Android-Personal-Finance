@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Stack;
 
 import com.artoo.personalfinance.broadcastReceiver.SMSReceiver;
+import com.artoo.personalfinance.services.ArchiveSMSReaderService;
 import com.artoo.personalfinance.services.SMSFilteringService;
 import com.google.gson.Gson;
 
@@ -120,6 +121,39 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		showFragment(FRAGMENT_HOME);
 	}
 
+	private void showArchiveMessageConsentSeekingDialog() {
+		AlertDialog.Builder builder = new Builder(this);
+
+		builder.setMessage("Do you want us to read your archive messages as well, this will only take 1 or two minutes.");
+
+		builder.setNegativeButton("Not now", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				UtilitySharedpref.setArchiveMessagesAsRead(Home.this);
+			}
+		});
+
+		builder.setPositiveButton("Allow", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent smsIntent = new Intent(Home.this,
+						ArchiveSMSReaderService.class);
+
+				Home.this.startService(smsIntent);
+				UtilitySharedpref.setArchiveMessagesAsRead(Home.this);
+			}
+		});
+
+		builder.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				UtilitySharedpref.setArchiveMessagesAsRead(Home.this);
+			}
+		});
+		builder.show();
+	}
+
 	/**
 	 * shows up a dialog seeking user consent to analyze sms
 	 */
@@ -200,9 +234,19 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-
+				if (!UtilitySharedpref.getIsOlderMessageRead(Home.this))
+					showArchiveMessageConsentSeekingDialog();
 			}
 		});
+		preferenceChangeDialog
+				.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						if (!UtilitySharedpref.getIsOlderMessageRead(Home.this))
+							showArchiveMessageConsentSeekingDialog();
+					}
+				});
 		preferenceChangeDialog.show();
 	}
 
@@ -234,14 +278,14 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		}
 	}
 
+	/**
+	 * close app when user is finally on home screen
+	 */
 	@Override
 	public void onBackPressed() {
-
-		if(getSupportFragmentManager().getBackStackEntryCount()==1)
-		{
+		if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
 			finish();
-		}
-		else if (!fragmentStack.isEmpty()) {
+		} else if (!fragmentStack.isEmpty()) {
 			fragmentStack.pop();
 			toggleTranIcon();
 			super.onBackPressed();
@@ -288,8 +332,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			case FRAGMENT_HOME:
 				FragmentHome fragmentHome = new FragmentHome(this);
 				fragmentTransaction.replace(R.id.content_frame, fragmentHome);
-				fragmentTransaction.addToBackStack(FRAGMENT_HOME
-						+ "");
+				fragmentTransaction.addToBackStack(FRAGMENT_HOME + "");
 				fragmentTransaction.commit();
 				break;
 
@@ -302,7 +345,8 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 				fragmentTransaction.commit();
 				break;
 			case FRAGMENT_HOW_IT_WORKS:
-				FragmentHowItWorks fragmentHowItWorks = new FragmentHowItWorks(this);
+				FragmentHowItWorks fragmentHowItWorks = new FragmentHowItWorks(
+						this);
 				fragmentTransaction.addToBackStack(FRAGMENT_HOW_IT_WORKS + "");
 				fragmentTransaction.replace(R.id.content_frame,
 						fragmentHowItWorks);
@@ -330,7 +374,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void showUserSelectedPreference() {
 		int userPref = UtilitySharedpref.getSMSPermission(this);
 		String msg = userPermissionText[1];
@@ -389,7 +433,9 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			Bundle databuBundle = intent.getExtras();
 			if (databuBundle != null) {
 				if (databuBundle
-						.containsKey(SMSFilteringService.TRANSACTION_KEY)) {
+						.containsKey(SMSFilteringService.TRANSACTION_KEY)
+						&& !databuBundle
+								.containsKey(ArchiveSMSReaderService.IS_TRANSACTION)) {
 					Transaction transaction = new Gson().fromJson(databuBundle
 							.getString(SMSFilteringService.TRANSACTION_KEY),
 							Transaction.class);
