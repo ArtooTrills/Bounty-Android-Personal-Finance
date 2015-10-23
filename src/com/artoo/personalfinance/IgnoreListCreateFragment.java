@@ -54,7 +54,9 @@ public class IgnoreListCreateFragment extends Fragment implements
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == buttonSaveIgnoreItem.getId()) {
+		if (v.getId() == buttonSaveIgnoreItem.getId()
+				&& editTextIgnoreSenderName.getText().toString().trim()
+						.length() > 0) {
 			boolean isNew = true;
 			for (IgnoreItem item : ignoreItemsList) {
 				if (item.getSource().equals(

@@ -41,6 +41,10 @@ public class TransactionReportAdapter extends
 	List<String> categories;
 	List<Float> amountCategoryWise;
 	private float totalTransaction;
+	
+	/**
+	 * add colors to represent transaction categories
+	 */
 	static {
 		INCOME_COLORS = new ArrayList<Integer>();
 		EXPENSE_COLORS = new ArrayList<Integer>();
@@ -60,6 +64,12 @@ public class TransactionReportAdapter extends
 		for (int i = INCOME_COLORS.size() - 1; i > -1; i--) {
 			EXPENSE_COLORS.add(INCOME_COLORS.get(i));
 		}
+		
+		/**
+		 * shuffle colors so that every time user opens app new colors come
+		 */
+		Collections.shuffle(INCOME_COLORS);
+		Collections.shuffle(EXPENSE_COLORS);
 	}
 
 	/**

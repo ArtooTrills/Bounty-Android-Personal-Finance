@@ -25,14 +25,14 @@
             android:layout_height="wrap_content"
             android:layout_weight=".8"
             android:orientation="vertical"
-            android:paddingBottom="4dp"
-             >
+            android:paddingBottom="4dp" >
 
             <TextView
                 android:id="@+id/transaction_amount_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/transaction_date_text_view"
@@ -42,7 +42,9 @@
             <TextView
                 android:id="@+id/transaction_desc_text_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/no_notes" />
+            
         </LinearLayout>
 
         <Button

@@ -13,6 +13,10 @@ public interface TransactionDetailsPresenter {
 	 * @param transaction
 	 */
 	public void showHistoryFragment(Transaction transaction);
-	
+
+	/**
+	 * shows reports based on user's transaction and transaction categories
+	 * @param list of transactions 
+	 */
 	public void showReportFragment(List<Transaction> transactions);
 }

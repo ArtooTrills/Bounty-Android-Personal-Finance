@@ -115,12 +115,16 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		showFragment(FRAGMENT_HOME);
 	}
 
+	/**
+	 * Show a dialog to ask user if user wants this app to read previous
+	 * messages as well
+	 */
 	private void showArchiveMessageConsentSeekingDialog() {
 		AlertDialog.Builder builder = new Builder(this);
 
 		builder.setMessage("Do you want us to read your archive messages as well, this will only take 1 or two minutes.");
 
-		builder.setNegativeButton("Not now", new OnClickListener() {
+		builder.setNegativeButton("No", new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -281,8 +285,6 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 		if (currentFragmentId != FRAGMENT_HOME) {
 			showFragment(FRAGMENT_HOME);
-			currentFragmentId = FRAGMENT_HOME;
-			toggleTranIcon();
 		} else {
 			super.onBackPressed();
 		}
@@ -331,7 +333,6 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 
 			case FRAGMENT_IGNORE:
 				IgnoreListCreateFragment ignoreListCreateFragment = new IgnoreListCreateFragment();
-				fragmentTransaction.addToBackStack(FRAGMENT_IGNORE + "");
 				fragmentTransaction.replace(R.id.content_frame,
 						ignoreListCreateFragment);
 				fragmentTransaction.commit();
@@ -366,6 +367,10 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * show a dialog to show user's current sms permission and an option to
+	 * change them if user wants
+	 */
 	private void showUserSelectedPreference() {
 		int userPref = UtilitySharedpref.getSMSPermission(this);
 		String msg = userPermissionText[1];

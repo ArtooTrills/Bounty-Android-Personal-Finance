@@ -216,7 +216,9 @@ public class TransactionRecyclerViewAdapter extends
 								.format(transactionList.get(position)
 										.getTransactionDate()));
 			}
-			if (transactionList.get(accessPosition).getDesc() != null) {
+			if (transactionList.get(accessPosition).getDesc() != null
+					&& transactionList.get(accessPosition).getDesc().trim()
+							.length() > 0) {
 				if (transactionList.get(position).getDesc().length() > 10)
 					holder.textViewTransactionDesc.setText(transactionList
 							.get(position).getDesc().substring(0, 10)
@@ -225,6 +227,9 @@ public class TransactionRecyclerViewAdapter extends
 					holder.textViewTransactionDesc.setText(transactionList.get(
 							position).getDesc());
 				}
+			}else
+			{
+				holder.textViewTransactionDesc.setText("");
 			}
 		}
 	}
