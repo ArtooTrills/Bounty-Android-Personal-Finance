@@ -52,10 +52,10 @@ public class ArchiveSMSReaderService extends IntentService {
 
 	// ------------------------filtering messages-----------------//
 	private void filterMessage(SMS sms) {
-		String[] msgBodyChunks = sms.body.replaceAll("(\\r|\\n|\\t|\\s)+", " ")
-				.toLowerCase(Locale.ENGLISH).split(" ");
 		String msgBody = sms.body.replaceAll("(\\r|\\n|\\t|\\s)+", " ")
 				.toLowerCase(Locale.ENGLISH);
+		String[] msgBodyChunks = msgBody.split(" ");
+
 		boolean isTransaction = false;
 		Transaction transaction = null;
 
@@ -73,18 +73,23 @@ public class ArchiveSMSReaderService extends IntentService {
 					if (i > 0) {
 						utilityStringBUilder.setLength(0);
 						utilityStringBUilder.append(chunk);
-						for (int x = i + 1; x < msgBodyChunks.length; x++) {
-							utilityStringBUilder.append(" ").append(
-									msgBodyChunks[x]);
-							if (utilityStringBUilder.length() >= EXPENSE_PATTERNS_AMOUNT_BEFORE[expBeforeCount]
-									.length()) {
-								if (utilityStringBUilder
-										.toString()
-										.equals(EXPENSE_PATTERNS_AMOUNT_BEFORE[expBeforeCount])) {
-									shouldCheck = true;
+						if (utilityStringBUilder.toString().equals(
+								EXPENSE_PATTERNS_AMOUNT_BEFORE[expBeforeCount])) {
+							shouldCheck = true;
+						} else {
+							for (int x = i + 1; x < msgBodyChunks.length; x++) {
+								utilityStringBUilder.append(" ").append(
+										msgBodyChunks[x]);
+								if (utilityStringBUilder.length() >= EXPENSE_PATTERNS_AMOUNT_BEFORE[expBeforeCount]
+										.length()) {
+									if (utilityStringBUilder
+											.toString()
+											.equals(EXPENSE_PATTERNS_AMOUNT_BEFORE[expBeforeCount])) {
+										shouldCheck = true;
 
+									}
+									break;
 								}
-								break;
 							}
 						}
 						if (shouldCheck) {
@@ -144,7 +149,7 @@ public class ArchiveSMSReaderService extends IntentService {
 							try {
 								float amount = Float
 										.parseFloat(utilityStringBUilder
-												.toString());
+												.toString().replaceAll(",", ""));
 								transaction = new Transaction(amount,
 										Transaction.EXPENSE, sms.address,
 										sms.getDate());
@@ -172,12 +177,16 @@ public class ArchiveSMSReaderService extends IntentService {
 				if (EXPENSE_PATTERNS_AMOUNT_AFTER[expAfterCount]
 						.startsWith(chunk)) {
 
-					if (i > 1) {
-						shouldCheck = false;
-						try {
-							utilityStringBUilder.setLength(0);
-							utilityStringBUilder.append(chunk);
-							int x;
+					shouldCheck = false;
+					try {
+						utilityStringBUilder.setLength(0);
+						utilityStringBUilder.append(chunk);
+						int x = i;
+						if (utilityStringBUilder.toString().equals(
+								EXPENSE_PATTERNS_AMOUNT_AFTER[expAfterCount])) {
+							shouldCheck = true;
+
+						} else {
 							for (x = i + 1; x < msgBodyChunks.length; x++) {
 								utilityStringBUilder.append(" ").append(
 										msgBodyChunks[x]);
@@ -192,71 +201,72 @@ public class ArchiveSMSReaderService extends IntentService {
 									break;
 								}
 							}
-							if (shouldCheck) {
-								utilityStringBUilder.setLength(0);
-								if (i > 1
-										&& (msgBodyChunks[x + 1]
-												.equalsIgnoreCase("inr")
-												|| msgBodyChunks[x + 1]
-														.equalsIgnoreCase("rs")
-												|| msgBodyChunks[x + 1]
-														.equalsIgnoreCase("rs.")
-												|| msgBodyChunks[x + 1]
-														.equals('\u20A8' + "") || msgBodyChunks[x + 1]
-												.equalsIgnoreCase('\u20A8' + "."))) {
+						}
+						if (shouldCheck) {
+							utilityStringBUilder.setLength(0);
+							if ((x + 1) < msgBodyChunks.length
+									&& (msgBodyChunks[x + 1]
+											.equalsIgnoreCase("inr")
+											|| msgBodyChunks[x + 1]
+													.equalsIgnoreCase("rs")
+											|| msgBodyChunks[x + 1]
+													.equalsIgnoreCase("rs.")
+											|| msgBodyChunks[x + 1]
+													.equals('\u20A8' + "") || msgBodyChunks[x + 1]
+											.equalsIgnoreCase('\u20A8' + "."))) {
+								utilityStringBUilder
+										.append(msgBodyChunks[x + 2]);
+							} else if (x + 1 < msgBodyChunks.length) {
+								if (msgBodyChunks[x + 1].startsWith("inr")) {
 									utilityStringBUilder
-											.append(msgBodyChunks[x + 2]);
-								} else if (i > 0) {
-									if (msgBodyChunks[x + 1].startsWith("inr")) {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]
-														.substring(
-																3,
-																msgBodyChunks[x + 1]
-																		.length()));
-									} else if (msgBodyChunks[x + 1]
-											.startsWith("rs.")) {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]
-														.substring(
-																3,
-																msgBodyChunks[x + 1]
-																		.length()));
-									} else if (msgBodyChunks[x + 1]
-											.startsWith("rs")) {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]
-														.substring(
-																2,
-																msgBodyChunks[x + 1]
-																		.length()));
-									} else {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]);
-									}
+											.append(msgBodyChunks[x + 1]
+													.substring(
+															3,
+															msgBodyChunks[x + 1]
+																	.length()));
+								} else if (msgBodyChunks[x + 1]
+										.startsWith("rs.")) {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]
+													.substring(
+															3,
+															msgBodyChunks[x + 1]
+																	.length()));
+								} else if (msgBodyChunks[x + 1]
+										.startsWith("rs")) {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]
+													.substring(
+															2,
+															msgBodyChunks[x + 1]
+																	.length()));
+								} else {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]);
 								}
-
-								float amount = Float
-										.parseFloat(utilityStringBUilder
-												.toString());
-								transaction = new Transaction(amount,
-										Transaction.EXPENSE, sms.address,
-										sms.getDate());
-								transaction.setSource(sms.address
-										.toUpperCase(Locale.ENGLISH)
-										+ "\n"
-										+ msgBody);
-								transaction.setSender(sms.address);
-								DatabaseHelper dbHelper = new DatabaseHelper(
-										getBaseContext());
-								dbHelper.addTransaction(transaction);
-								isTransaction = true;
 							}
 
-						} catch (Exception e) {
-
+							float amount = Float
+									.parseFloat(utilityStringBUilder.toString()
+											.replaceAll(",", ""));
+							transaction = new Transaction(amount,
+									Transaction.EXPENSE, sms.address,
+									sms.getDate());
+							transaction.setSource(sms.address
+									.toUpperCase(Locale.ENGLISH)
+									+ "\n"
+									+ msgBody);
+							transaction.setSender(sms.address);
+							DatabaseHelper dbHelper = new DatabaseHelper(
+									getBaseContext());
+							dbHelper.addTransaction(transaction);
+							isTransaction = true;
 						}
+
+					} catch (Exception e) {
+
 					}
+
 				}
 			}
 			if (isTransaction)
@@ -272,18 +282,24 @@ public class ArchiveSMSReaderService extends IntentService {
 						shouldCheck = false;
 						utilityStringBUilder.setLength(0);
 						utilityStringBUilder.append(chunk);
-						for (int x = i + 1; x < msgBodyChunks.length; x++) {
-							utilityStringBUilder.append(" ").append(
-									msgBodyChunks[x]);
-							if (utilityStringBUilder.length() >= INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount]
-									.length()) {
-								if (utilityStringBUilder
-										.toString()
-										.equals(INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount])) {
-									shouldCheck = true;
+						if (utilityStringBUilder.toString().equals(
+								INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount])) {
+							shouldCheck = true;
 
+						} else {
+							for (int x = i + 1; x < msgBodyChunks.length; x++) {
+								utilityStringBUilder.append(" ").append(
+										msgBodyChunks[x]);
+								if (utilityStringBUilder.length() >= INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount]
+										.length()) {
+									if (utilityStringBUilder
+											.toString()
+											.equals(INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount])) {
+										shouldCheck = true;
+
+									}
+									break;
 								}
-								break;
 							}
 						}
 						if (shouldCheck) {
@@ -332,7 +348,8 @@ public class ArchiveSMSReaderService extends IntentService {
 
 							try {
 								float amount = Float
-										.parseFloat(msgBodyChunks[i - 1]);
+										.parseFloat(utilityStringBUilder
+												.toString().replaceAll(",", ""));
 								transaction = new Transaction(amount,
 										Transaction.INCOME, sms.address,
 										sms.getDate());
@@ -359,12 +376,15 @@ public class ArchiveSMSReaderService extends IntentService {
 				if (INCOME_PATTERNS_AMOUNT_AFTER[incAfterCount]
 						.startsWith(chunk)) {
 
-					if (i > 1) {
-						shouldCheck = false;
-						try {
-							utilityStringBUilder.setLength(0);
-							utilityStringBUilder.append(chunk);
-							int x;
+					shouldCheck = false;
+					try {
+						utilityStringBUilder.setLength(0);
+						utilityStringBUilder.append(chunk);
+						int x = i;
+						if (utilityStringBUilder.toString().equals(
+								INCOME_PATTERNS_AMOUNT_AFTER[incAfterCount])) {
+							shouldCheck = true;
+						} else {
 							for (x = i + 1; x < msgBodyChunks.length; x++) {
 								utilityStringBUilder.append(" ").append(
 										msgBodyChunks[x]);
@@ -378,67 +398,71 @@ public class ArchiveSMSReaderService extends IntentService {
 									break;
 								}
 							}
-							if (shouldCheck) {
-								utilityStringBUilder.setLength(0);
-								if (i > 1
-										&& (msgBodyChunks[x + 1]
-												.equalsIgnoreCase("inr")
-												|| msgBodyChunks[x + 1]
-														.equalsIgnoreCase("rs")
-												|| msgBodyChunks[x + 1]
-														.equalsIgnoreCase("rs.")
-												|| msgBodyChunks[x + 1]
-														.equals('\u20A8' + "") || msgBodyChunks[x + 1]
-												.equalsIgnoreCase('\u20A8' + "."))) {
-									utilityStringBUilder
-											.append(msgBodyChunks[x + 2]);
-								} else if (i > 0) {
-									if (msgBodyChunks[x + 1].startsWith("inr")) {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]
-														.substring(
-																3,
-																msgBodyChunks[x + 1]
-																		.length()));
-									} else if (msgBodyChunks[x + 1]
-											.startsWith("rs.")) {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]
-														.substring(
-																3,
-																msgBodyChunks[x + 1]
-																		.length()));
-									} else if (msgBodyChunks[x + 1]
-											.startsWith("rs")) {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]
-														.substring(
-																2,
-																msgBodyChunks[x + 1]
-																		.length()));
-									} else {
-										utilityStringBUilder
-												.append(msgBodyChunks[x + 1]);
-									}
-								}
-								float amount = Float
-										.parseFloat(msgBodyChunks[i + 1]);
-								transaction = new Transaction(amount,
-										Transaction.INCOME, sms.address,
-										sms.getDate());
-								transaction.setSender(sms.address);
-								DatabaseHelper dbHelper = new DatabaseHelper(
-										getBaseContext());
-								transaction.setSource(sms.address
-										.toUpperCase(Locale.ENGLISH)
-										+ "\n"
-										+ msgBody);
-								dbHelper.addTransaction(transaction);
-								isTransaction = true;
-							}
-						} catch (Exception e) {
 						}
+						if (shouldCheck) {
+							utilityStringBUilder.setLength(0);
+							if ((x + 1) < msgBodyChunks.length
+									&& (msgBodyChunks[x + 1]
+											.equalsIgnoreCase("inr")
+											|| msgBodyChunks[x + 1]
+													.equalsIgnoreCase("rs")
+											|| msgBodyChunks[x + 1]
+													.equalsIgnoreCase("rs.")
+											|| msgBodyChunks[x + 1]
+													.equals('\u20A8' + "") || msgBodyChunks[x + 1]
+											.equalsIgnoreCase('\u20A8' + "."))) {
+								utilityStringBUilder
+										.append(msgBodyChunks[x + 2]);
+							} else if (x + 1 < msgBodyChunks.length) {
+								if ((x + 1) < msgBodyChunks.length
+										&& msgBodyChunks[x + 1]
+												.startsWith("inr")) {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]
+													.substring(
+															3,
+															msgBodyChunks[x + 1]
+																	.length()));
+								} else if (msgBodyChunks[x + 1]
+										.startsWith("rs.")) {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]
+													.substring(
+															3,
+															msgBodyChunks[x + 1]
+																	.length()));
+								} else if (msgBodyChunks[x + 1]
+										.startsWith("rs")) {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]
+													.substring(
+															2,
+															msgBodyChunks[x + 1]
+																	.length()));
+								} else {
+									utilityStringBUilder
+											.append(msgBodyChunks[x + 1]);
+								}
+							}
+							float amount = Float
+									.parseFloat(utilityStringBUilder.toString()
+											.replaceAll(",", ""));
+							transaction = new Transaction(amount,
+									Transaction.INCOME, sms.address,
+									sms.getDate());
+							transaction.setSender(sms.address);
+							DatabaseHelper dbHelper = new DatabaseHelper(
+									getBaseContext());
+							transaction.setSource(sms.address
+									.toUpperCase(Locale.ENGLISH)
+									+ "\n"
+									+ msgBody);
+							dbHelper.addTransaction(transaction);
+							isTransaction = true;
+						}
+					} catch (Exception e) {
 					}
+
 				}
 			}
 			if (isTransaction)
