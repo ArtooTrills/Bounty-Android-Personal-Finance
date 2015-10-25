@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -29,9 +30,6 @@ public class MainActivity extends Activity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private Button mExpense;
-    private Button mIncome;
-    private Button mUpdateProfile;
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -40,15 +38,6 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_page);
-
-        mExpense = (Button) findViewById(R.id.Nav_To_Expense);
-
-        mIncome = (Button) findViewById(R.id.Nav_To_Income);
-
-        mUpdateProfile = (Button) findViewById(R.id.Nav_To_Update_Profile);
-
-
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -163,6 +152,9 @@ public class MainActivity extends Activity
                     break;
                 case 2:
                     rootView = inflater.inflate(R.layout.income_page, container, false);
+                    break;
+                case 3:
+                    rootView = inflater.inflate(R.layout.fragment_expenses,container,false);
                     break;
                 default:
                     rootView = inflater.inflate(R.layout.fragment_main, container, false);

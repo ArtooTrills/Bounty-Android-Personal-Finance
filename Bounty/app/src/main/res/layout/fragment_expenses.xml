@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-    android:gravity="center"
-    android:layout_gravity="center">
+    android:gravity="center">
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -16,25 +14,26 @@
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/incomeListView"
+                android:id="@+id/listView"
                 android:layout_gravity="center_horizontal"
-                android:layout_span="3"/>
+                android:layout_marginLeft="5dp"
+                android:layout_span="2"/>
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="New Source of Income:"/>
+                android:text="New Expenses:"/>
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Source"/>
+                android:text="Reason"/>
             <EditText
-                android:text="Enter the name of source"
+                android:text="Enter the reason for expense"
                 android:textSize="15dp"
-                android:id="@+id/new_income_source"/>
+                android:id="@+id/new_expense_reason"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -42,38 +41,44 @@
                 android:layout_width="wrap_content"
                 android:text="Amount"/>
             <EditText
-                android:text="Enter the amount of income"
+                android:text="Enter the amount for expense"
                 android:textSize="15dp"
-                android:id="@+id/new_income_amount"/>
+                android:id="@+id/new_expense_amount"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Repeat Per Month?"/>
+            <Switch
+                android:layout_gravity="center"
+                android:id="@+id/is_for_once"/>
         </TableRow>
         <TableRow>
             <Button
-                android:text="Add Income Source"
+                android:text="Add Expense"
                 android:id="@+id/update_expense"/>
+            </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Old Expenses:"/>
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Old Income Source:"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Source"/>
+                android:text="Reason"/>
             <EditText
-                android:text="Enter the source to be deleted"
+                android:text="Enter the reason to be deleted"
                 android:textSize="15dp"
-                android:id="@+id/old_income_source"/>
+                android:id="@+id/old_expense_reason"/>
         </TableRow>
         <TableRow>
-            <Button
-                android:text="Delete Source"
-                android:textSize="15dp"
-                android:id="@+id/delete_income"/>
-        </TableRow>
+        <Button
+            android:text="Delete Expense"
+            android:textSize="15dp"
+            android:id="@+id/delete_expense"/>
+    </TableRow>
     </TableLayout>
-
 
 </LinearLayout>
