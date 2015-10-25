@@ -3,6 +3,7 @@ package bounty.android.example.com.bounty;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -19,7 +20,8 @@ public class IncomeActivity extends Activity{
     private EditText mIncomeSrcAdd;
     private EditText mIncomeAmt;
     private EditText mIncomeSrcDel;
-    private ListView mListView;
+    private Button mAddIncomeSource;
+    private Button mDelIncomeSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,26 @@ public class IncomeActivity extends Activity{
 
         mIncomeSrcDel = (EditText) findViewById(R.id.old_income_source);
 
-        mListView = (ListView) findViewById(R.id.incomeListView);
+        mAddIncomeSource = (Button) findViewById(R.id.add_income);
+        mAddIncomeSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newIncome();
+                updateList();
+            }
+        });
+
+        mDelIncomeSource = (Button) findViewById(R.id.delete_income);
+        mDelIncomeSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeIncome();
+                updateList();
+            }
+        });
     }
 
-    public void newIncome (View view) {
+    public void newIncome() {
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
         String src =
@@ -48,12 +66,13 @@ public class IncomeActivity extends Activity{
         mIncomeAmt.setText("");
     }
 
-    public void updateList (View view) {
+    public void updateList () {
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
         HashMap<String, Double> incomeList = dbHandler.findIncome();
 
         TableLayout l1 = (TableLayout)findViewById(R.id.income_data);
+        l1.removeAllViews();
 
         for(String src : incomeList.keySet()){
             TableRow tr =  new TableRow(getBaseContext());
@@ -71,7 +90,7 @@ public class IncomeActivity extends Activity{
         }
     }
 
-    public void removeIncome (View view) {
+    public void removeIncome () {
         MyDBHandler dbHandler = new MyDBHandler(this, null,
                 null, 1);
 

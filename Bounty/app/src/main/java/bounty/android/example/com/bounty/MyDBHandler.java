@@ -97,8 +97,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
         return incomeData;
     }
-    public Expense findExpense(String productname) {
-        String query = "Select * FROM " + TABLE_EXPENSE + " WHERE " + COLUMN_SOURCE + " =  \"" + productname + "\"";
+    public HashMap<String, Double> findExpense() {
+        String query = "Select * FROM " + TABLE_EXPENSE;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -106,17 +106,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         Expense product = new Expense();
 
+        HashMap<String, Double> expenseData = new HashMap<String, Double>();
+        //Iterating through all the rows
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            product.setReason(cursor.getString(0));
-            product.setAmt(Double.parseDouble(cursor.getString(1)));
-            product.setIsForOnce(Boolean.parseBoolean(cursor.getString(2)));
-            cursor.close();
-        } else {
-            product = null;
+            expenseData.put(cursor.getString(0),Double.parseDouble(cursor.getString(1)));
+            while(cursor.moveToNext()){
+                expenseData.put(cursor.getString(0),Double.parseDouble(cursor.getString(1)));
+            }
         }
+
         db.close();
-        return product;
+        return expenseData;
     }
 
     public boolean deleteIncome(String productname) {

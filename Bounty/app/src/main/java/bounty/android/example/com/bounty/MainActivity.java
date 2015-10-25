@@ -34,6 +34,7 @@ public class MainActivity extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+        mContext = this;
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -147,18 +149,16 @@ public class MainActivity extends Activity
             View rootView;
 
             switch(sec){
-                case 1:
-                    rootView = inflater.inflate(R.layout.welcome_page, container, false);
-                    break;
                 case 2:
-                    rootView = inflater.inflate(R.layout.income_page, container, false);
+                    Intent incomeIntent = new Intent(mContext, IncomeActivity.class);
+                    mContext.startActivity(incomeIntent);
                     break;
                 case 3:
-                    rootView = inflater.inflate(R.layout.fragment_expenses,container,false);
+                    Intent expenseIntent = new Intent(mContext, ExpenseActivity.class);
+                    mContext.startActivity(expenseIntent);
                     break;
-                default:
-                    rootView = inflater.inflate(R.layout.fragment_main, container, false);
             }
+            rootView = inflater.inflate(R.layout.welcome_page, container, false);
             return rootView;
         }
 

@@ -5,19 +5,48 @@
               android:layout_height="match_parent"
     android:gravity="center">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp">
-
         <TableRow>
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/listView"
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Reason"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Amount"
+                android:layout_gravity="center"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent">
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:layout_span="2"/>
+                android:foregroundGravity="center"
+                android:layout_span="2">
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/expense_data"
+                    android:dividerPadding="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                </TableLayout>
+
+            </ScrollView>
+
         </TableRow>
         <TableRow>
             <TextView
@@ -31,9 +60,10 @@
                 android:layout_width="wrap_content"
                 android:text="Reason"/>
             <EditText
-                android:text="Enter the reason for expense"
+                android:hint="Enter the reason for expense"
                 android:textSize="15dp"
-                android:id="@+id/new_expense_reason"/>
+                android:id="@+id/new_expense_reason"
+                android:inputType="textShortMessage"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -41,9 +71,10 @@
                 android:layout_width="wrap_content"
                 android:text="Amount"/>
             <EditText
-                android:text="Enter the amount for expense"
+                android:hint="Enter the amount for expense"
                 android:textSize="15dp"
-                android:id="@+id/new_expense_amount"/>
+                android:id="@+id/new_expense_amount"
+                android:inputType="numberDecimal"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -55,7 +86,7 @@
         <TableRow>
             <Button
                 android:text="Add Expense"
-                android:id="@+id/update_expense"/>
+                android:id="@+id/add_expense"/>
             </TableRow>
         <TableRow>
             <TextView
@@ -69,9 +100,10 @@
                 android:layout_width="wrap_content"
                 android:text="Reason"/>
             <EditText
-                android:text="Enter the reason to be deleted"
+                android:hint="Enter the reason to be deleted"
                 android:textSize="15dp"
-                android:id="@+id/old_expense_reason"/>
+                android:id="@+id/old_expense_reason"
+                android:inputType="textShortMessage"/>
         </TableRow>
         <TableRow>
         <Button
@@ -79,6 +111,18 @@
             android:textSize="15dp"
             android:id="@+id/delete_expense"/>
     </TableRow>
-    </TableLayout>
 
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Total Expenses: "/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/total_expenses"/>
+
+        </TableRow>
+    </TableLayout>
+</ScrollView>
 </LinearLayout>
