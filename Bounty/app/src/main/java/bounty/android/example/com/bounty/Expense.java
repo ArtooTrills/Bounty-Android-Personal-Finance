@@ -4,24 +4,24 @@ package bounty.android.example.com.bounty;
  * Created by RamizMehran on 25/10/2015.
  */
 public class Expense {
-    private String reason;
+    private String src;
     private double amt;
     private boolean isForOnce;
 
     public Expense(){}
 
     public Expense(String reason, double amt, boolean isForOnce) {
-        this.reason = reason;
+        this.src = reason;
         this.amt = amt;
         this.isForOnce = isForOnce;
     }
 
     public String getReason() {
-        return reason;
+        return src;
     }
 
     public void setReason(String reason) {
-        this.reason = reason;
+        this.src = reason;
     }
 
     public double getAmt() {
