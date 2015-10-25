@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import java.util.HashMap;
 
 /**
  * Created by RamizMehran on 25/10/2015.
@@ -13,15 +19,19 @@ public class IncomeActivity extends Activity{
     private EditText mIncomeSrcAdd;
     private EditText mIncomeAmt;
     private EditText mIncomeSrcDel;
+    private ListView mListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.income_page);
 
         mIncomeSrcAdd = (EditText) findViewById(R.id.new_income_source);
-        mIncomeAmt = (EditText) findViewById(R.id.income_value);
+        mIncomeAmt = (EditText) findViewById(R.id.new_income_amount);
 
         mIncomeSrcDel = (EditText) findViewById(R.id.old_income_source);
+
+        mListView = (ListView) findViewById(R.id.incomeListView);
     }
 
     public void newIncome (View view) {
@@ -38,35 +48,41 @@ public class IncomeActivity extends Activity{
         mIncomeAmt.setText("");
     }
 
-    public void lookupIncome (View view) {
+    public void updateList (View view) {
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
-        Income product =
-                dbHandler.findIncome(mIncomeSrcDel.getText().toString());
+        HashMap<String, Double> incomeList = dbHandler.findIncome();
 
-        if (product != null) {
-            idView.setText(String.valueOf(product.getID()));
+        TableLayout l1 = (TableLayout)findViewById(R.id.income_data);
 
-            quantityBox.setText(String.valueOf(product.getQuantity()));
-        } else {
-            idView.setText("No Match Found");
+        for(String src : incomeList.keySet()){
+            TableRow tr =  new TableRow(getBaseContext());
+
+            TextView t1 = new TextView(getBaseContext());
+            TextView t2 = new TextView(getBaseContext());
+
+            t1.setText(src);
+            t2.setText(incomeList.get(src).toString());
+
+            tr.addView(t1);
+            tr.addView(t2);
+
+            l1.addView(tr);
         }
     }
 
-    public void removeProduct (View view) {
+    public void removeIncome (View view) {
         MyDBHandler dbHandler = new MyDBHandler(this, null,
                 null, 1);
 
-        boolean result = dbHandler.deleteProduct(
-                productBox.getText().toString());
+        boolean result = dbHandler.deleteIncome(
+                mIncomeSrcDel.getText().toString());
 
         if (result)
         {
-            idView.setText("Record Deleted");
-            productBox.setText("");
-            quantityBox.setText("");
+            mIncomeSrcDel.setText("Record Deleted");
         }
         else
-            idView.setText("No Match Found");
+            mIncomeSrcDel.setText("No Match Found");
     }
 }

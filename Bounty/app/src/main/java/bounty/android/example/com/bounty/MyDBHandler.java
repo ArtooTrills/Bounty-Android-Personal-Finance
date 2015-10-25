@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import java.util.HashMap;
+
 public class MyDBHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -73,8 +75,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Income findIncome(String productname) {
-        String query = "Select * FROM " + TABLE_INCOME + " WHERE " + COLUMN_SOURCE + " =  \"" + productname + "\"";
+    public HashMap<String, Double> findIncome() {
+        String query = "Select * FROM " + TABLE_INCOME;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -82,16 +84,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         Income product = new Income();
 
+        HashMap<String, Double> incomeData = new HashMap<String, Double>();
+        //Iterating through all the rows
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            product.setSrc(cursor.getString(0));
-            product.setAmt(Double.parseDouble(cursor.getString(1)));
-            cursor.close();
-        } else {
-            product = null;
+            incomeData.put(cursor.getString(0),Double.parseDouble(cursor.getString(1)));
+            while(cursor.moveToNext()){
+                incomeData.put(cursor.getString(0),Double.parseDouble(cursor.getString(1)));
+            }
         }
+
         db.close();
-        return product;
+        return incomeData;
     }
     public Expense findExpense(String productname) {
         String query = "Select * FROM " + TABLE_EXPENSE + " WHERE " + COLUMN_SOURCE + " =  \"" + productname + "\"";

@@ -13,12 +13,22 @@
         android:padding="15dp">
 
         <TableRow>
-            <ListView
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/incomeListView"
                 android:layout_gravity="center_horizontal"
-                android:layout_span="3"/>
+                android:layout_span="2">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/income_data">
+
+
+                </TableLayout>
+
+            </ScrollView>
+
         </TableRow>
         <TableRow>
             <TextView
