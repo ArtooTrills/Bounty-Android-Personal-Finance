@@ -10,23 +10,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarAlwaysDrawHorizontalTrack="true">
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="15dp">
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Source"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Amount"
+                android:layout_gravity="center"/>
+        </TableRow>
 
-            <TableRow>
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_span="2">
+        <TableRow
+            android:layout_width="fill_parent">
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:foregroundGravity="center"
+                android:layout_span="2">
 
-                    <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/income_data">
-
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/income_data"
+                    android:dividerPadding="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
 
                     </TableLayout>
 
@@ -89,6 +105,17 @@
                     android:textSize="15dp"
                     android:id="@+id/delete_income"/>
             </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Total Incomes: "/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/total_incomes"/>
+
+        </TableRow>
         </TableLayout>
     </ScrollView>
 </LinearLayout>

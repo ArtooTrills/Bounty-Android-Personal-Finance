@@ -56,5 +56,6 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sms_read_status"/>
+        android:id="@+id/sms_read_status"
+        android:onClick="onClick"/>
 </LinearLayout>

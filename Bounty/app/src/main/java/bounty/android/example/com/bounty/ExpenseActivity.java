@@ -120,6 +120,7 @@ public class ExpenseActivity extends Activity {
         }
 
         mTotalExpenses.setText(""+sum);
+
     }
 
     public void removeExpense () {

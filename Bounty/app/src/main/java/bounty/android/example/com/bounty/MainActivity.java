@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,7 +20,10 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -35,6 +40,8 @@ public class MainActivity extends Activity
      */
     private CharSequence mTitle;
     private static Context mContext;
+    private Switch mSms;
+    private WelcomeActivity ft = new WelcomeActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +64,31 @@ public class MainActivity extends Activity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
 
+        if(position == 0) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, ft)
+                    .commit();
+/*
+            MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+
+            Total_ t = new Total_(58, 69);
+            dbHandler.addTotal(t);
+
+            Double[] totalList = dbHandler.findTotal();
+
+            ((TextView) findViewById(R.id.income_value)).setText(totalList[0].toString());
+            ((TextView) findViewById(R.id.expense_value)).setText(totalList[1].toString());
+            */
+
+        }
+        else
             fragmentManager.beginTransaction()
                     .replace(R.id.container,PlaceholderFragment.newInstance(position + 1))
                     .commit();
+    }
+
+    public void onClick(View v){
+        ft.onClick(v);
     }
 
     public void onSectionAttached(int number) {
@@ -149,6 +178,9 @@ public class MainActivity extends Activity
             View rootView;
 
             switch(sec){
+                case 1:
+                    rootView = inflater.inflate(R.layout.welcome_page, container, false);
+                    break;
                 case 2:
                     Intent incomeIntent = new Intent(mContext, IncomeActivity.class);
                     mContext.startActivity(incomeIntent);
@@ -159,6 +191,7 @@ public class MainActivity extends Activity
                     break;
             }
             rootView = inflater.inflate(R.layout.welcome_page, container, false);
+
             return rootView;
         }
 

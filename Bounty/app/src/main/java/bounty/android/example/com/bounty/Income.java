@@ -29,4 +29,6 @@ public class Income {
     public void setAmt(double amt) {
         this.amt = amt;
     }
+
+
 }

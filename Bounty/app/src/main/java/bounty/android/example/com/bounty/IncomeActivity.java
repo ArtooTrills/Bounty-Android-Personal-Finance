@@ -1,7 +1,9 @@
 package bounty.android.example.com.bounty;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,7 @@ public class IncomeActivity extends Activity{
     private EditText mIncomeSrcDel;
     private Button mAddIncomeSource;
     private Button mDelIncomeSource;
+    private TextView mTotalIncome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class IncomeActivity extends Activity{
         mIncomeSrcDel = (EditText) findViewById(R.id.old_income_source);
 
         mAddIncomeSource = (Button) findViewById(R.id.add_income);
+
+        mTotalIncome = (TextView)findViewById(R.id.total_incomes);
         mAddIncomeSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +55,8 @@ public class IncomeActivity extends Activity{
                 updateList();
             }
         });
+
+        updateList();
     }
 
     public void newIncome() {
@@ -74,20 +81,38 @@ public class IncomeActivity extends Activity{
         TableLayout l1 = (TableLayout)findViewById(R.id.income_data);
         l1.removeAllViews();
 
+        double sum = 0;
+
         for(String src : incomeList.keySet()){
             TableRow tr =  new TableRow(getBaseContext());
 
             TextView t1 = new TextView(getBaseContext());
             TextView t2 = new TextView(getBaseContext());
 
+
+            t1.setTextColor(Color.BLACK);
+            t2.setTextColor(Color.BLACK);
+
+            t1.setGravity(Gravity.CENTER);
+            t2.setGravity(Gravity.CENTER);
+
+            t1.setTextSize(15);
+            t2.setTextSize(15);
+
+
+            t1.setPadding(50, 5, 50, 5);
+            t2.setPadding(50, 5, 50, 5);
+
             t1.setText(src);
             t2.setText(incomeList.get(src).toString());
+            sum += incomeList.get(src);
 
             tr.addView(t1);
             tr.addView(t2);
 
             l1.addView(tr);
         }
+        mTotalIncome.setText(sum+"");
     }
 
     public void removeIncome () {

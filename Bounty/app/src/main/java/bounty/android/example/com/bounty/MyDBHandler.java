@@ -17,10 +17,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "budgetDB.db";
     private static final String TABLE_INCOME = "income";
     private static final String TABLE_EXPENSE = "expense";
+    private static final String TABLE_TOTAL = "total";
 
     public static final String COLUMN_SOURCE = "src";
     public static final String COLUMN_AMOUNT = "amt";
     public static final String COLUMN_REPEAT = "isForOnce";
+    public static final String COLUMN_INCOME = "income";
+    public static final String COLUMN_EXPENSE = "expense";
 
     public MyDBHandler(Context context, String name,
                        SQLiteDatabase.CursorFactory factory, int version) {
@@ -40,6 +43,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 + COLUMN_SOURCE + " TEXT," + COLUMN_AMOUNT
                 + " DECIMAL(5,2)," + COLUMN_REPEAT + " BOOLEAN " + ")";
         db.execSQL(CREATE_EXPENSE_TABLE);
+
+        String CREATE_TOTAL_TABLE = "CREATE TABLE " +
+                TABLE_TOTAL + "("
+                + COLUMN_INCOME + " DECIMAL(5,2)," + COLUMN_EXPENSE
+                + " DECIMAL(5,2)," + ")";
+        db.execSQL(CREATE_TOTAL_TABLE);
     }
 
     @Override
@@ -47,6 +56,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                           int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INCOME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TOTAL);
         onCreate(db);
     }
 
@@ -72,6 +82,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.insert(TABLE_EXPENSE, null, values);
+        db.close();
+    }
+
+    public void addTotal(Total_ product) {
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SOURCE, product.getIncome());
+        values.put(COLUMN_AMOUNT, product.getExpense());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.insert(TABLE_TOTAL, null, values);
         db.close();
     }
 
@@ -118,6 +140,24 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         db.close();
         return expenseData;
+    }
+
+    public Double[] findTotal() {
+        String query = "Select * FROM " + TABLE_TOTAL;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        Double[] totalData = new Double[2];
+        //Iterating through all the rows
+        if (cursor.moveToLast()) {
+            totalData[0] = Double.parseDouble(cursor.getString(0));
+            totalData[1] = Double.parseDouble(cursor.getString(1));
+        }
+
+        db.close();
+        return totalData;
     }
 
     public boolean deleteIncome(String productname) {
