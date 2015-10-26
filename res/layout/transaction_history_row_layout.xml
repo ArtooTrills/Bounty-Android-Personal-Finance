@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="@string/rupee_symbol"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/tran_amt_edt_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="start"
+            android:hint="@string/enter_transaction_amount"
+            android:inputType="numberDecimal"
+            android:paddingEnd="5dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="5dp"
+            android:paddingStart="50dp"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/tran_type_radio_grp_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp" >
+
+        <RadioButton
+            android:id="@+id/rbg_inc_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/income" />
+
+        <RadioButton
+            android:id="@+id/rbg_exp_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/expense" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tran_category_text_view_history"
+        style="@android:style/Widget.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:focusableInTouchMode="false"
+        android:text="@string/default_category" />
+
+    <EditText
+        android:id="@+id/tran_note_edt_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/add_a_note"
+        android:inputType="textCapSentences|textMultiLine" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/calendar_image"
+            android:paddingTop="5dp"
+            android:src="@drawable/calendar" />
+
+        <TextView
+            android:id="@+id/tran_date_edt_history"
+            style="@android:style/Widget.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:focusableInTouchMode="false"
+            android:hint="@string/select_date"
+            android:paddingEnd="5dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="5dp"
+            android:paddingStart="50dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/sms_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone" >
+
+        <TextView
+            android:focusableInTouchMode="false"
+            android:id="@+id/ignore_sender_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ignore_sender"
+            android:textColor="@color/expense_color" />
+
+        <Button
+            android:id="@+id/btn_tran_source_show"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_tran_source" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/delete_transaction_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bin"
+            android:contentDescription="@string/delete_button" />
+
+        <Button
+            android:id="@+id/tran_save_btn_history"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#448aff"
+            android:padding="6dp"
+            android:text="@string/update_information"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>
