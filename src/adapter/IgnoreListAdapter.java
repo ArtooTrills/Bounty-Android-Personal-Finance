@@ -62,8 +62,9 @@ public class IgnoreListAdapter extends
 			@Override
 			public void onClick(View v) {
 				boolean res = dbHelper.deleteIgnoreItem(ignoreItems.get(
-						position).getId());
+						position).getSource());
 				if (res) {
+					
 					ignoreItems.remove(position);
 					notifyDataSetChanged();
 				}

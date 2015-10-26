@@ -12,6 +12,7 @@ import utills.CommonUtility;
 import widgets.TextDatePicker;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -127,6 +129,10 @@ public class ManualTransactionEntryFragment extends Fragment implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == buttonSaveTransaction.getId()) {
+			InputMethodManager imm = (InputMethodManager) getActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(getActivity().getCurrentFocus()
+					.getWindowToken(), 0);
 			if (validateData()) {
 				int tranType = Transaction.EXPENSE;
 				if (radioGrpTransactionType.getCheckedRadioButtonId() == R.id.rbg_inc) {
@@ -154,7 +160,7 @@ public class ManualTransactionEntryFragment extends Fragment implements
 										.toString());
 
 						transaction.setCategory(transactionCategory);
-					} 
+					}
 					dbHelper.addTransaction(transaction);
 					getActivity().onBackPressed();
 				} catch (Exception e) {

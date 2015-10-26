@@ -8,6 +8,7 @@ import persistantData.DatabaseHelper;
 import utills.CommonUtility;
 import model.IgnoreItem;
 import adapter.IgnoreListAdapter;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,6 +59,10 @@ public class IgnoreListCreateFragment extends Fragment implements
 		if (v.getId() == buttonSaveIgnoreItem.getId()
 				&& editTextIgnoreSenderName.getText().toString().trim()
 						.length() > 0) {
+			InputMethodManager imm = (InputMethodManager) getActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(getActivity().getCurrentFocus()
+					.getWindowToken(), 0);
 			boolean isNew = true;
 			for (IgnoreItem item : ignoreItemsList) {
 				if (item.getSource().equals(
@@ -72,12 +78,15 @@ public class IgnoreListCreateFragment extends Fragment implements
 									.parse(CommonUtility.DATE_FORMATTER_WITHOUT_TIME
 											.format(new Date())));
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				ignoreItem.setSource(editTextIgnoreSenderName.getText()
 						.toString().trim());
 				new IgnoreItemSaver(ignoreItem).execute();
+
+			} else {
+				Toast.makeText(getActivity(), "Sender is already ignored",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -104,6 +113,7 @@ public class IgnoreListCreateFragment extends Fragment implements
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			if (!isException) {
+				editTextIgnoreSenderName.setText("");
 				ignoreItemsList.add(item);
 				ignoreAdapter.notifyDataSetChanged();
 			} else {

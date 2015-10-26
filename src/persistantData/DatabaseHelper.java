@@ -171,26 +171,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @param id
 	 * @return
 	 */
-	public boolean deleteIgnoreItem(int id) {
-		boolean returnValue = true;
+	public boolean deleteIgnoreItem(String sender) {
+		boolean returnValue = false;
 		SQLiteDatabase db = getWritableDatabase();
 		try {
-			int res = db.delete(IGNORE_LIST_TABLE_NAME, IGNORE_LIST_COLUMNS[0]
-					+ "=?", new String[] { id + "" });
-			if (res > -1) {
-				for (int i=0;i<IGNORE_ITEMS.size();i++){
-					if(IGNORE_ITEMS.get(i).getId()==id){
-						res=i;
+			int res = db.delete(IGNORE_LIST_TABLE_NAME, IGNORE_LIST_COLUMNS[1]
+					+ "=?", new String[] { sender });
+			if (res > 0) {
+				for (int i = 0; i < IGNORE_ITEMS.size(); i++) {
+					if (IGNORE_ITEMS.get(i).getSource().trim()
+							.equals(sender.trim())) {
+						res = i;
 						break;
 					}
 				}
 				IGNORE_ITEMS.remove(res);
+				returnValue = true;
 			}
-			
-		} catch (Exception e) {
-			returnValue = true;
-		}
 
+		} catch (Exception e) {
+			returnValue = false;
+		} finally {
+			db.close();
+		}
 		return returnValue;
 	}
 
@@ -225,8 +228,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<IgnoreItem> getIgnoreItemList() {
-		List<IgnoreItem> retList=new ArrayList<IgnoreItem>();
-		
+		List<IgnoreItem> retList = new ArrayList<IgnoreItem>();
+
 		if (IGNORE_ITEMS.isEmpty()) {
 
 			SQLiteDatabase db = getReadableDatabase();
@@ -248,6 +251,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				}
 			} catch (Exception e) {
 
+			} finally {
+				db.close();
 			}
 		}
 		retList.addAll(IGNORE_ITEMS);
@@ -285,6 +290,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			}
 		} catch (Exception e) {
 			System.out.println(" exception in - " + e);
+		} finally {
+			db.close();
 		}
 		return histories;
 	}
@@ -312,6 +319,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			}
 		} catch (Exception e) {
 			System.out.println("exception in - " + e);
+		} finally {
+			db.close();
 		}
 		return categories;
 	}

@@ -22,24 +22,27 @@ public class SMSFilteringService extends IntentService {
 
 	public static final String TRANSACTION_KEY = "tran";
 	public static final String BROADCAST_ACTION_KEY = "com.artoo.personalfinance.services.inernal_sms_broadcast";
-	static final String[] EXPENSE_PATTERNS_AMOUNT_BEFORE = { "withdrawn",
-			"has been withdrawn", "have been withdrawn", "was withdrawn",
-			"is withdrawn", "is debited", "was debited", "has been debited" };
+	static final String[] EXPENSE_PATTERNS_AMOUNT_BEFORE = { "withdrawn", "dr",
+			"dr.", "debited", "has been withdrawn", "have been withdrawn",
+			"was withdrawn", "is withdrawn", "is debited", "was debited",
+			"has been debited" };
 
 	static final String[] EXPENSE_PATTERNS_AMOUNT_AFTER = { "withdrawn",
-			"debited with", "debited for", "debited by", "withdrawn with",
-			"dr with", "dr for", "dr by", "dr. with", "dr. for", "dr. by",
-			"withdrawn for", "paid", "paid an amount of",
-			"withdrawn an amount of" };
+			"debited", "debited with", "debited for", "debited by",
+			"withdrawn with", "dr", "dr.", "dr with", "dr for", "dr by",
+			"dr. with", "dr. for", "dr. by", "withdrawn for", "paid",
+			"paid an amount of", "withdrawn an amount of" };
 
-	static final String[] INCOME_PATTERNS_AMOUNT_BEFORE = { "depositted",
-			"has been depositted", "have been depositted", "was depositted",
-			"is depositted", "was credited", "is credited", "has been credited" };
+	static final String[] INCOME_PATTERNS_AMOUNT_BEFORE = { "depositted", "cr",
+			"cr.", "credited", "has been depositted", "have been depositted",
+			"was depositted", "is depositted", "was credited", "is credited",
+			"has been credited" };
 
 	static final String[] INCOME_PATTERNS_AMOUNT_AFTER = { "have dopsitted",
-			"credited with", "credited by", "credited for", "cr with", "cr by",
-			" cr for", "cr. with", "cr. by", " cr. for",
-			"depositted an amount of", "received", "received an amount of" };
+			"credited", "credited with", "credited by", "credited for", "cr",
+			"cr.", "cr with", "cr by", " cr for", "cr. with", "cr. by",
+			" cr. for", "depositted an amount of", "received",
+			"received an amount of" };
 
 	/**
 	 * class performs message filtering and transaction extraction on a worker

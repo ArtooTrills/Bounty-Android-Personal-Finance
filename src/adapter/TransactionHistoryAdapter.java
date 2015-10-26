@@ -15,6 +15,7 @@ import model.IgnoreItem;
 import model.Transaction;
 import model.TransactionCategory;
 import model.TransactionHistory;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -27,6 +28,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -156,6 +158,10 @@ public class TransactionHistoryAdapter extends
 
 			} else if (buttonUpdateTransaction != null
 					&& v.getId() == buttonUpdateTransaction.getId()) {
+				InputMethodManager imm = (InputMethodManager) context
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(((Activity) context)
+						.getCurrentFocus().getWindowToken(), 0);
 
 				StringBuilder modificationMessage = null;
 
