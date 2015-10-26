@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:layout_gravity="center">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Source"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Amount"
+                android:layout_gravity="center"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent">
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:foregroundGravity="center"
+                android:layout_span="2">
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/income_data"
+                    android:dividerPadding="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    </TableLayout>
+
+                </ScrollView>
+
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="New Source of Income:"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Source"/>
+                <EditText
+                    android:hint="Enter the name of source"
+                    android:textSize="15dp"
+                    android:id="@+id/new_income_source"
+                    android:inputType="textShortMessage"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Amount"/>
+                <EditText
+                    android:hint="Enter the amount of income"
+                    android:textSize="15dp"
+                    android:id="@+id/new_income_amount"
+                    android:inputType="numberDecimal"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:text="Add Income Source"
+                    android:id="@+id/add_income"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Old Income Source:"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Source"/>
+                <EditText
+                    android:hint="Enter the source to be deleted"
+                    android:textSize="15dp"
+                    android:id="@+id/old_income_source"
+                    android:inputType="textShortMessage"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:text="Delete Source"
+                    android:textSize="15dp"
+                    android:id="@+id/delete_income"/>
+            </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Total Incomes: "/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/total_incomes"/>
+
+        </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>

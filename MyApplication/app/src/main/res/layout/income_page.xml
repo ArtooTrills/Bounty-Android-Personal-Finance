@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/label_1"
+            android:id="@+id/label1"
+            android:labelFor="@+id/total_income"
+            android:padding="5dp"/>
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:id="@+id/total_income"
+            android:inputType="text"/>
+    </LinearLayout>
+    <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List of sources:"
+        android:layout_gravity="left"
+        android:padding="5dp"
+        android:layout_marginLeft="50dp"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:listitem="@android:layout/simple_list_item_2">
+
+    </ListView>
+
+
+</LinearLayout>

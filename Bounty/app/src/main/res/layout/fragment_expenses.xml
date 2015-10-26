@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Reason"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Amount"
+                android:layout_gravity="center"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent">
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:foregroundGravity="center"
+                android:layout_span="2">
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/expense_data"
+                    android:dividerPadding="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                </TableLayout>
+
+            </ScrollView>
+
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="New Expenses:"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Reason"/>
+            <EditText
+                android:hint="Enter the reason for expense"
+                android:textSize="15dp"
+                android:id="@+id/new_expense_reason"
+                android:inputType="textShortMessage"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Amount"/>
+            <EditText
+                android:hint="Enter the amount for expense"
+                android:textSize="15dp"
+                android:id="@+id/new_expense_amount"
+                android:inputType="numberDecimal"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Repeat Per Month?"/>
+            <Switch
+                android:layout_gravity="center"
+                android:id="@+id/is_for_once"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:text="Add Expense"
+                android:id="@+id/add_expense"/>
+            </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Old Expenses:"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Reason"/>
+            <EditText
+                android:hint="Enter the reason to be deleted"
+                android:textSize="15dp"
+                android:id="@+id/old_expense_reason"
+                android:inputType="textShortMessage"/>
+        </TableRow>
+        <TableRow>
+        <Button
+            android:text="Delete Expense"
+            android:textSize="15dp"
+            android:id="@+id/delete_expense"/>
+    </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Total Expenses: "/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/total_expenses"/>
+
+        </TableRow>
+    </TableLayout>
+</ScrollView>
+</LinearLayout>
