@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/typeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/smsType"
+        android:contentDescription="Type of Transaction"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp" />
+
+    <TextView
+        android:id="@+id/smsType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/smsDate"
+        android:gravity="start"
+        android:paddingBottom="5dp"
+        android:paddingStart="15dp"
+        android:text="TYPE"
+        android:textColor="@android:color/darker_gray"
+        android:typeface="sans"
+        android:textSize="18sp"
+        android:paddingTop="5dp" />
+
+    <TextView
+        android:id="@+id/smsAmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/smsType"
+        android:text="AMOUNT"
+        android:textSize="24sp"
+        android:typeface="monospace"
+        android:layout_toEndOf="@+id/typeImage"
+        android:paddingStart="5dp" />
+
+    <TextView
+        android:id="@+id/smsDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="Date"
+        android:textColor="@android:color/darker_gray"
+        android:typeface="monospace"
+        android:textSize="18sp"
+        android:paddingEnd="5dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/smsAmt"
+        android:layout_toStartOf="@id/smsDate"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:text="Bal:"
+        android:textColor="@android:color/darker_gray"
+        android:typeface="sans"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/smsBal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/smsAmt"
+        android:paddingBottom="5dp"
+        android:paddingEnd="20dp"
+        android:text="bal"
+        android:textIsSelectable="false"
+        android:typeface="monospace"
+        android:textSize="16sp"
+        android:layout_alignEnd="@id/smsDate" />
+
+    <View
+        android:id="@+id/viewBorder"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/smsBal"
+        android:background="@color/material_grey_300" />
+</RelativeLayout>

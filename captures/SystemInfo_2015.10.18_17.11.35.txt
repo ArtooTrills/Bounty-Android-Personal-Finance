@@ -1,0 +1,95 @@
+Applications Graphics Acceleration Info:
+Uptime: 13956316 Realtime: 15506894
+
+** Graphics info for pid 21511 [com.manage.ak.moneyreport] **
+
+Recent DisplayList operations
+          ResetShader
+          RestoreToCount
+          Translate
+          DrawRoundRect
+          Save
+          ClipRect
+          DrawDisplayList
+            DrawRect
+            Save
+            ClipRect
+            DrawDisplayList
+              Save
+              ClipRect
+              Translate
+              DrawText
+              RestoreToCount
+            DrawDisplayList
+              Save
+              ClipRect
+              Translate
+              DrawText
+              RestoreToCount
+            DrawDisplayList
+              Save
+              ClipRect
+              Translate
+              DrawText
+              RestoreToCount
+            RestoreToCount
+          RestoreToCount
+    DrawPatch
+  RestoreToCount
+DrawRect
+DrawRect
+DrawRect
+multiDraw
+  DrawText
+DrawPath
+DrawPath
+DrawRect
+DrawRect
+DrawPath
+DrawPath
+DrawRect
+DrawRect
+DrawRoundRect
+DrawRect
+DrawText
+multiDraw
+  DrawText
+
+Caches:
+Current memory usage / total memory usage (bytes):
+  TextureCache           186584 / 25165824
+  LayerCache                  0 / 16777216
+  RenderBufferCache           0 /  2097152
+  GradientCache           32768 /   524288
+  PathCache                1280 / 10485760
+  TextDropShadowCache         0 /  2097152
+  PatchCache               2752 /   131072
+  FontRenderer 0 A8      524288 /   524288
+  FontRenderer 0 RGBA         0 /        0
+  FontRenderer 0 total   524288 /   524288
+Other:
+  FboCache                    2 /       16
+Total memory usage:
+  747672 bytes, 0.71 MB
+
+Profile data in ms:
+
+	com.manage.ak.moneyreport/com.manage.ak.moneyreport.MainActivity/android.view.ViewRootImpl@425cc8a0
+	com.manage.ak.moneyreport/com.manage.ak.moneyreport.CashTransactions/android.view.ViewRootImpl@4272e788
+	com.manage.ak.moneyreport/com.manage.ak.moneyreport.report/android.view.ViewRootImpl@4279c598
+View hierarchy:
+
+  com.manage.ak.moneyreport/com.manage.ak.moneyreport.MainActivity/android.view.ViewRootImpl@425cc8a0
+  30 views, 0.00 kB of display lists, 9 frames rendered
+
+  com.manage.ak.moneyreport/com.manage.ak.moneyreport.CashTransactions/android.view.ViewRootImpl@4272e788
+  30 views, 0.00 kB of display lists, 56 frames rendered
+
+  com.manage.ak.moneyreport/com.manage.ak.moneyreport.report/android.view.ViewRootImpl@4279c598
+  17 views, 5.12 kB of display lists, 3 frames rendered
+
+
+Total ViewRootImpl: 3
+Total Views:        77
+Total DisplayList:  5.12 kB
+

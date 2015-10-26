@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Money Report</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="desc_array">
+        <item>Income</item>
+        <item>Salary</item>
+        <item>Personal Expenses</item>
+        <item>Food</item>
+        <item>Transport</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+</resources>

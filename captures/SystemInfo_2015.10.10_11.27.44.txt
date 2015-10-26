@@ -1,0 +1,56 @@
+TASK com.example.ak.moneyreport id=143
+  ACTIVITY com.example.ak.moneyreport/.MainActivity 431bf568 pid=29699
+    Local FragmentActivity 423b64a8 State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mHost=android.support.v4.app.FragmentActivity$HostCallbacks@423b7420
+      mContainer=android.support.v4.app.FragmentActivity$HostCallbacks@423b7420
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{423c0670 V.E..... ... 0,0-720,1280}
+        android.widget.LinearLayout{423c6038 V.E..... ... 0,0-720,1280}
+          android.view.ViewStub{423c95c8 G.E..... ... 0,0-0,0 #102031c}
+          android.widget.FrameLayout{423c99f8 V.E..... ... 0,50-720,1280}
+            android.support.v7.internal.widget.ActionBarOverlayLayout{423d0a40 V.ED.... ... 0,0-720,1230 #7f0d003d app:id/decor_content_parent}
+              android.support.v7.internal.widget.ContentFrameLayout{423d3e00 V.ED.... ... 0,112-720,1230 #1020002 android:id/content}
+                android.widget.RelativeLayout{423f1a70 V.E..... ... 0,0-720,1118}
+                  android.support.v7.widget.RecyclerView{423f30b0 VFED.V.. F.. 4,4-716,1018 #7f0d004e app:id/report}
+                    android.widget.RelativeLayout{42443080 V.E..... ... 10,10-702,200}
+                      android.support.v7.widget.AppCompatTextView{42443df8 V.ED.... ... 4,4-688,65 #7f0d0065 app:id/smsType}
+                      android.support.v7.widget.AppCompatTextView{42444538 V.ED.... ... 4,65-168,126 #7f0d0066 app:id/smsAmt}
+                      android.support.v7.widget.AppCompatTextView{42444ab8 V.ED.... ... 4,126-216,174 #7f0d0067 app:id/smsDate}
+                      android.support.v7.widget.AppCompatTextView{42445038 V.ED.... ... 564,118-688,186 #7f0d0068 app:id/smsBal}
+                      android.support.v7.widget.AppCompatTextView{424455b8 V.ED.... ... 570,65-688,118 #7f0d0069 app:id/textView}
+                    android.widget.RelativeLayout{42447648 V.E..... ... 10,204-702,394}
+                      android.support.v7.widget.AppCompatTextView{42447ad0 V.ED.... ... 4,4-688,65 #7f0d0065 app:id/smsType}
+                      android.support.v7.widget.AppCompatTextView{42448100 V.ED.... ... 4,65-186,126 #7f0d0066 app:id/smsAmt}
+                      android.support.v7.widget.AppCompatTextView{42448640 V.ED.... ... 4,126-216,174 #7f0d0067 app:id/smsDate}
+                      android.support.v7.widget.AppCompatTextView{42448b80 V.ED.... ... 540,118-688,186 #7f0d0068 app:id/smsBal}
+                      android.support.v7.widget.AppCompatTextView{424490c0 V.ED.... ... 570,65-688,118 #7f0d0069 app:id/textView}
+                    android.widget.RelativeLayout{4244a6a8 V.E..... ... 10,398-702,588}
+                      android.support.v7.widget.AppCompatTextView{4244ab30 V.ED.... ... 4,4-688,65 #7f0d0065 app:id/smsType}
+                      android.support.v7.widget.AppCompatTextView{4244b160 V.ED.... ... 4,65-150,126 #7f0d0066 app:id/smsAmt}
+                      android.support.v7.widget.AppCompatTextView{4244b6a0 V.ED.... ... 4,126-216,174 #7f0d0067 app:id/smsDate}
+                      android.support.v7.widget.AppCompatTextView{4244bbe0 V.ED.... ... 552,118-688,186 #7f0d0068 app:id/smsBal}
+                      android.support.v7.widget.AppCompatTextView{4244c120 V.ED.... ... 570,65-688,118 #7f0d0069 app:id/textView}
+                    android.widget.RelativeLayout{4244d708 V.E..... ... 10,592-702,782}
+                      android.support.v7.widget.AppCompatTextView{4244db90 V.ED.... ... 4,4-688,65 #7f0d0065 app:id/smsType}
+                      android.support.v7.widget.AppCompatTextView{4244e1c0 V.ED.... ... 4,65-168,126 #7f0d0066 app:id/smsAmt}
+                      android.support.v7.widget.AppCompatTextView{4244e700 V.ED.... ... 4,126-216,174 #7f0d0067 app:id/smsDate}
+                      android.support.v7.widget.AppCompatTextView{4244ec40 V.ED.... ... 552,118-688,186 #7f0d0068 app:id/smsBal}
+                      android.support.v7.widget.AppCompatTextView{4244f180 V.ED.... ... 570,65-688,118 #7f0d0069 app:id/textView}
+                    android.widget.RelativeLayout{42450768 V.E..... ... 10,786-702,976}
+                      android.support.v7.widget.AppCompatTextView{42450bf0 V.ED.... ... 4,4-688,65 #7f0d0065 app:id/smsType}
+                      android.support.v7.widget.AppCompatTextView{42451220 V.ED.... ... 4,65-222,126 #7f0d0066 app:id/smsAmt}
+                      android.support.v7.widget.AppCompatTextView{42451760 V.ED.... ... 4,126-216,174 #7f0d0067 app:id/smsDate}
+                      android.support.v7.widget.AppCompatTextView{42451ca0 V.ED.... ... 564,118-688,186 #7f0d0068 app:id/smsBal}
+                      android.support.v7.widget.AppCompatTextView{424521e0 V.ED.... ... 570,65-688,118 #7f0d0069 app:id/textView}
+                  android.support.v7.widget.AppCompatButton{423fd7d8 VFED..C. ... 4,1018-716,1114 #7f0d004f app:id/readInbox}
+              android.support.v7.internal.widget.ActionBarContainer{423d4a48 V.ED.... ... 0,0-720,112 #7f0d003e app:id/action_bar_container}
+                android.support.v7.widget.Toolbar{423d67d8 V.E..... ... 0,0-720,112 #7f0d003f app:id/action_bar}
+                  android.widget.TextView{423ed250 V.ED.... ... 32,29-285,83}
+                  android.support.v7.widget.ActionMenuView{42459ef0 V.E..... ... 528,0-720,112}
+                    android.support.v7.internal.view.menu.ActionMenuItemView{4246f5d8 VFED..CL ... 0,8-96,104 #7f0d006a app:id/add}
+                    android.support.v7.internal.view.menu.ActionMenuItemView{42470018 VFED..CL ... 96,8-192,104 #7f0d006b app:id/forward}
+                android.support.v7.internal.widget.ActionBarContextView{423e6b28 G.E..... ... 0,0-0,0 #7f0d0040 app:id/action_context_bar}
