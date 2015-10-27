@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class SmsActivity extends Activity{
 
-    private Button mRefresh;
+    public Button mRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +35,41 @@ public class SmsActivity extends Activity{
         mRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyDBHandlerSms dbHandler = new MyDBHandlerSms(SmsActivity.this, null, null, 1);
+
+                dbHandler.deleteSms();
+
+                Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+                if (cursor.moveToFirst()) { // must check the result to prevent exception
+                    do {
+                        try {
+                            String[] list = {"", cursor.getString(2), cursor.getString(cursor.getColumnIndexOrThrow("body"))};
+
+
+                            Sms newSms = new Sms();
+                            newSms.setFrom(list[1]);
+                            Log.d("List Values", "0 ->" + list[0] + " 1 ->" + list[1] + " 2 ->" + list[2]);
+                            if (list[2].contains("credit"))
+                                newSms.setType("Income");
+                            else if (list[2].contains("debit"))
+                                newSms.setType("Expense");
+                            else
+                                continue;
+
+                            String[] amt = list[2].split("Rs.");
+                            amt = amt[1].split(" ");
+                            newSms.setAmount(amt[1]);
+
+                            dbHandler.addSms(newSms);
+                        }
+                        catch(Exception e){}
+                    } while (cursor.moveToNext());
+                }
                 updateTable();
             }
         });
-        updateTable();
+
+        mRefresh.performClick();
     }
 
     public void updateTable(){
@@ -46,7 +77,7 @@ public class SmsActivity extends Activity{
 
         List<Sms> list= dbHandler.findSms();
 
-        TableLayout l1 = (TableLayout)findViewById(R.id.sms_list);
+        TableLayout l1 = (TableLayout) findViewById(R.id.sms_list);
 
         l1.removeAllViews();
 

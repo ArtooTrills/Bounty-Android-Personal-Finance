@@ -99,4 +99,12 @@ public class MyDBHandlerSms extends SQLiteOpenHelper {
         db.close();
         return smsData;
     }
+
+    public void deleteSms(){
+        String query = "Delete from " + TABLE_SMS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL(query);
+    }
 }

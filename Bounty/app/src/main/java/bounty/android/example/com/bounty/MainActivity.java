@@ -44,26 +44,8 @@ public class MainActivity extends Activity
         inst = this;
     }
 
-    public void updateList(final String str) {
-        MyDBHandlerSms dbHandler = new MyDBHandlerSms(this, null, null, 1);
+    public void updateList() {
 
-        String[] list = str.split(":");
-
-        Sms newSms = new Sms();
-        newSms.setFrom(list[1]);
-
-        if(list[2].contains("credit"))
-            newSms.setType("Income");
-        else if(list[2].contains("debit"))
-            newSms.setType("Expense");
-        else
-            return;
-
-        String[] amt = list[2].split("Rs.");
-        amt = amt[1].split(" ");
-        newSms.setAmount(amt[1]);
-
-        dbHandler.addSms(newSms);
     }
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.

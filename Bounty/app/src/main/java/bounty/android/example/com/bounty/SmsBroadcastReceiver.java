@@ -30,9 +30,9 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
                 smsMessageStr += smsBody + "\n";
             }
             Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
-/*
+
             MainActivity inst = MainActivity.instance();
-            inst.updateList(smsMessageStr);*/
+            inst.updateList();
         }
     }
 }
