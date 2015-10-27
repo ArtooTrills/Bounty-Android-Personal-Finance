@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import model.Transaction;
-
-import com.github.mikephil.charting.charts.PieChart;
-
 import adapter.TransactionReportAdapter;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -21,7 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -30,14 +27,12 @@ import android.widget.Toast;
 public class FragmentTransactionReport extends Fragment implements
 		OnClickListener {
 	private ArrayAdapter<String> arrayAdapterDeafultPeriodChoice;
-	PieChart pieChartExpense, pieChartIncome;
-	List<Transaction> transactionList, expenseTransaction, incomeTransaction;
-	RecyclerView recyclerViewExpense, recyclerViewIncome;
+	private List<Transaction> transactionList, expenseTransaction, incomeTransaction;
+	private RecyclerView recyclerViewExpense, recyclerViewIncome;
 	private LinearLayoutManager layoutManagerExpRV, layoutManagerIncRV;
-	TransactionReportAdapter expenseAdapter, incomeAdapter;
-	ImageView imgExpense, imgIncome;
-	TextView textViewRangeSelector;
-	RadioGroup radioGrpCategorySelector;
+	private TransactionReportAdapter expenseAdapter, incomeAdapter;
+	private Button textViewRangeSelector;
+	private RadioGroup radioGrpCategorySelector;
 	private static final String[] choices = { "CURRENT MONTH",
 			"LAST TWO MONTHS", "THIS YEAR", "ALL" };
 	private int lastSelectedPeriodIndex = 3;
@@ -67,7 +62,7 @@ public class FragmentTransactionReport extends Fragment implements
 				.findViewById(R.id.expense_rv_report);
 		recyclerViewIncome = (RecyclerView) view
 				.findViewById(R.id.income_rv_report);
-		textViewRangeSelector = (TextView) view
+		textViewRangeSelector = (Button) view
 				.findViewById(R.id.textview_range_selector);
 		radioGrpCategorySelector = (RadioGroup) view
 				.findViewById(R.id.cat_selector_rgp);

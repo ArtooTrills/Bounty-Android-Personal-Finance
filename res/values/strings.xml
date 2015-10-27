@@ -50,5 +50,6 @@
     <string name="firs_name_">Firs Name *</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name_">Last Name *</string>
+    <string name="comparitive_reports">Comparison</string>
 
 </resources>

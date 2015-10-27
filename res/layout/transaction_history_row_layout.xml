@@ -87,10 +87,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:contentDescription="@string/calendar_image"
-            android:paddingTop="5dp"
             android:src="@drawable/calendar" />
 
         <TextView

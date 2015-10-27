@@ -258,7 +258,13 @@ public class TransactionHistoryAdapter extends
 					if (!textViewTransactionCategory
 							.getText()
 							.toString()
-							.equals(transaction.getCategory().getCategoryName())) {
+							.equals(transaction.getCategory().getCategoryName())
+							&& !textViewTransactionCategory
+									.getText()
+									.toString()
+									.equals(((Activity) context).getResources()
+											.getString(
+													R.string.default_category))) {
 						modificationMessage.append(messageStarter);
 						modificationMessage
 								.append("Changed Transaction category from "

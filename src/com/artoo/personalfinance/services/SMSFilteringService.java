@@ -2,10 +2,13 @@ package com.artoo.personalfinance.services;
 
 import java.util.Date;
 import java.util.Locale;
+
 import persistantData.DatabaseHelper;
 import model.Transaction;
+
 import com.artoo.personalfinance.broadcastReceiver.SMSReceiver;
 import com.google.gson.Gson;
+
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +24,9 @@ public class SMSFilteringService extends IntentService {
 	}
 
 	public static final String TRANSACTION_KEY = "tran";
+
 	public static final String BROADCAST_ACTION_KEY = "com.artoo.personalfinance.services.inernal_sms_broadcast";
+
 	static final String[] EXPENSE_PATTERNS_AMOUNT_BEFORE = { "withdrawn", "dr",
 			"dr.", "debited", "has been withdrawn", "have been withdrawn",
 			"was withdrawn", "is withdrawn", "is debited", "was debited",
@@ -44,6 +49,16 @@ public class SMSFilteringService extends IntentService {
 			" cr. for", "depositted an amount of", "received",
 			"received an amount of" };
 
+	static final String[] EXPENSE_CATEGORY_FOOD_TERMS = { "hotel",
+			"restaurant", "pizza", "pizzeria", "lunch", "dinner", "breakfast",
+			"dominos", "faasos", "zomato", "foodpanda", "mcdonalds" };
+
+	static final String[] EXPENSE_CATEGORY_COMMUNICATION_TERMS = { "recharge",
+			"rchrg", "talktime" };
+
+	static final String FILTERED_CATEGORY_FOOD = "FOOD",
+			FILTERED_CATEGORY_COMMUNICATION = "COMMUNICATIONS";
+
 	/**
 	 * class performs message filtering and transaction extraction on a worker
 	 * thread
@@ -55,8 +70,9 @@ public class SMSFilteringService extends IntentService {
 		boolean isTransaction = false;
 		Transaction transaction = null;
 
+		msgBody = msgBody.toLowerCase(Locale.ENGLISH);
 		String[] msgBodyChunks = msgBody.replaceAll("(\\r|\\n|\\t|\\s)+", " ")
-				.toLowerCase(Locale.ENGLISH).split(" ");
+				.split(" ");
 
 		StringBuilder utilityStringBUilder = new StringBuilder();
 		boolean shouldCheck = false;
@@ -155,6 +171,26 @@ public class SMSFilteringService extends IntentService {
 										.toUpperCase(Locale.ENGLISH)
 										+ "\n"
 										+ msgBody);
+								for (String categoryTerms : EXPENSE_CATEGORY_FOOD_TERMS) {
+									if (msgBody.contains(categoryTerms)) {
+										transaction.getCategory()
+												.setCategoryName(
+														FILTERED_CATEGORY_FOOD);
+										break;
+									}
+								}
+								if (transaction.getCategory().getCategoryName()
+										.equals("NONE")) {
+									for (String categoryTerms : EXPENSE_CATEGORY_COMMUNICATION_TERMS) {
+										if (msgBody.contains(categoryTerms)) {
+											transaction
+													.getCategory()
+													.setCategoryName(
+															FILTERED_CATEGORY_COMMUNICATION);
+											break;
+										}
+									}
+								}
 								transaction.setSender(senderName);
 								DatabaseHelper dbHelper = new DatabaseHelper(
 										getBaseContext());
@@ -253,6 +289,25 @@ public class SMSFilteringService extends IntentService {
 									+ "\n"
 									+ msgBody);
 							transaction.setSender(senderName);
+							for (String categoryTerms : EXPENSE_CATEGORY_FOOD_TERMS) {
+								if (msgBody.contains(categoryTerms)) {
+									transaction.getCategory().setCategoryName(
+											FILTERED_CATEGORY_FOOD);
+									break;
+								}
+							}
+							if (transaction.getCategory().getCategoryName()
+									.equals("NONE")) {
+								for (String categoryTerms : EXPENSE_CATEGORY_COMMUNICATION_TERMS) {
+									if (msgBody.contains(categoryTerms)) {
+										transaction
+												.getCategory()
+												.setCategoryName(
+														FILTERED_CATEGORY_COMMUNICATION);
+										break;
+									}
+								}
+							}
 							DatabaseHelper dbHelper = new DatabaseHelper(
 									getBaseContext());
 							dbHelper.addTransaction(transaction);
@@ -346,9 +401,24 @@ public class SMSFilteringService extends IntentService {
 								float amount = Float
 										.parseFloat(utilityStringBUilder
 												.toString().replace(",", ""));
-								transaction = new Transaction(amount,
-										Transaction.INCOME, senderName,
-										new Date());
+								int tranType = Transaction.INCOME;
+
+								// check if sms is a mobile recharge message
+								if (INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount]
+										.contains("credited")
+										&& msgBody.contains("recharge")) {
+									tranType = Transaction.EXPENSE;
+
+								}
+
+								transaction = new Transaction(amount, tranType,
+										senderName, new Date());
+
+								if (tranType == Transaction.EXPENSE) {
+									transaction.getCategory().setCategoryName(
+											FILTERED_CATEGORY_COMMUNICATION);
+								}
+
 								transaction.setSender(senderName);
 								DatabaseHelper dbHelper = new DatabaseHelper(
 										getBaseContext());
@@ -442,8 +512,18 @@ public class SMSFilteringService extends IntentService {
 							float amount = Float
 									.parseFloat(utilityStringBUilder.toString()
 											.replace(",", ""));
-							transaction = new Transaction(amount,
-									Transaction.INCOME, senderName, new Date());
+							int tranType = Transaction.INCOME;
+							// check if message is a mobile recharge message
+							if (INCOME_PATTERNS_AMOUNT_BEFORE[incAfterCount]
+									.contains("credited")
+									&& msgBody.contains("recharge")) {
+								tranType = Transaction.EXPENSE;
+							}
+							transaction = new Transaction(amount, tranType,
+									senderName, new Date());
+							if (tranType == Transaction.EXPENSE)
+								transaction.getCategory().setCategoryName(
+										FILTERED_CATEGORY_COMMUNICATION);
 							transaction.setSender(senderName);
 							DatabaseHelper dbHelper = new DatabaseHelper(
 									getBaseContext());

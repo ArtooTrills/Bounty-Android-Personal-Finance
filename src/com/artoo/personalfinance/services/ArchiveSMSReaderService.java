@@ -19,6 +19,7 @@ public class ArchiveSMSReaderService extends IntentService {
 
 	private static final String[] REQUIRED_SMS_FIELDS = { "address", "body",
 			"date" };
+
 	public static final String IS_TRANSACTION = "isTran";
 
 	public ArchiveSMSReaderService() {
@@ -86,7 +87,6 @@ public class ArchiveSMSReaderService extends IntentService {
 											.toString()
 											.equals(EXPENSE_PATTERNS_AMOUNT_BEFORE[expBeforeCount])) {
 										shouldCheck = true;
-
 									}
 									break;
 								}
@@ -157,6 +157,26 @@ public class ArchiveSMSReaderService extends IntentService {
 										.toUpperCase(Locale.ENGLISH)
 										+ "\n"
 										+ msgBody);
+								for (String categoryTerms : EXPENSE_CATEGORY_FOOD_TERMS) {
+									if (sms.body.contains(categoryTerms)) {
+										transaction.getCategory()
+												.setCategoryName(
+														FILTERED_CATEGORY_FOOD);
+										break;
+									}
+								}
+								if (transaction.getCategory().getCategoryName()
+										.equals("NONE")) {
+									for (String categoryTerms : EXPENSE_CATEGORY_COMMUNICATION_TERMS) {
+										if (sms.body.contains(categoryTerms)) {
+											transaction
+													.getCategory()
+													.setCategoryName(
+															FILTERED_CATEGORY_COMMUNICATION);
+											break;
+										}
+									}
+								}
 								transaction.setSender(sms.address);
 								DatabaseHelper dbHelper = new DatabaseHelper(
 										getBaseContext());
@@ -249,6 +269,7 @@ public class ArchiveSMSReaderService extends IntentService {
 							float amount = Float
 									.parseFloat(utilityStringBUilder.toString()
 											.replaceAll(",", ""));
+
 							transaction = new Transaction(amount,
 									Transaction.EXPENSE, sms.address,
 									sms.getDate());
@@ -256,6 +277,25 @@ public class ArchiveSMSReaderService extends IntentService {
 									.toUpperCase(Locale.ENGLISH)
 									+ "\n"
 									+ msgBody);
+							for (String categoryTerms : EXPENSE_CATEGORY_FOOD_TERMS) {
+								if (sms.body.contains(categoryTerms)) {
+									transaction.getCategory().setCategoryName(
+											FILTERED_CATEGORY_FOOD);
+									break;
+								}
+							}
+							if (transaction.getCategory().getCategoryName()
+									.equals("NONE")) {
+								for (String categoryTerms : EXPENSE_CATEGORY_COMMUNICATION_TERMS) {
+									if (sms.body.contains(categoryTerms)) {
+										transaction
+												.getCategory()
+												.setCategoryName(
+														FILTERED_CATEGORY_COMMUNICATION);
+										break;
+									}
+								}
+							}
 							transaction.setSender(sms.address);
 							DatabaseHelper dbHelper = new DatabaseHelper(
 									getBaseContext());
@@ -350,9 +390,18 @@ public class ArchiveSMSReaderService extends IntentService {
 								float amount = Float
 										.parseFloat(utilityStringBUilder
 												.toString().replaceAll(",", ""));
-								transaction = new Transaction(amount,
-										Transaction.INCOME, sms.address,
-										sms.getDate());
+
+								int tranType = Transaction.INCOME;
+								if (INCOME_PATTERNS_AMOUNT_BEFORE[incBeforeCount]
+										.contains("credited")
+										&& msgBody.contains("recharge")) {
+									tranType = Transaction.EXPENSE;
+								}
+								transaction = new Transaction(amount, tranType,
+										sms.address, new Date());
+								if (tranType == Transaction.EXPENSE)
+									transaction.getCategory().setCategoryName(
+											FILTERED_CATEGORY_COMMUNICATION);
 								transaction.setSender(sms.address);
 								DatabaseHelper dbHelper = new DatabaseHelper(
 										getBaseContext());
@@ -447,9 +496,17 @@ public class ArchiveSMSReaderService extends IntentService {
 							float amount = Float
 									.parseFloat(utilityStringBUilder.toString()
 											.replaceAll(",", ""));
-							transaction = new Transaction(amount,
-									Transaction.INCOME, sms.address,
-									sms.getDate());
+							int tranType = Transaction.INCOME;
+							if (INCOME_PATTERNS_AMOUNT_BEFORE[incAfterCount]
+									.contains("credited")
+									&& msgBody.contains("recharge")) {
+								tranType = Transaction.EXPENSE;
+							}
+							transaction = new Transaction(amount, tranType,
+									sms.address, new Date());
+							if (tranType == Transaction.EXPENSE)
+								transaction.getCategory().setCategoryName(
+										FILTERED_CATEGORY_COMMUNICATION);
 							transaction.setSender(sms.address);
 							DatabaseHelper dbHelper = new DatabaseHelper(
 									getBaseContext());

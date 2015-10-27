@@ -34,17 +34,13 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <TextView
+        <Button
             android:id="@+id/textview_range_selector"
-            style="@android:style/Widget.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:padding="10dp"
-            android:text="@string/select_period"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
+            android:text="@string/select_period" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
