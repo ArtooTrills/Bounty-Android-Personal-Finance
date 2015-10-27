@@ -18,12 +18,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String TABLE_INCOME = "income";
     private static final String TABLE_EXPENSE = "expense";
     private static final String TABLE_TOTAL = "total";
+    private static final String TABLE_SMS = "sms";
 
     public static final String COLUMN_SOURCE = "src";
     public static final String COLUMN_AMOUNT = "amt";
     public static final String COLUMN_REPEAT = "isForOnce";
     public static final String COLUMN_INCOME = "income";
     public static final String COLUMN_EXPENSE = "expense";
+
 
     public MyDBHandler(Context context, String name,
                        SQLiteDatabase.CursorFactory factory, int version) {
@@ -47,7 +49,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String CREATE_TOTAL_TABLE = "CREATE TABLE " +
                 TABLE_TOTAL + "("
                 + COLUMN_INCOME + " DECIMAL(5,2)," + COLUMN_EXPENSE
-                + " DECIMAL(5,2)," + ")";
+                + " DECIMAL(5,2)" + ")";
         db.execSQL(CREATE_TOTAL_TABLE);
     }
 

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,39 @@ import java.util.HashMap;
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static MainActivity inst;
+
+    public static MainActivity instance() {
+        return inst;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        inst = this;
+    }
+
+    public void updateList(final String str) {
+        MyDBHandlerSms dbHandler = new MyDBHandlerSms(this, null, null, 1);
+
+        String[] list = str.split(":");
+
+        Sms newSms = new Sms();
+        newSms.setFrom(list[1]);
+
+        if(list[2].contains("credit"))
+            newSms.setType("Income");
+        else if(list[2].contains("debit"))
+            newSms.setType("Expense");
+        else
+            return;
+
+        String[] amt = list[2].split("Rs.");
+        amt = amt[1].split(" ");
+        newSms.setAmount(amt[1]);
+
+        dbHandler.addSms(newSms);
+    }
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -39,7 +73,7 @@ public class MainActivity extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private static Context mContext;
+    public static Context mContext;
     private Switch mSms;
     private WelcomeActivity ft = new WelcomeActivity();
 
@@ -188,6 +222,10 @@ public class MainActivity extends Activity
                 case 3:
                     Intent expenseIntent = new Intent(mContext, ExpenseActivity.class);
                     mContext.startActivity(expenseIntent);
+                    break;
+                case 4 :
+                    Intent smsIntent = new Intent(mContext, SmsActivity.class);
+                    mContext.startActivity(smsIntent);
                     break;
             }
             rootView = inflater.inflate(R.layout.welcome_page, container, false);

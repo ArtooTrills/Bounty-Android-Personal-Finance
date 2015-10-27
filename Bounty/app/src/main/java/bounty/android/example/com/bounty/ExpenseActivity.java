@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -49,8 +50,20 @@ public class ExpenseActivity extends Activity {
         mAddExpenseSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newExpense();
-                updateList();
+
+
+                if (mExpenseSrcAdd.getText().toString().matches("")) {
+
+                    Toast.makeText(ExpenseActivity.this, "You did not enter a source", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (mExpenseAmt.getText().toString().matches("")) {
+
+                    Toast.makeText(ExpenseActivity.this, "You did not enter a Amount", Toast.LENGTH_SHORT).show();
+                }else {
+                    newExpense();
+                    updateList();
+                }
             }
         });
 
@@ -58,8 +71,14 @@ public class ExpenseActivity extends Activity {
         mDelExpenseSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeExpense();
-                updateList();
+                if (mExpenseSrcDel.getText().toString().matches("")) {
+
+                    Toast.makeText(ExpenseActivity.this, "You did not enter a Source", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    removeExpense();
+                    updateList();
+                }
             }
         });
         updateList();

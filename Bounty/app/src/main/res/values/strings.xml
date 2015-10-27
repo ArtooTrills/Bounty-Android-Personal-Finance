@@ -4,7 +4,7 @@
     <string name="title_section1">Welcome!</string>
     <string name="title_section2">Income</string>
     <string name="title_section3">Expense</string>
-    <string name="title_section4">Update Profile</string>
+    <string name="title_section4">Sms Transactions</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

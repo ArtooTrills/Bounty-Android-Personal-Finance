@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:scrollbarAlwaysDrawHorizontalTrack="true">
     <TableLayout
+        android:stretchColumns="0,1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp">
@@ -36,6 +37,7 @@
                 android:layout_span="2">
 
                 <TableLayout
+                    android:stretchColumns="0,1"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/expense_data"

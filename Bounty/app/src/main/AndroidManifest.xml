@@ -23,8 +23,10 @@
             android:label="Income Activity"/>
         <activity android:name=".ExpenseActivity"
                   android:label="Expense Activity"/>
+        <activity android:name=".SmsActivity"
+                  android:label="Sms Activity"/>
 
-        <receiver android:name=".SmsBroadcastReceiver" android:exported="true" android:enabled="false">
+        <receiver android:name=".SmsBroadcastReceiver" android:enabled="true">
             <intent-filter android:priority="999" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

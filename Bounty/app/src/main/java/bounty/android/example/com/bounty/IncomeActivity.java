@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -42,8 +43,18 @@ public class IncomeActivity extends Activity{
         mAddIncomeSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newIncome();
-                updateList();
+                if (mIncomeAmt.getText().toString().matches("")) {
+
+                    Toast.makeText(IncomeActivity.this, "You did not enter a Amount", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if (mIncomeSrcAdd.getText().toString().matches("")) {
+
+                    Toast.makeText(IncomeActivity.this, "You did not enter a Source", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    newIncome();
+                    updateList();
+                }
             }
         });
 
@@ -51,8 +62,14 @@ public class IncomeActivity extends Activity{
         mDelIncomeSource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeIncome();
-                updateList();
+                if (mIncomeSrcDel.getText().toString().matches("")) {
+
+                    Toast.makeText(IncomeActivity.this, "You did not enter a Amount", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    removeIncome();
+                    updateList();
+                }
             }
         });
 

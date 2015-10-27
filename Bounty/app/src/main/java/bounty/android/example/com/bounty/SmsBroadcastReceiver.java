@@ -26,12 +26,13 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
                 String address = smsMessage.getOriginatingAddress();
 
-                smsMessageStr += "SMS From: " + address + "\n";
+                smsMessageStr += "SMS From:" + address + ":\n";
                 smsMessageStr += smsBody + "\n";
             }
             Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
-
-            //COde to add data from sms to expense or income, based on user
+/*
+            MainActivity inst = MainActivity.instance();
+            inst.updateList(smsMessageStr);*/
         }
     }
 }
