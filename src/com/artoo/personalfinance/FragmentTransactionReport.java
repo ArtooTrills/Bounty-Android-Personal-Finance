@@ -21,13 +21,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class FragmentTransactionReport extends Fragment implements
 		OnClickListener {
 	private ArrayAdapter<String> arrayAdapterDeafultPeriodChoice;
-	private List<Transaction> transactionList, expenseTransaction, incomeTransaction;
+	private List<Transaction> transactionList, expenseTransaction,
+			incomeTransaction;
 	private RecyclerView recyclerViewExpense, recyclerViewIncome;
 	private LinearLayoutManager layoutManagerExpRV, layoutManagerIncRV;
 	private TransactionReportAdapter expenseAdapter, incomeAdapter;

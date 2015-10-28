@@ -21,6 +21,7 @@
             android:text="@string/expense" />
 
         <RadioButton
+        
             android:id="@+id/income_rgb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
             android:text="@string/select_period" />
     </LinearLayout>
 
+    
     <android.support.v7.widget.RecyclerView
         android:id="@+id/expense_rv_report"
         android:layout_width="match_parent"

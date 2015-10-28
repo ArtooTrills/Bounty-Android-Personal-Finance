@@ -39,12 +39,12 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	private static final String[] userPermissionText = {
 			"You have allowed us to extract your transactions from your sms",
 			"We are not extracting your transactions from your sms" };
-	private static final String[] navItems = { "Home", "Ignore List",
-			"SMS Permission", "How it works" };
+	private static final String[] navItems = { "Home", "Comparative Report",
+			"Ignore List", "SMS Permission", "How it works" };
 
 	private SMSTransactionReceiver receiver;
 	private static final int[] navMenuDrawableIds = { R.drawable.home,
-			R.drawable.ignore_item, R.drawable.sms_pref,
+			R.drawable.ic_stats, R.drawable.ignore_item, R.drawable.sms_pref,
 			R.drawable.how_it_works };
 
 	private RecyclerView.LayoutManager navLayoutManager; // layout manager for
@@ -60,10 +60,11 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	private Toolbar toolBar;
 
 	public static final int NEW_TRANSACTION_FRAGMENT_ID = 100,
-			FRAGMENT_IGNORE = 1, FRAGMENT_HOME = 0, FRAGMENT_HISTORY = 101,
-			FRAGMENT_REPORT = 109, FRAGMENT_HOW_IT_WORKS = 3;
+			COMPARATIVE_REPORT = 1, FRAGMENT_IGNORE = 2, FRAGMENT_HOME = 0,
+			FRAGMENT_HISTORY = 101, FRAGMENT_REPORT = 109,
+			FRAGMENT_HOW_IT_WORKS = 4;
 
-	private static final int SMS_PREF_OPTION = 2;
+	private static final int SMS_PREF_OPTION = 3;
 
 	private MenuItem newTrasactionItem;
 	private int currentFragmentId = -1;
@@ -323,6 +324,13 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 			case NEW_TRANSACTION_FRAGMENT_ID:
 				ManualTransactionEntryFragment entryFragment = new ManualTransactionEntryFragment();
 				fragmentTransaction.replace(R.id.content_frame, entryFragment);
+				fragmentTransaction.commit();
+				break;
+
+			case COMPARATIVE_REPORT:
+				ComparativeReport comparativeReport = new ComparativeReport();
+				fragmentTransaction.replace(R.id.content_frame,
+						comparativeReport);
 				fragmentTransaction.commit();
 				break;
 			case FRAGMENT_HOME:

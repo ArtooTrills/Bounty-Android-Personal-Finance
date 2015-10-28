@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/comp_period_selector_rgp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/monthly_rgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/monthly_report" />
+
+        <RadioButton
+            android:id="@+id/weekly_rgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weekly_report" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/please_select_period"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/comp_year_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:spinnerMode="dialog" />
+
+        <Spinner
+            android:visibility="gone"
+            android:id="@+id/comp_month_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:spinnerMode="dialog" />
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.BarChart
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/weekly_cahrt"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/monthly_chart"
+        android:layout_width="match_parent"
+        android:layout_height="270dp" />
+
+</LinearLayout>

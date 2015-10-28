@@ -51,5 +51,9 @@
     <string name="middle_name">Middle Name</string>
     <string name="last_name_">Last Name *</string>
     <string name="comparitive_reports">Comparison</string>
+    <string name="to_date">To Date</string>
+    <string name="monthly_report">Monthly Report</string>
+    <string name="weekly_report">Weekly Report</string>
+    <string name="please_select_period">Please select period</string>
 
 </resources>
