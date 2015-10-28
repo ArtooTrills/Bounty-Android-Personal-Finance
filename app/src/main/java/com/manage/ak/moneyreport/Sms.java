@@ -9,7 +9,6 @@ public class Sms implements Serializable {
     private String msgType;
     private String msgAmt;
     private String msgDate;
-    private String formatDate;
     private String msgBal;
 
 
@@ -25,6 +24,14 @@ public class Sms implements Serializable {
 
     public String getMsgType() {
         return this.msgType;
+    }
+
+    public String getDrOrCr() {
+        if (this.msgType.equals("Personal Expenses") || this.msgType.equals("Food") || this.msgType.equals("Transport"))
+            return "DR";
+        else
+            return "CR";
+
     }
 
     public String getMsgAmt() {

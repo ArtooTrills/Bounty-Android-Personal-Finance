@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4sp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/transList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:background="@android:color/background_light" />
+
+</RelativeLayout>

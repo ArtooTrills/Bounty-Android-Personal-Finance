@@ -1,8 +1,11 @@
 package com.manage.ak.moneyreport;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -22,14 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,17 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Sms> cashList = new ArrayList<>();
 
     // Main balance in the bank
+    // In many places the balance is needed in String form.
     private String BALANCE = "0.0";
     // Total cash spent from cash in hand
     private String CASHSPENT = "0.0";
 
     // variables used to store and calculate balance for the cash transactions
     private String amt, type, balance;
-    private double bal;
-
-    // output stream file in which bank and cash sms are saved
-    private String BANK_FILE = "Bank Transactions";
-    private String CASH_FILE = "Cash Transactions";
 
     // bank balance and date TextView inside the bank card
     private TextView bankBalance;
@@ -64,6 +55,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // spent amount and cash in hand inside the cash card
     private TextView spentAmount;
     private TextView cashBalance;
+
+    // BroadcastReceiver listening to the incoming messages
+    private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
+    IntentFilter intentFilter = new IntentFilter(SMS_RECEIVED);
+    private BroadcastReceiver sms_receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(SMS_RECEIVED)) {
+                readMessages();
+                Toast.makeText(MainActivity.this, "Reading New SMS...", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    DatabaseHandler databaseHandler = new DatabaseHandler(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             final Sms smsBal = new Sms();
             smsBal.setMsgType("Bank Balance");
-            smsBal.setMsgDate("1433097000000");
+            smsBal.setMsgDate(Long.toString(System.currentTimeMillis()));
 
-            bal_dialog.setTitle("Bank Bal as of " + smsBal.getFormatDate());
+            bal_dialog.setTitle("Current Bank Balance -");
 
             final EditText etBalance = (EditText) bal_dialog.findViewById(R.id.Balance);
             Button saveBalance = (Button) bal_dialog.findViewById(R.id.saveBalance);
@@ -105,49 +111,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     smsBal.setMsgAmt(BALANCE);
                     smsBal.setMsgBal(BALANCE);
                     bankList.add(0, smsBal);
-                    if (bankList.size() > 0) {
-                        bankBalance.setText("₹ " + bankList.get(0).getMsgBal());
-                        estimateDate.setText(bankList.get(0).getFormatDate());
-                    } else {
-                        bankBalance.setText("₹ " + "0.0");
-                        estimateDate.setText(" ");
-                    }
+                    databaseHandler.addBankSms(smsBal);
+                    setBankBalance();
                 }
             });
         }
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice("AAE5999327EA1F02B184A568C2316129")
-                .build();
-        mAdView.loadAd(adRequest);
-
         try {
-            // file input stream is used to open a file for reading
-            FileInputStream f = context.openFileInput(BANK_FILE);
-            // object input stream is used to read object from the file opened
-            ObjectInputStream i = new ObjectInputStream(f);
             // object read is in the form of list<Sms> so iterate over the list to extract all Sms objects.
-            for (Sms r : (List<Sms>) i.readObject()) {
+            for (Sms r : databaseHandler.getAllSms("bankTransactions")) {
                 bankList.add(r);
             }
-            i.close();
-            f.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            // file input stream is used to open a file for reading
-            FileInputStream f = context.openFileInput(CASH_FILE);
-            // object input stream is used to read object from the file opened
-            ObjectInputStream i = new ObjectInputStream(f);
             // object read is in the form of list<Sms> so iterate over the list to extract all Sms objects.
-            for (Sms r : (List<Sms>) i.readObject()) {
+            for (Sms r : databaseHandler.getAllSms("cashTransactions")) {
                 cashList.add(r);
             }
-            i.close();
-            f.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,30 +144,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spentAmount = (TextView) findViewById(R.id.spendAmount);
         cashBalance = (TextView) findViewById(R.id.cashBalance);
 
-        spentAmount.setText("₹ " + CASHSPENT);
+        setCashBalance();
 
-        if (cashList.size() > 0) {
-            cashBalance.setText("In Hand:   ₹ " + cashList.get(0).getMsgBal());
-        } else {
-            cashBalance.setText("In Hand:   ₹ " + "0.0");
-        }
-
-        if (bankList.size() > 0) {
-            bankBalance.setText("₹ " + bankList.get(0).getMsgBal());
-            estimateDate.setText(bankList.get(0).getFormatDate());
-        } else {
-            bankBalance.setText("₹ " + "0.0");
-            estimateDate.setText(" ");
-        }
+        setBankBalance();
 
         CardView bankCard = (CardView) findViewById(R.id.bankCard);
         bankCard.setOnClickListener(this);
 
         CardView cashCard = (CardView) findViewById(R.id.cashCard);
         cashCard.setOnClickListener(this);
-
-        TextView refresh = (TextView) findViewById(R.id.refresh);
-        refresh.setOnClickListener(this);
 
         TextView addCash = (TextView) findViewById(R.id.addCash);
         addCash.setOnClickListener(this);
@@ -194,6 +162,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView cashReport = (TextView) findViewById(R.id.cashReport);
         cashReport.setOnClickListener(this);
+
+        readMessages();
     }
 
     @Override
@@ -201,9 +171,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.bankCard:
                 if (bankList.size() > 0) {
-                    Intent bank = new Intent(MainActivity.this, BankTransactions.class);
+                    Intent bank = new Intent(MainActivity.this, Transactions.class);
                     Bundle b = new Bundle();
                     b.putSerializable("SMS", (Serializable) bankList);
+                    b.putString("CARD", "BANK_CARD");
+                    b.putString("COLOR", "#6ed036");
                     bank.putExtra("DATA", b);
                     startActivity(bank);
                 } else {
@@ -211,140 +183,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.cashCard:
-                Intent cash = new Intent(MainActivity.this, CashTransactions.class);
+                Intent cash = new Intent(MainActivity.this, Transactions.class);
                 Bundle b = new Bundle();
                 b.putSerializable("CASH", (Serializable) cashList);
-                b.putString("Spent", CASHSPENT);
+                b.putString("CARD", "CASH_CARD");
+                b.putString("COLOR", "#467fd9");
+                b.putString("SPENT", CASHSPENT);
                 cash.putExtra("DATA", b);
                 startActivityForResult(cash, 1);
                 break;
-            case R.id.refresh:
-                Toast.makeText(MainActivity.this, "Reading Transaction sms...", Toast.LENGTH_SHORT).show();
-                readMessages();
-                break;
             case R.id.addCash:
-                final Dialog dialog = new Dialog(context);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCancelable(true);
-                dialog.setContentView(R.layout.add_dialog);
-
-                final EditText addAmt = (EditText) dialog.findViewById(R.id.addAmt);
-                final Spinner description = (Spinner) dialog.findViewById(R.id.description);
-                Button save = (Button) dialog.findViewById(R.id.save);
-
-                ArrayAdapter<CharSequence> desc_adapter = ArrayAdapter.createFromResource(this, R.array.desc_array, android.R.layout.simple_spinner_item);
-                desc_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                description.setAdapter(desc_adapter);
-
-                description.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        type = parent.getItemAtPosition(position).toString();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        type = parent.getItemAtPosition(0).toString();
-                    }
-                });
-
+                final AddDialog dialog = new AddDialog(context, cashList);
                 dialog.show();
-
-                // set onclick listener to add button in the custom dialog box to add transaction
-                save.setOnClickListener(new View.OnClickListener() {
+                dialog.setOnSaveClickListener(new AddDialog.OnSaveClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        // then according to the id of check button balance is calculated
-                        int index = cashList.size() - 1;
-                        amt = addAmt.getText().toString();
-                        if (amt.trim().equals("")) {
-                            amt = "0.0";
-                        }
-
-                        String t = "";
-                        if (type.equals("Personal Expenses") || type.equals("Food") || type.equals("Transport"))
-                            t = "DR";
-                        else if (type.equals("Income") || type.equals("Salary"))
-                            t = "CR";
-
-                        switch (t) {
-                            case "DR":
-                                // index will be zero if there are no messages in the list so balance will be equal to the amount
-                                if (index >= 0) {
-                                    balance = cashList.get(0).getMsgBal();
-                                    bal = Double.parseDouble(balance) - Double.parseDouble(amt);
-                                    balance = Double.toString(bal);
-                                } else {
-                                    // negative in case of expenses
-                                    balance = "-" + amt;
-                                }
-                                break;
-                            case "CR":
-                                if (index >= 0) {
-                                    balance = cashList.get(0).getMsgBal();
-                                    bal = Double.parseDouble(balance) + Double.parseDouble(amt);
-                                    balance = Double.toString(bal);
-                                } else {
-                                    // positive in case of income
-                                    balance = amt;
-                                }
-                                break;
-                        }
-                        // finally the sms object is added to the list
-                        // the date in this sms object is set ot the current date of the system
-                        long time = System.currentTimeMillis();
-                        Sms s = new Sms(type, amt, Long.toString(time), balance);
+                    public void OnSaveClick() {
+                        Sms s = dialog.getTransaction();
                         cashList.add(0, s);
-                        dialog.dismiss();
-                        if (s.getMsgType().equals("Personal Expenses") || s.getMsgType().equals("Food") || s.getMsgType().equals("Transport")) {
-                            CASHSPENT = Double.toString(Double.parseDouble(CASHSPENT) + Double.parseDouble(amt));
-                            spentAmount.setText("₹ " + CASHSPENT);
+                        databaseHandler.addCashSms(s);
+
+                        if (s.getDrOrCr().equals("DR")) {
+                            CASHSPENT = Double.toString(Double.parseDouble(CASHSPENT) + s.getAmtDouble());
                         }
-                        cashBalance.setText("In Hand:   ₹ " + cashList.get(0).getMsgBal());
+                        setCashBalance();
+
                         Toast.makeText(MainActivity.this, "Transaction Added", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
             case R.id.bankReport:
-                List<Sms> smsList1 = new ArrayList<>();
-                for (Sms s : bankList) {
-                    if (s.getMsgType().equals("Personal Expenses") || s.getMsgType().equals("Food") || s.getMsgType().equals("Transport")) {
-                        smsList1.add(s);
-                    }
-                }
-                // when forward action button is clicked a bar chart is displayed whose values are calculated here
-                if (smsList1.size() > 0) {
-                    Intent i = new Intent(MainActivity.this, report.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("SMS", (Serializable) smsList1);
-                    bundle.putString("color", "#6ed036");
-                    i.putExtra("DATA", bundle);
-                    startActivity(i);
-                } else {
-                    // if no messages are there then a toast is displayed
-                    Toast.makeText(MainActivity.this, "You have not spent money", Toast.LENGTH_SHORT).show();
-                }
+                sendReport(bankList, "#6ed036");
                 break;
             case R.id.cashReport:
-                List<Sms> smsList2 = new ArrayList<>();
-                for (Sms s : cashList) {
-                    if (s.getMsgType().equals("Personal Expenses") || s.getMsgType().equals("Food") || s.getMsgType().equals("Transport")) {
-                        smsList2.add(s);
-                    }
-                }
-                // when forward action button is clicked a bar chart is displayed whose values are calculated here
-                if (smsList2.size() > 0) {
-                    Intent i = new Intent(MainActivity.this, report.class);
-                    Bundle bundle1 = new Bundle();
-                    bundle1.putSerializable("SMS", (Serializable) smsList2);
-                    bundle1.putString("color", "#467fd9");
-                    i.putExtra("DATA", bundle1);
-                    startActivity(i);
-                } else {
-                    // if no messages are there then a toast is displayed
-                    Toast.makeText(MainActivity.this, "You have not spent money", Toast.LENGTH_SHORT).show();
-                }
+                sendReport(cashList, "#467fd9");
                 break;
+        }
+    }
+
+    private void sendReport(List<Sms> originalList, String color) {
+        List<Sms> spentList = new ArrayList<>();
+        for (Sms s : originalList) {
+            if (s.getDrOrCr().equals("DR")) {
+                spentList.add(s);
+            }
+        }
+        // when forward action button is clicked a bar chart is displayed whose values are calculated here
+        if (spentList.size() > 0) {
+            Intent i = new Intent(MainActivity.this, report.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("SMS", (Serializable) spentList);
+            bundle.putString("color", color);
+            i.putExtra("DATA", bundle);
+            startActivity(i);
+        } else {
+            // if no messages are there then a toast is displayed
+            Toast.makeText(MainActivity.this, "You have not spent money", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -370,13 +263,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == 1) {
             cashList = (ArrayList<Sms>) data.getBundleExtra("Result").getSerializable("cash");
             CASHSPENT = data.getBundleExtra("Result").getString("SPENT");
-            if (cashList.size() > 0) {
-                cashBalance.setText("In Hand:   ₹ " + cashList.get(0).getMsgBal());
-            } else {
-                cashBalance.setText("In Hand:   ₹ " + "0.0");
-            }
 
-            spentAmount.setText("₹ " + CASHSPENT);
+            setCashBalance();
         }
     }
 
@@ -414,11 +302,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 body = body.toLowerCase();
 
-                // some common keywords used in bank messages
-                if ((body.contains("debit") || body.contains("transaction") || body.contains("withdrawn")) && !body.contains("recharge") && !body.contains("paytm") && !body.contains("ola")) {
-                    t = "Personal Expenses";
-                } else if ((body.contains("credit") || body.contains("deposited")) && !body.contains("recharge") && !body.contains("paytm") && !body.contains("ola")) {
-                    t = "Income";
+                if (!Pattern.compile("(recharge|paytm|ola)").matcher(body).find()) {
+                    if (Pattern.compile("(debit|transaction|withdrawn)").matcher(body).find())
+                        t = "Personal Expenses";
+                    else if (Pattern.compile("(credit|deposited)").matcher(body).find())
+                        t = "Income";
                 }
 
                 // switched according to the type to extract information from the message
@@ -432,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             sms.setMsgBal(Double.toString(Double.parseDouble(BALANCE) - Double.parseDouble(a)));
                             BALANCE = sms.getMsgBal();
                             bankList.add(0, sms);
+                            databaseHandler.addBankSms(sms);
                         } else {
                             c.moveToPrevious();
                             continue;
@@ -447,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             sms.setMsgBal(Double.toString(Double.parseDouble(BALANCE) + Double.parseDouble(a1)));
                             BALANCE = sms.getMsgBal();
                             bankList.add(0, sms);
+                            databaseHandler.addBankSms(sms);
                         } else {
                             c.moveToPrevious();
                             continue;
@@ -460,13 +350,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(MainActivity.this, "No sms to read!!", Toast.LENGTH_SHORT).show();
         }
         c.close();
-        if (bankList.size() > 0) {
-            bankBalance.setText("₹ " + bankList.get(0).getMsgBal());
-            estimateDate.setText(bankList.get(0).getFormatDate());
-        } else {
-            bankBalance.setText("₹ " + "0.0");
-            estimateDate.setText(" ");
-        }
+        setBankBalance();
     }
 
     // getting amount by matching the pattern
@@ -506,10 +390,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return null;
     }
 
+    private void setBankBalance() {
+        if (bankList.size() > 0) {
+            bankBalance.setText("₹ " + bankList.get(0).getMsgBal());
+            estimateDate.setText(bankList.get(0).getFormatDate());
+        } else {
+            bankBalance.setText("₹ " + "0.0");
+            estimateDate.setText(" ");
+        }
+    }
+
+    private void setCashBalance() {
+        spentAmount.setText("₹ " + CASHSPENT);
+
+        if (cashList.size() > 0) {
+            cashBalance.setText("In Hand:   ₹ " + cashList.get(0).getMsgBal());
+        } else {
+            cashBalance.setText("In Hand:   ₹ " + "0.0");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // registering a BroadcastReceiver to listen to incoming messages
+        registerReceiver(sms_receiver, intentFilter);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         save();
+        unregisterReceiver(sms_receiver);
     }
 
     @Override
@@ -519,32 +431,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void save() {
-        // saving the bank list
-        try {
-            // file output stream is used to open a file for writing
-            FileOutputStream f = context.openFileOutput(BANK_FILE, Context.MODE_PRIVATE);
-            // object output stream is used to write object to the file opened
-            ObjectOutputStream o = new ObjectOutputStream(f);
-            o.writeObject(bankList);
-            o.close();
-            f.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // saving the cash list
-        try {
-            // file output stream is used to open a file for writing
-            FileOutputStream f = context.openFileOutput(CASH_FILE, Context.MODE_PRIVATE);
-            // object output stream is used to write object to the file opened
-            ObjectOutputStream o = new ObjectOutputStream(f);
-            o.writeObject(cashList);
-            o.close();
-            f.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // saving the total cash spent and the bank balance
         SharedPreferences saveSpent = getSharedPreferences("KEY", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = saveSpent.edit();
