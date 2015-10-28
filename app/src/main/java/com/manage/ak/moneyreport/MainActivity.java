@@ -1,6 +1,8 @@
 package com.manage.ak.moneyreport;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,12 +23,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,9 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Total cash spent from cash in hand
     private String CASHSPENT = "0.0";
 
-    // variables used to store and calculate balance for the cash transactions
-    private String amt, type, balance;
-
     // bank balance and date TextView inside the bank card
     private TextView bankBalance;
     private TextView estimateDate;
@@ -55,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // spent amount and cash in hand inside the cash card
     private TextView spentAmount;
     private TextView cashBalance;
+
+    // report TextViews
+    private TextView bankReport;
+    private TextView cashReport;
 
     // BroadcastReceiver listening to the incoming messages
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -157,10 +163,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView addCash = (TextView) findViewById(R.id.addCash);
         addCash.setOnClickListener(this);
 
-        TextView bankReport = (TextView) findViewById(R.id.bankReport);
+        bankReport = (TextView) findViewById(R.id.bankReport);
         bankReport.setOnClickListener(this);
 
-        TextView cashReport = (TextView) findViewById(R.id.cashReport);
+        cashReport = (TextView) findViewById(R.id.cashReport);
         cashReport.setOnClickListener(this);
 
         readMessages();
@@ -212,33 +218,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
             case R.id.bankReport:
-                sendReport(bankList, "#6ed036");
+                if (getSpendList(bankList).size() > 0)
+                    startFragment(R.id.bankReportContainer, getSpendList(bankList));
+                else
+                    Toast.makeText(MainActivity.this, "Not Enough Data To Display", Toast.LENGTH_SHORT).show();
+                //sendReport(bankList, "#6ed036");
                 break;
             case R.id.cashReport:
-                sendReport(cashList, "#467fd9");
+                if (getSpendList(cashList).size() > 0)
+                    startFragment(R.id.cashReportContainer, getSpendList(cashList));
+                else
+                    Toast.makeText(MainActivity.this, "Not Enough Data To Display", Toast.LENGTH_SHORT).show();
+                //sendReport(cashList, "#467fd9");
                 break;
         }
     }
 
-    private void sendReport(List<Sms> originalList, String color) {
+    private void startFragment(int id, List<Sms> spendList) {
+        FrameLayout f = (FrameLayout) findViewById(id);
+        if (f.getVisibility() == View.GONE) {
+            f.setVisibility(View.VISIBLE);
+            cashReport.setText("Hide Today's Report");
+        } else if (f.getVisibility() == View.VISIBLE) {
+            f.setVisibility(View.GONE);
+            cashReport.setText("Show Today's Report");
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("SPEND LIST", (Serializable) spendList);
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        TransFragment cashFragment = new TransFragment();
+        cashFragment.setArguments(bundle);
+        fragmentTransaction.replace(id, cashFragment);
+        fragmentTransaction.commit();
+    }
+
+    private List<Sms> getSpendList(List<Sms> originalList) {
         List<Sms> spentList = new ArrayList<>();
         for (Sms s : originalList) {
-            if (s.getDrOrCr().equals("DR")) {
+            if (s.getDrOrCr().equals("DR") && s.getDay().equals(new SimpleDateFormat("dd/MM").format(new Date(System.currentTimeMillis())))) {
                 spentList.add(s);
             }
         }
-        // when forward action button is clicked a bar chart is displayed whose values are calculated here
-        if (spentList.size() > 0) {
-            Intent i = new Intent(MainActivity.this, report.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("SMS", (Serializable) spentList);
-            bundle.putString("color", color);
-            i.putExtra("DATA", bundle);
-            startActivity(i);
-        } else {
-            // if no messages are there then a toast is displayed
-            Toast.makeText(MainActivity.this, "You have not spent money", Toast.LENGTH_SHORT).show();
-        }
+        return spentList;
     }
 
     @Override

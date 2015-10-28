@@ -86,6 +86,10 @@ public class Sms implements Serializable {
         return new SimpleDateFormat("MMM").format(new Date(Long.parseLong(this.msgDate))) + "'" + new SimpleDateFormat("yy").format(new Date(Long.parseLong(this.msgDate)));
     }
 
+    public String getTime() {
+        return new SimpleDateFormat("HH:mm").format(new Date(Long.parseLong(this.msgDate)));
+    }
+
     public String getDate(long milliSeconds) {
         // Create a DateFormatter object for displaying date in specified format.
         return new SimpleDateFormat("dd/MMM/yy").format(new Date(milliSeconds));

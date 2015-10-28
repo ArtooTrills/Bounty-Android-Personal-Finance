@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/border"
         android:background="@android:color/background_light"
-        android:paddingEnd="20dp"
-        android:paddingStart="20dp" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" />
 
 </RelativeLayout>
