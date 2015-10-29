@@ -1,11 +1,9 @@
 package com.manage.ak.moneyreport;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -18,13 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // A list to store bank list and cash sms
     private List<Sms> bankList = new ArrayList<>();
     private List<Sms> cashList = new ArrayList<>();
+
+    // this is used to filter already read messages
+    String FILTER = null;
 
     // Main balance in the bank
     // In many places the balance is needed in String form.
@@ -144,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!savedData.getString("SPENT", "").equals(""))
             CASHSPENT = savedData.getString("SPENT", "");
 
+        // getting the saved filter
+        FILTER = savedData.getString("FILTER", "");
+
         bankBalance = (TextView) findViewById(R.id.bankBalance);
         estimateDate = (TextView) findViewById(R.id.estimateDate);
 
@@ -222,14 +222,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startFragment(R.id.bankReportContainer, getSpendList(bankList));
                 else
                     Toast.makeText(MainActivity.this, "Not Enough Data To Display", Toast.LENGTH_SHORT).show();
-                //sendReport(bankList, "#6ed036");
                 break;
             case R.id.cashReport:
                 if (getSpendList(cashList).size() > 0)
                     startFragment(R.id.cashReportContainer, getSpendList(cashList));
                 else
                     Toast.makeText(MainActivity.this, "Not Enough Data To Display", Toast.LENGTH_SHORT).show();
-                //sendReport(cashList, "#467fd9");
                 break;
         }
     }
@@ -296,17 +294,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // new sms object declared
         Sms sms;
 
-        // this is used to filter already read messages
-        String filter = null;
-
-        // if list is greater than zero then the last date is read and a filter greater than that date is made
-        if (bankList.size() > 0) {
-            String lastDate = bankList.get(0).getMsgDate();
-            filter = "date>" + lastDate;
-        }
-
         // read sms are stored in cursor
-        Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), new String[]{"date", "body"}, filter, null, null);
+        Cursor c = getContentResolver().query(Uri.parse("content://sms/inbox"), new String[]{"date", "body"}, FILTER, null, null);
         int total = c.getCount();
 
         // all messages are read from bottom because when new sms gets inserted they are inserted in the position zero
@@ -318,6 +307,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // body and date read from cursor
                 String date = c.getString(c.getColumnIndexOrThrow("date"));
                 String body = c.getString(c.getColumnIndexOrThrow("body"));
+                // keeping track of a filter to prevent reading of messages already read
+                FILTER = "date>" + date;
+
                 String t = "";
 
                 // date is set to the sms object
@@ -459,6 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences.Editor editor = saveSpent.edit();
         editor.putString("SPENT", CASHSPENT);
         editor.putString("BALANCE", BALANCE);
+        editor.putString("FILTER", FILTER);
         editor.apply();
     }
 }
