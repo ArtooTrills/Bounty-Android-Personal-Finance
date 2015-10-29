@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FinanceApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="change_sms_pref">SMS Permission</string>
+    <color name="app_bar_color">#0d47a1</color>
+    <color name="slidercolor">#e0e0e0</color>
+    <color name="drawer_base_color">#171717</color>
+    <color name="divider_color">#e0f2f1</color>
+    <color name="header_text_view_color">#0d47a1</color>
+    <color name="income_color">#43a047</color>
+    <color name="expense_color">#ef5350</color>
+    
+    <string name="show_tran_source">SHOW SOURCE</string>
+    <string name="default_category">Select Category</string>
+    <string name="summary">Summary</string>
+    <string name="image_option_nav_row">image_option_nav_row</string>
+    <string name="enter_transaction_amount">Amount</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="add_a_note">Add a note</string>
+    <string name="save_transaction">Save Transaction</string>
+    <string name="rupee_symbol">\u20A8.</string>
+    <string name="calendar_image">calendar image</string>
+    <string name="select_date">select date</string>
+    <string name="new_transaction">New Transaction</string>
+    <string name="symbole_of_transaction_type">Symbole of transaction type</string>
+    <string name="update_information">Update Information</string>
+    <string name="delete_button">delete button</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="total">Total</string>
+    <string name="from_date">From Date</string>
+    <string name="select_period">Select Period</string>
+    <string name="select_range">Select Range</string>
+    <string name="or">OR</string>
+    <string name="ignore_this_sender">Ignore this sender</string>
+    <string name="enter_sender_address">Enter Sender Address</string>
+    <string name="ignore_sender">IGNORE SENDER</string>
+    <string name="delete_ignore_item">delete ignore item</string>
+    <string name="view_your_preference">View your preference</string>
+    <string name="view_more">View more</string>
+    <string name="how_it_works_content">Almost every transaction SMS contains a pattern. This App analyzes incoming messages for such patterns and there is match we make it a transaction. You can allow or refuse from granting this permission any time. You can always change your preference and view your current preference by clicking on View your preference and SMS permission from the option menu.\nIf you feel we should not analyze SMS of any sender, you can put them under ignore list.\nYou can create a transaction manually by clicking on the + button available on top. Transactions belong to categories and we have added some categories but you can always personalize them by adding more.\nOn the home screen you can click first block to view reports of incomes and expenses separately and if there are more than two categories of transaction report will be presented in Pie-chart for clearer view.</string>
+    <string name="ok">OK</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="no_notes">No notes</string>
+    <string name="firs_name_">Firs Name *</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name_">Last Name *</string>
+    <string name="comparitive_reports">Comparison</string>
+    <string name="to_date">To Date</string>
+    <string name="monthly_report">Monthly Report</string>
+    <string name="weekly_report">Weekly Report</string>
+    <string name="please_select_period">Please select period</string>
+
+</resources>
