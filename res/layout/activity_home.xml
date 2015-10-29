@@ -27,7 +27,7 @@
 
         <LinearLayout
             android:id="@+id/nav_header_layout"
-            android:layout_width="240dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@color/slidercolor"

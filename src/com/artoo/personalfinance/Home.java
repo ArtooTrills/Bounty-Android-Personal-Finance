@@ -39,7 +39,7 @@ public class Home extends AppCompatActivity implements FragmentPresenter,
 	private static final String[] userPermissionText = {
 			"You have allowed us to extract your transactions from your sms",
 			"We are not extracting your transactions from your sms" };
-	private static final String[] navItems = { "Home", "Comparative Report",
+	private static final String[] navItems = { "Home", "Comparative Reports",
 			"Ignore List", "SMS Permission", "How it works" };
 
 	private SMSTransactionReceiver receiver;

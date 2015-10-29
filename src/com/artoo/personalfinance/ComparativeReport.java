@@ -45,7 +45,6 @@ public class ComparativeReport extends Fragment {
 	private List<Float> monthlyIncome;
 	private List<Float> monthlyExpense;
 	private Typeface tf;
-
 	private static final String[] WEEK_XVALUES = { "Week1", "Week2", "Week3",
 			"Week4" };
 
@@ -71,6 +70,7 @@ public class ComparativeReport extends Fragment {
 		barChartMonthly = (BarChart) view.findViewById(R.id.monthly_chart);
 
 		getYearRange();
+
 		if (!years.isEmpty()) {
 			spnrMonthSelector
 					.setAdapter(new ArrayAdapter<String>(getActivity(),
@@ -79,18 +79,26 @@ public class ComparativeReport extends Fragment {
 			spnrYearSelector.setAdapter(new ArrayAdapter<Integer>(
 					getActivity(), android.R.layout.simple_list_item_1, years));
 		}
+
+		if (totalTransactions.isEmpty()) {
+			spnrYearSelector.setVisibility(View.GONE);
+			spnrMonthSelector.setVisibility(View.GONE);
+		}
 		radioGroupPeriodSelector
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
-						if (radioGroupPeriodSelector.getCheckedRadioButtonId() == R.id.monthly_rgb) {
-							barChartMonthly.setVisibility(View.VISIBLE);
-							barChartWeekly.setVisibility(View.GONE);
-							spnrMonthSelector.setVisibility(View.GONE);
-						} else {
-							barChartMonthly.setVisibility(View.GONE);
-							barChartWeekly.setVisibility(View.VISIBLE);
-							spnrMonthSelector.setVisibility(View.VISIBLE);
+						if (!totalTransactions.isEmpty()) {
+							if (radioGroupPeriodSelector
+									.getCheckedRadioButtonId() == R.id.monthly_rgb) {
+								barChartMonthly.setVisibility(View.VISIBLE);
+								barChartWeekly.setVisibility(View.GONE);
+								spnrMonthSelector.setVisibility(View.GONE);
+							} else {
+								barChartMonthly.setVisibility(View.GONE);
+								barChartWeekly.setVisibility(View.VISIBLE);
+								spnrMonthSelector.setVisibility(View.VISIBLE);
+							}
 						}
 					}
 				});
@@ -98,6 +106,7 @@ public class ComparativeReport extends Fragment {
 		barChartWeekly.setDescription("");
 
 		barChartMonthly.setDescription("");
+		barChartMonthly.setNoDataText("No transactions found");
 
 		tf = Typeface.createFromAsset(getActivity().getAssets(),
 				"OpenSans-Regular.ttf");
@@ -143,7 +152,8 @@ public class ComparativeReport extends Fragment {
 					@Override
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int position, long id) {
-						setWeeklyReportData();
+						if (!totalTransactions.isEmpty())
+							setWeeklyReportData();
 					}
 
 					@Override
@@ -157,10 +167,12 @@ public class ComparativeReport extends Fragment {
 					@Override
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int position, long id) {
-						if (barChartWeekly.getVisibility() == View.VISIBLE) {
-							setWeeklyReportData();
-						} else {
-							setMonthlyReportData();
+						if (!totalTransactions.isEmpty()) {
+							if (barChartWeekly.getVisibility() == View.VISIBLE) {
+								setWeeklyReportData();
+							} else {
+								setMonthlyReportData();
+							}
 						}
 					}
 
@@ -173,6 +185,9 @@ public class ComparativeReport extends Fragment {
 	}
 
 	private void getYearRange() {
+		if (years == null) {
+			years = new ArrayList<Integer>();
+		}
 		int maxYear = -1, minYear = Integer.MAX_VALUE;
 		for (Transaction t : totalTransactions) {
 			if (t.getTransactionDate().getYear() + 1900 < minYear) {
@@ -183,7 +198,7 @@ public class ComparativeReport extends Fragment {
 			}
 		}
 		if (maxYear != -1) {
-			years = new ArrayList<Integer>();
+
 			for (int i = minYear; i <= maxYear; i++) {
 				years.add(i);
 			}
@@ -191,144 +206,159 @@ public class ComparativeReport extends Fragment {
 
 	}
 
+	/**
+	 * filters data as per user input and fills chart to present weekly
+	 * comparison of given month
+	 */
 	private void setWeeklyReportData() {
-		int year = years.get(spnrYearSelector.getSelectedItemPosition()) - 1900;
-		int month = spnrMonthSelector.getSelectedItemPosition();
+		if (!years.isEmpty()) {
+			int year = years.get(spnrYearSelector.getSelectedItemPosition()) - 1900;
+			int month = spnrMonthSelector.getSelectedItemPosition();
 
-		if (weeklyIncome == null) {
-			weeklyIncome = new ArrayList<Float>(4);
-		}
+			if (weeklyIncome == null) {
+				weeklyIncome = new ArrayList<Float>(4);
+			}
 
-		if (weeklyExpense == null) {
-			weeklyExpense = new ArrayList<Float>(4);
-		}
-		if (weeklyExpense.isEmpty()) {
-			for (int i = 0; i < 4; i++) {
-				weeklyIncome.add(0f);
-				weeklyExpense.add(0f);
+			if (weeklyExpense == null) {
+				weeklyExpense = new ArrayList<Float>(4);
 			}
-		} else {
-			for (int i = 0; i < weeklyIncome.size(); i++) {
-				weeklyIncome.set(i, 0f);
-				weeklyExpense.set(i, 0f);
+			if (weeklyExpense.isEmpty()) {
+				for (int i = 0; i < 4; i++) {
+					weeklyIncome.add(0f);
+					weeklyExpense.add(0f);
+				}
+			} else {
+				for (int i = 0; i < weeklyIncome.size(); i++) {
+					weeklyIncome.set(i, 0f);
+					weeklyExpense.set(i, 0f);
+				}
 			}
-		}
-		for (Transaction transaction : totalTransactions) {
-			if (transaction.getTransactionDate().getYear() == year
-					&& transaction.getTransactionDate().getMonth() == month) {
-				if (transaction.getType() == Transaction.INCOME) {
-					if (transaction.getTransactionDate().getDate() < 8) {
-						weeklyIncome.set(0,
-								weeklyIncome.get(0) + transaction.getAmount());
-					} else if (transaction.getTransactionDate().getDate() < 15) {
-						weeklyIncome.set(1,
-								weeklyIncome.get(1) + transaction.getAmount());
-					} else if (transaction.getTransactionDate().getDate() < 22) {
-						weeklyIncome.set(2,
-								weeklyIncome.get(2) + transaction.getAmount());
+			for (Transaction transaction : totalTransactions) {
+				if (transaction.getTransactionDate().getYear() == year
+						&& transaction.getTransactionDate().getMonth() == month) {
+					if (transaction.getType() == Transaction.INCOME) {
+						if (transaction.getTransactionDate().getDate() < 8) {
+							weeklyIncome.set(0, weeklyIncome.get(0)
+									+ transaction.getAmount());
+						} else if (transaction.getTransactionDate().getDate() < 15) {
+							weeklyIncome.set(1, weeklyIncome.get(1)
+									+ transaction.getAmount());
+						} else if (transaction.getTransactionDate().getDate() < 22) {
+							weeklyIncome.set(2, weeklyIncome.get(2)
+									+ transaction.getAmount());
+						} else {
+							weeklyIncome.set(3, weeklyIncome.get(3)
+									+ transaction.getAmount());
+						}
 					} else {
-						weeklyIncome.set(3,
-								weeklyIncome.get(3) + transaction.getAmount());
-					}
-				} else {
-					if (transaction.getTransactionDate().getDate() < 8) {
-						weeklyExpense.set(0,
-								weeklyExpense.get(0) + transaction.getAmount());
-					} else if (transaction.getTransactionDate().getDate() < 15) {
-						weeklyExpense.set(1,
-								weeklyExpense.get(1) + transaction.getAmount());
-					} else if (transaction.getTransactionDate().getDate() < 22) {
-						weeklyExpense.set(2,
-								weeklyExpense.get(2) + transaction.getAmount());
-					} else {
-						weeklyExpense.set(3,
-								weeklyExpense.get(3) + transaction.getAmount());
+						if (transaction.getTransactionDate().getDate() < 8) {
+							weeklyExpense.set(0, weeklyExpense.get(0)
+									+ transaction.getAmount());
+						} else if (transaction.getTransactionDate().getDate() < 15) {
+							weeklyExpense.set(1, weeklyExpense.get(1)
+									+ transaction.getAmount());
+						} else if (transaction.getTransactionDate().getDate() < 22) {
+							weeklyExpense.set(2, weeklyExpense.get(2)
+									+ transaction.getAmount());
+						} else {
+							weeklyExpense.set(3, weeklyExpense.get(3)
+									+ transaction.getAmount());
+						}
 					}
 				}
 			}
+
+			List<BarEntry> incomeYValues = new ArrayList<BarEntry>();
+			List<BarEntry> expenseYValues = new ArrayList<BarEntry>();
+
+			for (int i = 0; i < weeklyExpense.size(); i++) {
+				incomeYValues.add(new BarEntry(weeklyIncome.get(i), i));
+				expenseYValues.add(new BarEntry(weeklyExpense.get(i), i));
+			}
+
+			BarDataSet incomeDataSet = new BarDataSet(incomeYValues, "Income");
+			BarDataSet expenseDataSet = new BarDataSet(expenseYValues,
+					"Expense");
+
+			incomeDataSet.setColor(getActivity().getResources().getColor(
+					R.color.income_color));
+			expenseDataSet.setColor(getActivity().getResources().getColor(
+					R.color.expense_color));
+			ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+			dataSets.add(expenseDataSet);
+			dataSets.add(incomeDataSet);
+			barChartWeekly.setData(new BarData(WEEK_XVALUES, dataSets));
+			barChartWeekly.invalidate();
 		}
-
-		List<BarEntry> incomeYValues = new ArrayList<BarEntry>();
-		List<BarEntry> expenseYValues = new ArrayList<BarEntry>();
-
-		for (int i = 0; i < weeklyExpense.size(); i++) {
-			incomeYValues.add(new BarEntry(weeklyIncome.get(i), i));
-			expenseYValues.add(new BarEntry(weeklyExpense.get(i), i));
-		}
-
-		BarDataSet incomeDataSet = new BarDataSet(incomeYValues, "Income");
-		BarDataSet expenseDataSet = new BarDataSet(expenseYValues, "Expense");
-
-		incomeDataSet.setColor(getActivity().getResources().getColor(
-				R.color.income_color));
-		expenseDataSet.setColor(getActivity().getResources().getColor(
-				R.color.expense_color));
-		ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-		dataSets.add(expenseDataSet);
-		dataSets.add(incomeDataSet);
-		barChartWeekly.setData(new BarData(WEEK_XVALUES, dataSets));
-		barChartWeekly.invalidate();
 	}
 
+	/**
+	 * filters data as per user input and fills chart to present monthly
+	 * comparison of given year
+	 */
 	private void setMonthlyReportData() {
+		if (!years.isEmpty()) {
+			int year = years.get(spnrYearSelector.getSelectedItemPosition()) - 1900;
 
-		int year = years.get(spnrYearSelector.getSelectedItemPosition()) - 1900;
-
-		if (monthlyIncome == null) {
-			monthlyIncome = new ArrayList<Float>(12);
-		}
-
-		if (monthlyExpense == null) {
-			monthlyExpense = new ArrayList<Float>(12);
-		}
-
-		if (monthlyExpense.isEmpty()) {
-			for (int i = 0; i < MONTHS.length; i++) {
-				monthlyIncome.add(0f);
-				monthlyExpense.add(0f);
+			if (monthlyIncome == null) {
+				monthlyIncome = new ArrayList<Float>(12);
 			}
-		} else {
-			for (int i = 0; i < monthlyIncome.size(); i++) {
-				monthlyIncome.set(i, 0f);
-				monthlyExpense.set(i, 0f);
+
+			if (monthlyExpense == null) {
+				monthlyExpense = new ArrayList<Float>(12);
 			}
-		}
-		for (Transaction transaction : totalTransactions) {
-			if (transaction.getTransactionDate().getYear() == year) {
-				if (transaction.getType() == Transaction.EXPENSE) {
-					monthlyExpense.set(
-							transaction.getTransactionDate().getMonth(),
-							monthlyExpense.get(transaction.getTransactionDate()
-									.getMonth()) + transaction.getAmount());
-				} else {
-					monthlyIncome.set(
-							transaction.getTransactionDate().getMonth(),
-							monthlyExpense.get(transaction.getTransactionDate()
-									.getMonth()) + transaction.getAmount());
+
+			if (monthlyExpense.isEmpty()) {
+				for (int i = 0; i < MONTHS.length; i++) {
+					monthlyIncome.add(0f);
+					monthlyExpense.add(0f);
+				}
+			} else {
+				for (int i = 0; i < monthlyIncome.size(); i++) {
+					monthlyIncome.set(i, 0f);
+					monthlyExpense.set(i, 0f);
 				}
 			}
+			for (Transaction transaction : totalTransactions) {
+				if (transaction.getTransactionDate().getYear() == year) {
+					if (transaction.getType() == Transaction.EXPENSE) {
+						monthlyExpense.set(
+								transaction.getTransactionDate().getMonth(),
+								monthlyExpense.get(transaction
+										.getTransactionDate().getMonth())
+										+ transaction.getAmount());
+					} else {
+						monthlyIncome.set(
+								transaction.getTransactionDate().getMonth(),
+								monthlyExpense.get(transaction
+										.getTransactionDate().getMonth())
+										+ transaction.getAmount());
+					}
+				}
+			}
+
+			List<BarEntry> incomeYValues = new ArrayList<BarEntry>();
+			List<BarEntry> expenseYValues = new ArrayList<BarEntry>();
+
+			for (int i = 0; i < monthlyExpense.size(); i++) {
+				incomeYValues.add(new BarEntry(monthlyIncome.get(i), i));
+				expenseYValues.add(new BarEntry(monthlyExpense.get(i), i));
+			}
+
+			BarDataSet incomeDataSet = new BarDataSet(incomeYValues, "Income");
+			BarDataSet expenseDataSet = new BarDataSet(expenseYValues,
+					"Expense");
+
+			incomeDataSet.setColor(getActivity().getResources().getColor(
+					R.color.income_color));
+			expenseDataSet.setColor(getActivity().getResources().getColor(
+					R.color.expense_color));
+			ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+			dataSets.add(expenseDataSet);
+			dataSets.add(incomeDataSet);
+			barChartMonthly.setData(new BarData(MONTHS, dataSets));
+			barChartMonthly.invalidate();
 		}
-
-		List<BarEntry> incomeYValues = new ArrayList<BarEntry>();
-		List<BarEntry> expenseYValues = new ArrayList<BarEntry>();
-
-		for (int i = 0; i < monthlyExpense.size(); i++) {
-			incomeYValues.add(new BarEntry(monthlyIncome.get(i), i));
-			expenseYValues.add(new BarEntry(monthlyExpense.get(i), i));
-		}
-
-		BarDataSet incomeDataSet = new BarDataSet(incomeYValues, "Income");
-		BarDataSet expenseDataSet = new BarDataSet(expenseYValues, "Expense");
-
-		incomeDataSet.setColor(getActivity().getResources().getColor(
-				R.color.income_color));
-		expenseDataSet.setColor(getActivity().getResources().getColor(
-				R.color.expense_color));
-		ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-		dataSets.add(expenseDataSet);
-		dataSets.add(incomeDataSet);
-		barChartMonthly.setData(new BarData(MONTHS, dataSets));
-		barChartMonthly.invalidate();
 	}
 
 }

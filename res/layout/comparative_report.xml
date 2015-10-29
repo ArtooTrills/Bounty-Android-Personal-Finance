@@ -42,6 +42,7 @@
         android:orientation="horizontal" >
 
         <Spinner
+            
             android:id="@+id/comp_year_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
