@@ -14,7 +14,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -28,11 +31,14 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
-public class ComparativeReport extends Fragment {
+public class ComparativeReport extends Fragment implements
+		OnChartValueSelectedListener {
 
 	private RadioGroup radioGroupPeriodSelector;
+	private TextView textViewChartSelectedData;
 	private Spinner spnrMonthSelector, spnrYearSelector;
 	private BarChart barChartWeekly, barChartMonthly;
 	private List<Transaction> totalTransactions;
@@ -45,6 +51,7 @@ public class ComparativeReport extends Fragment {
 	private List<Float> monthlyIncome;
 	private List<Float> monthlyExpense;
 	private Typeface tf;
+
 	private static final String[] WEEK_XVALUES = { "Week1", "Week2", "Week3",
 			"Week4" };
 
@@ -57,10 +64,14 @@ public class ComparativeReport extends Fragment {
 
 		dbHelper = new DatabaseHelper(getActivity());
 		totalTransactions = new ArrayList<Transaction>();
+
 		List<Transaction> temp = dbHelper.getAllTransaction();
 		if (temp != null) {
 			totalTransactions.addAll(temp);
 		}
+
+		textViewChartSelectedData = (TextView) view
+				.findViewById(R.id.chart_selected_data_text_view);
 		radioGroupPeriodSelector = (RadioGroup) view
 				.findViewById(R.id.comp_period_selector_rgp);
 		spnrMonthSelector = (Spinner) view
@@ -89,8 +100,10 @@ public class ComparativeReport extends Fragment {
 					@Override
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
 						if (!totalTransactions.isEmpty()) {
+							textViewChartSelectedData.setText("");
 							if (radioGroupPeriodSelector
 									.getCheckedRadioButtonId() == R.id.monthly_rgb) {
+
 								barChartMonthly.setVisibility(View.VISIBLE);
 								barChartWeekly.setVisibility(View.GONE);
 								spnrMonthSelector.setVisibility(View.GONE);
@@ -145,15 +158,18 @@ public class ComparativeReport extends Fragment {
 
 		setWeeklyReportData();
 		setMonthlyReportData();
-
+		barChartMonthly.setOnChartValueSelectedListener(this);
+		barChartWeekly.setOnChartValueSelectedListener(this);
 		spnrMonthSelector
 				.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 					@Override
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int position, long id) {
-						if (!totalTransactions.isEmpty())
+						if (!totalTransactions.isEmpty()) {
+							textViewChartSelectedData.setText("");
 							setWeeklyReportData();
+						}
 					}
 
 					@Override
@@ -168,6 +184,7 @@ public class ComparativeReport extends Fragment {
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int position, long id) {
 						if (!totalTransactions.isEmpty()) {
+							textViewChartSelectedData.setText("");
 							if (barChartWeekly.getVisibility() == View.VISIBLE) {
 								setWeeklyReportData();
 							} else {
@@ -185,6 +202,7 @@ public class ComparativeReport extends Fragment {
 	}
 
 	private void getYearRange() {
+		textViewChartSelectedData.setText("");
 		if (years == null) {
 			years = new ArrayList<Integer>();
 		}
@@ -297,6 +315,9 @@ public class ComparativeReport extends Fragment {
 	 * comparison of given year
 	 */
 	private void setMonthlyReportData() {
+		textViewChartSelectedData.setText("");
+		
+		
 		if (!years.isEmpty()) {
 			int year = years.get(spnrYearSelector.getSelectedItemPosition()) - 1900;
 
@@ -319,6 +340,8 @@ public class ComparativeReport extends Fragment {
 					monthlyExpense.set(i, 0f);
 				}
 			}
+			
+			
 			for (Transaction transaction : totalTransactions) {
 				if (transaction.getTransactionDate().getYear() == year) {
 					if (transaction.getType() == Transaction.EXPENSE) {
@@ -359,6 +382,17 @@ public class ComparativeReport extends Fragment {
 			barChartMonthly.setData(new BarData(MONTHS, dataSets));
 			barChartMonthly.invalidate();
 		}
+	}
+
+	@Override
+	public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+
+		textViewChartSelectedData.setText("Rs. " + e.getVal());
+	}
+
+	@Override
+	public void onNothingSelected() {
+		textViewChartSelectedData.setText("");
 	}
 
 }
