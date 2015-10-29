@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground">
+
+    <TextView
+        android:id="@+id/reportType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="start"
+        android:paddingBottom="5dp"
+        android:paddingStart="25dp"
+        android:paddingTop="5dp"
+        android:text="TYPE"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="15sp"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/reportAmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reportType"
+        android:paddingStart="25dp"
+        android:text="AMOUNT"
+        android:textSize="22sp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/reportTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/reportAmt"
+        android:paddingEnd="5dp"
+        android:text="Date"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="15sp"
+        android:typeface="monospace" />
+
+    <View
+        android:id="@+id/reportBorder"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/reportTime"
+        android:background="@color/material_grey_300" />
+
+</RelativeLayout>

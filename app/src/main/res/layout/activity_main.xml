@@ -1,0 +1,190 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4sp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/bankCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:clickable="true"
+        android:foreground="?android:selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6ed036"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:text="Bank Balance"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/bankBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6ed036"
+                android:gravity="end"
+                android:paddingBottom="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp"
+                android:text="AMOUNT"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white" />
+
+
+            <TextView
+                android:id="@+id/estimateDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6ed036"
+                android:gravity="end"
+                android:paddingBottom="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="DATE"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white" />
+
+            <FrameLayout
+                android:id="@+id/bankReportContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6ed036"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/bankReport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:drawableRight="@drawable/ic_action_bargraph"
+                android:gravity="center|end"
+                android:padding="10dp"
+                android:text="Show Today's Report"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cashCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:clickable="true"
+        android:foreground="?android:selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#467fd9"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:text="Cash Spent"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@android:color/white" />
+
+
+            <TextView
+                android:id="@+id/spendAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#467fd9"
+                android:gravity="end"
+                android:paddingBottom="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp"
+                android:text="AMOUNT"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/cashBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#467fd9"
+                android:gravity="end"
+                android:paddingBottom="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="Bal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white" />
+
+            <FrameLayout
+                android:id="@+id/cashReportContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#467fd9"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:padding="4dp"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/addCash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_action_add1"
+                    android:gravity="start|center"
+                    android:padding="10dp"
+                    android:text="Add Txn"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.Button"
+                    android:textColor="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/cashReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:drawableRight="@drawable/ic_action_bargraph"
+                    android:gravity="center|end"
+                    android:padding="10dp"
+                    android:text="Show Today's Report"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.Button"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
