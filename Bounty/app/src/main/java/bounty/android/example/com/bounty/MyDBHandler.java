@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -18,13 +19,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String TABLE_INCOME = "income";
     private static final String TABLE_EXPENSE = "expense";
     private static final String TABLE_TOTAL = "total";
-    private static final String TABLE_SMS = "sms";
 
     public static final String COLUMN_SOURCE = "src";
     public static final String COLUMN_AMOUNT = "amt";
     public static final String COLUMN_REPEAT = "isForOnce";
-    public static final String COLUMN_INCOME = "income";
-    public static final String COLUMN_EXPENSE = "expense";
 
 
     public MyDBHandler(Context context, String name,
@@ -46,10 +44,11 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 + " DECIMAL(5,2)," + COLUMN_REPEAT + " BOOLEAN " + ")";
         db.execSQL(CREATE_EXPENSE_TABLE);
 
-        String CREATE_TOTAL_TABLE = "CREATE TABLE " +
-                TABLE_TOTAL + "("
-                + COLUMN_INCOME + " DECIMAL(5,2)," + COLUMN_EXPENSE
-                + " DECIMAL(5,2)" + ")";
+        String CREATE_TOTAL_TABLE = "CREATE TABLE " +TABLE_TOTAL + "("
+                + COLUMN_SOURCE + " TEXT,"
+                + COLUMN_AMOUNT + " DECIMAL(5,2)"
+                +
+                ")";
         db.execSQL(CREATE_TOTAL_TABLE);
     }
 
@@ -88,15 +87,55 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public void addTotal(Total_ product) {
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SOURCE, product.getIncome());
-        values.put(COLUMN_AMOUNT, product.getExpense());
+        String query = "Select * FROM " + TABLE_TOTAL + " WHERE "+ COLUMN_SOURCE + " =  \"" + product.getSource()+"\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.insert(TABLE_TOTAL, null, values);
-        db.close();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+                ContentValues args = new ContentValues();
+                args.put(COLUMN_SOURCE, product.getSource());
+                args.put(COLUMN_AMOUNT, product.getAmount());
+                db.update(TABLE_TOTAL, args, COLUMN_SOURCE + " =  \"" + product.getSource()+"\"", null);
+
+            Log.d("Total", "After Adding --> " + product.getSource() +" " + getTotal(product.getSource()));
+
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SOURCE, product.getSource());
+            values.put(COLUMN_AMOUNT, product.getAmount());
+
+            db.insert(TABLE_TOTAL, null, values);
+            db.close();
+        }
+    }
+
+    public double getTotal(String source){
+        String query = "Select * FROM " + TABLE_TOTAL + " WHERE "+ COLUMN_SOURCE + " =  \"" + source + "\"";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst())
+            return cursor.getDouble(1);
+        else
+            return 0;
+    }
+
+    public void getAllTotal(){
+        String query = "Select * FROM " + TABLE_TOTAL;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        do{
+            Log.d("Total", cursor.getString(0)+ " " + cursor.getString(1));
+        }while(cursor.moveToNext());
+
     }
 
     public HashMap<String, Double> findIncome() {

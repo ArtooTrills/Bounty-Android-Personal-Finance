@@ -45,7 +45,8 @@ public class MainActivity extends Activity
     }
 
     public void updateList() {
-
+        Intent smsIntent = new Intent(mContext, SmsActivity.class);
+        mContext.startActivity(smsIntent);
     }
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -58,6 +59,7 @@ public class MainActivity extends Activity
     public static Context mContext;
     private Switch mSms;
     private WelcomeActivity ft = new WelcomeActivity();
+    private TextView mIncome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +110,7 @@ public class MainActivity extends Activity
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
+        /*switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -121,7 +123,7 @@ public class MainActivity extends Activity
             case 4:
                 mTitle = getString(R.string.title_section4);
                 break;
-        }
+        }*/
     }
 
     public void restoreActionBar() {
@@ -155,6 +157,10 @@ public class MainActivity extends Activity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if(id == R.id.action_example){
+            Intent report = new Intent(this,GenerateReportActivity.class);
+            startActivity(report);
         }
 
         return super.onOptionsItemSelected(item);
@@ -210,7 +216,7 @@ public class MainActivity extends Activity
                     mContext.startActivity(smsIntent);
                     break;
             }
-            rootView = inflater.inflate(R.layout.welcome_page, container, false);
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             return rootView;
         }

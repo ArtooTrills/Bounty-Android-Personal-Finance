@@ -4,32 +4,30 @@ package bounty.android.example.com.bounty;
  * Created by RamizMehran on 26/10/2015.
  */
 public class Total_ {
-    private double income;
-    private double expense;
+    private String source;
+    private Double amount;
 
     public Total_(){
-        income = 0;
-        expense = 0;
     }
 
-    public Total_(double income, double expense) {
-        this.income = income;
-        this.expense = expense;
+    public Total_(String source, Double amount) {
+        this.source = source;
+        this.amount = amount;
     }
 
-    public double getIncome() {
-        return income;
+    public String getSource() {
+        return source;
     }
 
-    public void setIncome(double income) {
-        this.income = income;
+    public void setSource(String source) {
+        this.source = source;
     }
 
-    public double getExpense() {
-        return expense;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setExpense(double expense) {
-        this.expense = expense;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

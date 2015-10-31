@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,6 +140,10 @@ public class ExpenseActivity extends Activity {
         }
 
         mTotalExpenses.setText(""+sum);
+
+        Total_ product = new Total_("input expense", sum);
+        dbHandler.addTotal(product);
+        Log.d("Total","Expense --> " + product.getSource() + " " + product.getAmount());
 
     }
 

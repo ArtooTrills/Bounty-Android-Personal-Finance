@@ -25,6 +25,8 @@
                   android:label="Expense Activity"/>
         <activity android:name=".SmsActivity"
                   android:label="Sms Activity"/>
+        <activity android:name=".GenerateReportActivity"
+                  android:label="Report"/>
 
         <receiver android:name=".SmsBroadcastReceiver" android:enabled="true">
             <intent-filter android:priority="999" >

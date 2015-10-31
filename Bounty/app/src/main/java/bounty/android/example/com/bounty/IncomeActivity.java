@@ -3,6 +3,7 @@ package bounty.android.example.com.bounty;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -129,7 +130,12 @@ public class IncomeActivity extends Activity{
 
             l1.addView(tr);
         }
-        mTotalIncome.setText(sum+"");
+        mTotalIncome.setText(sum + "");
+
+        Total_ product = new Total_("input income", sum);
+        Log.d("Total", "Income --> "+ product.getSource() + " " + product.getAmount());
+
+        dbHandler.addTotal(product);
     }
 
     public void removeIncome () {
