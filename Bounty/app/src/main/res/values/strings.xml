@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Bounty-App</string>
+
+    <string name="title_section1">Welcome!</string>
+    <string name="title_section2">Income</string>
+    <string name="title_section3">Expense</string>
+    <string name="title_section4">Sms Transactions</string>
+    <string name="saving">Savings</string>
+    <string name="title_report_input">Based On Inputs</string>
+    <string name="title_report_sms">Based on Bank Alerts</string>
+    <string name="title_report_net">Summary</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Generate Report</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="label_1">Total Income</string>
+</resources>
