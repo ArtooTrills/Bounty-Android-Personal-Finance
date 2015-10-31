@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -101,6 +102,7 @@ public class Splash extends AppCompatActivity {
         //  References
         final EditText editTextPhone  = (EditText) view.findViewById(R.id.editTextPhone);
         final EditText editTextName  = (EditText) view.findViewById(R.id.editTextName);
+        final CheckBox checkBoxReadMessages = (CheckBox) view.findViewById(R.id.checkBoxReadMessages);
         Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +113,7 @@ public class Splash extends AppCompatActivity {
 
                 String phone = editTextPhone.getText().toString();
                 String name = editTextName.getText().toString();
+                boolean readMessages = checkBoxReadMessages.isChecked();
 
                 if (TextUtils.isEmpty(name)) {
 
@@ -133,6 +136,7 @@ public class Splash extends AppCompatActivity {
                     editor.putString("name", name);
                     editor.putString("phone", phone);
                     editor.putBoolean("existAccount", true);
+                    editor.putBoolean("readMessages", readMessages);
 
                     editor.apply();
                     dialog.dismiss();
