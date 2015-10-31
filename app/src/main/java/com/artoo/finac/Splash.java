@@ -2,15 +2,19 @@ package com.artoo.finac;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +29,9 @@ public class Splash extends AppCompatActivity {
     //  DM
     private SharedPreferences settings;
     private Dialog dialog;
+    private SQLiteDatabase db;
+
+    final static String TAG = "Finac Splash";
 
     //  CL
     private class InitialCheckUp extends AsyncTask<String, Void, Void> {
@@ -48,16 +55,29 @@ public class Splash extends AppCompatActivity {
             boolean existAccount = settings.getBoolean("existAccount", false);
             if (existAccount) {
 
-                //  Start the Service
+                //  Start the Service for Message Broadcasts
             }
             else {
 
                 seekPersonalDetails = true;
 
                 //  Setup the database as required.
+                String query = "CREATE TABLE `transaction` (" +
+                        "`_id` INTEGER AUTO_INCREMENT PRIMARY KEY," +       //  For Cursor
+                        "`amount` REAL NOT NULL," +                         //  Amount
+                        "`category` VARCHAR(15) NOT NULL," +                //  Tags
+                        "`type` VARCHAR(2) NOT NULL," +                     //  Credit or Debit
+                        "`timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"; //  Timestamp for Analytics
 
+                try {
+
+                    db.execSQL(query);
+                    Log.d(TAG, "Transaction table created!");
+                } catch (SQLException e) {
+
+                    Log.d(TAG, "Transaction table exist! Message: " + e.getMessage());
+                }
             }
-
             return null;
         }
 
@@ -72,12 +92,14 @@ public class Splash extends AppCompatActivity {
 
             if (seekPersonalDetails) {
 
+                Log.d(TAG, "Need Personal Credentials!");
                 Splash.this.raiseDialogForPersonalDetails();
             }
             else {
 
                 //  Everything is alright.
                 //  Start the dashboard.
+                Log.d(TAG, "Starting the Dashboard Activity!");
                 Splash.this.raiseDashboard();
             }
         }
@@ -120,6 +142,7 @@ public class Splash extends AppCompatActivity {
                     editTextName.setError("Required!");
                     err = true;
                     editTextName.requestFocus();
+                    Log.d(TAG, "Name missing!");
                 }
 
                 if (TextUtils.isEmpty(phone)) {
@@ -127,6 +150,7 @@ public class Splash extends AppCompatActivity {
                     editTextPhone.setError("Required!");
                     err = true;
                     editTextPhone.requestFocus();
+                    Log.d(TAG, "Phone missing!");
                 }
 
                 if (!err) {
@@ -137,6 +161,7 @@ public class Splash extends AppCompatActivity {
                     editor.putString("phone", phone);
                     editor.putBoolean("existAccount", true);
                     editor.putBoolean("readMessages", readMessages);
+                    editor.putFloat("inHand",0.0f);
 
                     editor.apply();
                     dialog.dismiss();
@@ -145,7 +170,6 @@ public class Splash extends AppCompatActivity {
 
             }
         });
-
 
         dialog = builder.create();
         dialog.setCancelable(false);
@@ -159,6 +183,7 @@ public class Splash extends AppCompatActivity {
 
         //  Prior Initializations
         settings = PreferenceManager.getDefaultSharedPreferences(Splash.this);
+        db = openOrCreateDatabase(Constants.DB_NAME, Context.MODE_PRIVATE, null);
 
         //  Initial Check up
         new InitialCheckUp().execute();

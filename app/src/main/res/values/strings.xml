@@ -4,4 +4,20 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_dashboard">Dashboard</string>
+
+    <string-array name="DebitCategory">
+        <item> Food &amp; Grocery</item>
+        <item> Transport &amp; Fuel</item>
+        <item> House Rent</item>
+        <item> Bill - Telephone, DTH etc.</item>
+        <item> Savings</item>
+        <item> Other Sources</item>
+    </string-array>
+
+    <string-array name="CreditCategory">
+        <item> Salary</item>
+        <item> Deposits</item>
+        <item> Other Sources</item>
+    </string-array>
+    <string name="title_activity_transaction">Transaction</string>
 </resources>

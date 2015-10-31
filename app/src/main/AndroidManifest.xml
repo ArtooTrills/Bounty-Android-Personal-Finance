@@ -20,6 +20,14 @@
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard" >
         </activity>
+        <activity
+            android:name=".Transaction"
+            android:label="@string/title_activity_transaction"
+            android:parentActivityName=".Dashboard" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.artoo.finac.Dashboard" />
+        </activity>
     </application>
 
 </manifest>

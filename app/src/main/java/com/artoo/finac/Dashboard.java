@@ -1,5 +1,6 @@
 package com.artoo.finac;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.melnykov.fab.FloatingActionButton;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -22,6 +26,8 @@ public class Dashboard extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+
+    private FloatingActionButton fab;
 
     //  CL
     public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -41,15 +47,12 @@ public class Dashboard extends AppCompatActivity {
                 case 0:
                     detailView = new DetailView();
                     return detailView;
-
                 case 1:
                     summaryView = new SummaryView();
                     return summaryView;
-
                 case 2:
                     addTxn = new AddTxn();
                     return addTxn;
-
                 default:
                     return null;
             }
@@ -89,6 +92,16 @@ public class Dashboard extends AppCompatActivity {
         //  Initial Setups.
         setupActionBar();
 
+        fab = (FloatingActionButton) findViewById(R.id.fabShowAllTransaction);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Dashboard.this, Transaction.class);
+                startActivity(intent);
+            }
+        });
+
         setUpAllFragments();
 
     }
@@ -117,5 +130,4 @@ public class Dashboard extends AppCompatActivity {
 
         mBackPressed = System.currentTimeMillis();
     }
-
 }
