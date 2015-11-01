@@ -75,7 +75,7 @@ public class SummaryView extends Fragment {
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         db = getActivity().openOrCreateDatabase(Constants.DB_NAME, Context.MODE_PRIVATE, null);
 
-            String query = "SELECT `amount`, `category` FROM (SELECT * FROM `transaction` WHERE type = 'DB') GROUP BY `category`";
+            String query = "SELECT SUM(`amount`) AS amount, `category` FROM (SELECT * FROM `transaction` WHERE type = 'DB') GROUP BY `category`";
 //            String query = "SELECT `amount`, `category` FROM `transaction` GROUP BY `category` ORDER BY `amount` ASC WHERE `type` = 'DB'";
             try {
 

@@ -44,7 +44,7 @@ public class DetailView extends Fragment {
     private void updateData() {
 
         //  Fetch Data from DB and update the ArrayList;
-        String query = "SELECT * from `transaction` GROUP BY `category`";
+        String query = "SELECT `_id`, `category`, SUM(`amount`) AS amount from `transaction` GROUP BY `category`";
         try {
 
             if (cursor != null)
