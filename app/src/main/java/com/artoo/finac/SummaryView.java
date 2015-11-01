@@ -71,7 +71,10 @@ public class SummaryView extends Fragment {
         @Override
         protected Void doInBackground(String... params) {
 
-            //  Load data from SQL;
+            //  Load data from SQL;        //  Referencing
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        db = getActivity().openOrCreateDatabase(Constants.DB_NAME, Context.MODE_PRIVATE, null);
+
             String query = "SELECT `amount`, `category` FROM (SELECT * FROM `transaction` WHERE type = 'DB') GROUP BY `category`";
 //            String query = "SELECT `amount`, `category` FROM `transaction` GROUP BY `category` ORDER BY `amount` ASC WHERE `type` = 'DB'";
             try {
@@ -107,14 +110,12 @@ public class SummaryView extends Fragment {
             if (!doNothing) {
 
                 pieChart.setUsePercentValues(true);
-                pieChart.setDescription("Expenses!");
+                pieChart.setDescription("");
                 pieChart.setDrawHoleEnabled(true);
 
                 pieChart.setHoleColorTransparent(true);
                 pieChart.setHoleRadius(15);
                 pieChart.setTransparentCircleRadius(20);
-
-//                pieChart.getLegend().setEnabled(false);
 
                 PieDataSet pieDataSet = new PieDataSet(yValues, "");
                 pieDataSet.setSliceSpace(10);
@@ -124,6 +125,7 @@ public class SummaryView extends Fragment {
                 legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
                 legend.setXEntrySpace(7);
                 legend.setYEntrySpace(5);
+                legend.setEnabled(false);
 
                 ArrayList<Integer> colors = new ArrayList<>();
                 for (int c : ColorTemplate.LIBERTY_COLORS)
