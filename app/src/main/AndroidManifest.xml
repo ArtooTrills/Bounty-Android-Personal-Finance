@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.artoo.finac" >
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,6 +32,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.artoo.finac.Dashboard" />
         </activity>
+
+        <receiver
+            android:name=".services.StartServicesAtStartup"
+            android:enabled="true"
+            android:exported="true"
+            android:label="StartServicesAtStartup" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".services.FinacService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

@@ -1,28 +1,27 @@
 package com.artoo.finac;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.artoo.finac.services.FinacService;
 
 public class Splash extends AppCompatActivity {
 
@@ -53,11 +52,7 @@ public class Splash extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             boolean existAccount = settings.getBoolean("existAccount", false);
-            if (existAccount) {
-
-                //  Start the Service for Message Broadcasts
-            }
-            else {
+            if (!existAccount) {
 
                 seekPersonalDetails = true;
 
@@ -99,6 +94,17 @@ public class Splash extends AppCompatActivity {
 
                 //  Everything is alright.
                 //  Start the dashboard.
+
+                //  Check to see if the background service is running. Start it on readMessages = true;
+                if (settings.getBoolean("readMessages",true)) {
+
+                    if (!runningService(FinacService.class)) {
+
+                        Intent intent = new Intent(Splash.this, FinacService.class);
+                        startService(intent);
+                    }
+                }
+
                 Log.d(TAG, "Starting the Dashboard Activity!");
                 Splash.this.raiseDashboard();
             }
@@ -106,6 +112,22 @@ public class Splash extends AppCompatActivity {
     }
 
     //  FN
+
+    private boolean runningService(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        try {
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceClass.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+        } catch(SecurityException e) {
+
+            Log.d(TAG, "Exception, Message: " + e.getMessage());
+        }
+
+        return false;
+    }
 
     private void raiseDashboard() {
 
