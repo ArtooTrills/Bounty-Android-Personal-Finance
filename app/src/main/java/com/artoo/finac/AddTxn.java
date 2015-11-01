@@ -79,9 +79,18 @@ public class AddTxn extends Fragment {
 
                         //  Update Preference for quick reference.
                         SharedPreferences.Editor editor = settings.edit();
-                        Float inHand = settings.getFloat("inHand",0.0f);
-                        inHand += type.equals("CR")?(amount):(-amount);
-                        editor.putFloat("inHand",inHand);
+
+                        if (type.equals("CR")){
+
+                            Float val = settings.getFloat("credit", 0.0f);
+                            editor.putFloat("credit",(val+amount));
+                        }
+                        else {
+
+                            Float val = settings.getFloat("debit", 0.0f);
+                            editor.putFloat("debit",(val+amount));
+                        }
+
                         editor.apply();
 
                         //  Send Broadcasts.

@@ -161,7 +161,8 @@ public class Splash extends AppCompatActivity {
                     editor.putString("phone", phone);
                     editor.putBoolean("existAccount", true);
                     editor.putBoolean("readMessages", readMessages);
-                    editor.putFloat("inHand",0.0f);
+                    editor.putFloat("credit",0.0f);
+                    editor.putFloat("debit",0.0f);
 
                     editor.apply();
                     dialog.dismiss();

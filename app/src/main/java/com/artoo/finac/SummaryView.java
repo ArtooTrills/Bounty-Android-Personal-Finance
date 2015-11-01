@@ -17,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
@@ -31,7 +33,6 @@ public class SummaryView extends Fragment {
     private SQLiteDatabase db;
 
     private PieChart pieChart;
-    private LoadTask loadTask;
 
     private final static String TAG = "Finac SummaryView";
     private ArrayList<Entry> yValues;
@@ -51,12 +52,20 @@ public class SummaryView extends Fragment {
     private class LoadTask extends AsyncTask<String, Void, Void> {
 
         boolean doNothing = false;
+        float credit;
+        float debit;
+        float savings;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             xValues = new ArrayList<>();
             yValues = new ArrayList<>();
+
+            credit = settings.getFloat("credit",0);
+            debit = settings.getFloat("debit",0);
+            savings = credit - debit;
         }
 
         @Override
@@ -73,11 +82,15 @@ public class SummaryView extends Fragment {
                 while (cursor.moveToNext()) {
 
                     String cat = cursor.getString(cursor.getColumnIndex("category"));
+                    float sav = cursor.getFloat(cursor.getColumnIndex("amount"));
 
                     if (!cat.equals("Savings")) {
 
-                        yValues.add(new Entry(cursor.getFloat(cursor.getColumnIndex("amount")), i++));
+                        yValues.add(new Entry(sav, i++));
                         xValues.add(cat);
+                    } else {
+
+                        //savings += sav;
                     }
                 }
             } catch (Exception e) {
@@ -94,18 +107,29 @@ public class SummaryView extends Fragment {
             if (!doNothing) {
 
                 pieChart.setUsePercentValues(true);
-                pieChart.setDescription(null);
+                pieChart.setDescription("Expenses!");
                 pieChart.setDrawHoleEnabled(true);
 
                 pieChart.setHoleColorTransparent(true);
                 pieChart.setHoleRadius(15);
                 pieChart.setTransparentCircleRadius(20);
 
-                pieChart.getLegend().setEnabled(false);
+//                pieChart.getLegend().setEnabled(false);
 
-                PieDataSet pieDataSet = new PieDataSet(yValues, "Expenses!");
+                PieDataSet pieDataSet = new PieDataSet(yValues, "");
                 pieDataSet.setSliceSpace(10);
                 pieDataSet.setSelectionShift(10);
+
+                Legend legend = pieChart.getLegend();
+                legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+                legend.setXEntrySpace(7);
+                legend.setYEntrySpace(5);
+
+                ArrayList<Integer> colors = new ArrayList<>();
+                for (int c : ColorTemplate.LIBERTY_COLORS)
+                    colors.add(c);
+
+                pieDataSet.setColors(colors);
 
                 PieData pieData = new PieData(xValues, pieDataSet);
                 pieData.setValueFormatter(new PercentFormatter());
@@ -115,6 +139,8 @@ public class SummaryView extends Fragment {
 
                 pieChart.setRotation(0);
                 pieChart.setRotationEnabled(true);
+
+                pieChart.invalidate();
             }
         }
     }
@@ -140,7 +166,7 @@ public class SummaryView extends Fragment {
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         db = getActivity().openOrCreateDatabase(Constants.DB_NAME, Context.MODE_PRIVATE, null);
 
-        pieChart = (PieChart) view.findViewById(R.id.pieChartSummary);
+        pieChart            = (PieChart) view.findViewById(R.id.pieChartSummary);
 
         new LoadTask().execute();
 

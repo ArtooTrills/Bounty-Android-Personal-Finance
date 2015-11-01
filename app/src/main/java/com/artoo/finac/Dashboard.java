@@ -1,16 +1,23 @@
 package com.artoo.finac;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -28,8 +35,30 @@ public class Dashboard extends AppCompatActivity {
     private ViewPagerAdapter adapter;
 
     private FloatingActionButton fab;
+    private TextView textViewSavings;
+    private TextView textViewExpenses;
+    private TextView textViewEarnings;
+
+    private float credit;
+    private float debit;
+    private float savings;
+
+    private final static String TAG = "Finac Dashboard";
+
+    private SharedPreferences settings;
 
     //  CL
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //
+            Log.d(TAG, "Broadcast Received!!");
+            updateData();
+        }
+    };
+
     public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         final int PAGE_COUNT = 3;
@@ -70,6 +99,17 @@ public class Dashboard extends AppCompatActivity {
     }
 
     //  FN
+    private void updateData() {
+
+        credit = settings.getFloat("credit",0);
+        debit = settings.getFloat("debit",0);
+        savings = credit - debit;
+
+        textViewExpenses.setText("₹ " + debit + " /-");
+        textViewSavings.setText("₹ " + savings + " /-");
+        textViewEarnings.setText("₹ " + credit + " /-");
+    }
+
     private void setUpAllFragments() {
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -89,10 +129,16 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        settings = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+
         //  Initial Setups.
         setupActionBar();
 
         fab = (FloatingActionButton) findViewById(R.id.fabShowAllTransaction);
+        textViewEarnings = (TextView) findViewById(R.id.textViewEarnings);
+        textViewSavings = (TextView) findViewById(R.id.textViewSavings);
+        textViewExpenses = (TextView) findViewById(R.id.textViewExpenses);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +149,7 @@ public class Dashboard extends AppCompatActivity {
         });
 
         setUpAllFragments();
-
+        updateData();
     }
 
     @Override
@@ -130,4 +176,19 @@ public class Dashboard extends AppCompatActivity {
 
         mBackPressed = System.currentTimeMillis();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.COM_ARTOO_FINAC_ADDED_TRANSACTIONS);
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
 }
