@@ -147,6 +147,7 @@ public class Splash extends AppCompatActivity {
         final EditText editTextPhone  = (EditText) view.findViewById(R.id.editTextPhone);
         final EditText editTextName  = (EditText) view.findViewById(R.id.editTextName);
         final CheckBox checkBoxReadMessages = (CheckBox) view.findViewById(R.id.checkBoxReadMessages);
+        final CheckBox checkBoxSyncService = (CheckBox) view.findViewById(R.id.checkBoxSyncService);
         Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +159,7 @@ public class Splash extends AppCompatActivity {
                 String phone = editTextPhone.getText().toString();
                 String name = editTextName.getText().toString();
                 boolean readMessages = checkBoxReadMessages.isChecked();
+                boolean syncService = checkBoxSyncService.isChecked();
 
                 if (TextUtils.isEmpty(name)) {
 
@@ -183,6 +185,7 @@ public class Splash extends AppCompatActivity {
                     editor.putString("phone", phone);
                     editor.putBoolean("existAccount", true);
                     editor.putBoolean("readMessages", readMessages);
+                    editor.putBoolean("syncService", syncService);
                     editor.putFloat("credit",0.0f);
                     editor.putFloat("debit",0.0f);
 

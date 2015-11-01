@@ -1,28 +1,52 @@
 package com.artoo.finac.services;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
+import android.util.Log;
+import android.widget.Toast;
 
-public class HandleMessages {
+public class HandleMessages extends BroadcastReceiver {
 
-    private static HandleMessages instance;
-    private static Context context;
+    //  DM
+    private final SmsManager sms = SmsManager.getDefault();
 
-    //  Singleton Implementation
-    private HandleMessages() {
-    }
+    private final static String TAG = "Finac SMS";
 
-    public static HandleMessages getInstance(Context c) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
-        context = c;
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        if (settings.getBoolean("readMessages",true)) {
 
-        if (instance == null)
-            instance = new HandleMessages();
+            final Bundle bundle = intent.getExtras();
 
-        return instance;
-    }
+            try {
 
-    public void doReadRecentMesasges() {
+                if (bundle != null) {
 
+                    final Object[] pdusObj = (Object[]) bundle.get("pdus");
 
+                    for (int i = 0; i < pdusObj.length; i++) {
+
+                        SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
+                        String phoneNumber = currentMessage.getDisplayOriginatingAddress();
+
+                        String senderNum = phoneNumber;
+                        String message = currentMessage.getDisplayMessageBody();
+
+                        Log.i(TAG, "senderNum: " + senderNum + "; message: " + message);
+                        Toast.makeText(context, "senderNum: " + senderNum + ", message: " + message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("SmsReceiver", "Exception smsReceiver" + e);
+            }
+        }
     }
 }

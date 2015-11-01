@@ -42,6 +42,15 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".services.HandleMessages"
+            android:enabled="true"
+            android:exported="true"
+            android:label="HandleMessages" >
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".services.FinacService"

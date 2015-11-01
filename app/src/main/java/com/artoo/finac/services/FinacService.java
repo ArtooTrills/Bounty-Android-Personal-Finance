@@ -9,24 +9,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 /* Uses */
-/* To Receive Messages, update the database and then broadcast the transaction update Messages */
 /* To keep on syncing the data in the server */
 
 public class FinacService extends Service {
 
     //  DM
     private final static String TAG = "Finac Service";
-
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            //  Do the Handle Message part.
-            Log.d(TAG, "Reading Messages!");
-            HandleMessages handleMessages = HandleMessages.getInstance(getApplicationContext());
-            handleMessages.doReadRecentMesasges();
-        }
-    };
 
     //  FN
 
@@ -36,15 +24,11 @@ public class FinacService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        IntentFilter intentFilter = new IntentFilter();
-
-        registerReceiver(receiver, intentFilter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
     }
 
     @Override
@@ -52,6 +36,8 @@ public class FinacService extends Service {
 
         //  Instructions for Backup service.
         //  LATER
+
+        //  CONDITIONS FROM PREFERENCE LEFT
         SyncProfile syncProfile = SyncProfile.getInstance(getApplicationContext());
         syncProfile.doSyncProfile();
 

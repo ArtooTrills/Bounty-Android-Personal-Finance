@@ -18,7 +18,7 @@ public class StartServicesAtStartup extends BroadcastReceiver {
 
             //
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean readMessages = settings.getBoolean("readMessages",true);
+            boolean readMessages = settings.getBoolean("syncService",false);
 
             if (readMessages) {
 
