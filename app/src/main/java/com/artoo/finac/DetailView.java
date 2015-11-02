@@ -4,23 +4,37 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class DetailView extends Fragment {
 
     private SQLiteDatabase db;
+    private SharedPreferences settings;
 
-    private DetailViewAdapter adapter;
-    private Cursor cursor;
+    private DetailViewAdapter adapterExpense;
+    private Cursor cursorExpense;
+    private DetailViewAdapter adapterEarnings;
+    private Cursor cursorEarnings;
+
+    private RelativeLayout cardHeaderEarnings;
+    private RelativeLayout cardHeaderExpenses;
+    private RelativeLayout cardFooterEarnings;
+    private RelativeLayout cardFooterExpenses;
+    private TextView editTextEarningsValue;
+    private TextView editTextExpensesValue;
 
     private final static String TAG = "Finac Detail View";
 
@@ -38,19 +52,29 @@ public class DetailView extends Fragment {
     private void changeCursor() {
 
         updateData();
-        adapter.changeCursor(cursor);
+        adapterExpense.changeCursor(cursorExpense);
+        adapterEarnings.changeCursor(cursorEarnings);
     }
 
     private void updateData() {
 
+        //  The Global Data Update
+        editTextExpensesValue.setText("₹ " + String.valueOf(settings.getFloat("debit",0.0f)) + " /-");
+        editTextEarningsValue.setText("₹ " + String.valueOf(settings.getFloat("credit", 0.0f)) + " /-");
+
         //  Fetch Data from DB and update the ArrayList;
-        String query = "SELECT `_id`, `category`, SUM(`amount`) AS amount from `transaction` GROUP BY `category`";
+        String queryExpenses = "SELECT `_id`, SUM(`amount`) AS amount, `category` FROM (SELECT * FROM `transaction` WHERE type = 'DB') GROUP BY `category`";
+        String queryEarnings = "SELECT `_id`, SUM(`amount`) AS amount, `category` FROM (SELECT * FROM `transaction` WHERE type = 'CR') GROUP BY `category`";
         try {
 
-            if (cursor != null)
-                cursor.close();
+            if (cursorExpense != null)
+                cursorExpense.close();
+            
+            if (cursorEarnings != null)
+                cursorEarnings.close();
 
-            cursor = db.rawQuery(query, null);
+            cursorExpense = db.rawQuery(queryExpenses, null);
+            cursorEarnings = db.rawQuery(queryEarnings, null);
         } catch (SQLException e) {
 
             Log.d(TAG, "SQL Exception");
@@ -69,12 +93,46 @@ public class DetailView extends Fragment {
 
         //  Referencing
         db = getActivity().openOrCreateDatabase(Constants.DB_NAME, Context.MODE_PRIVATE, null);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        cardHeaderEarnings = (RelativeLayout) view.findViewById(R.id.cardHeaderEarnings);
+        cardHeaderExpenses = (RelativeLayout) view.findViewById(R.id.cardHeaderExpenses);
+        cardFooterEarnings = (RelativeLayout) view.findViewById(R.id.cardFooterEarnings);
+        cardFooterExpenses = (RelativeLayout) view.findViewById(R.id.cardFooterExpenses);
+        editTextEarningsValue = (TextView) view.findViewById(R.id.editTextEarningsValue);
+        editTextExpensesValue = (TextView) view.findViewById(R.id.editTextExpensesValue);
+
+        cardHeaderEarnings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int vis = cardFooterEarnings.getVisibility();
+                cardFooterEarnings.setVisibility(vis == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+                cardFooterExpenses.setVisibility(View.GONE);
+            }
+        });
+
+        cardHeaderExpenses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int vis = cardFooterExpenses.getVisibility();
+                cardFooterExpenses.setVisibility(vis == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+                cardFooterEarnings.setVisibility(View.GONE);
+            }
+        });
 
         updateData();
-        adapter = new DetailViewAdapter(getActivity(), cursor);
+        adapterExpense = new DetailViewAdapter(getActivity(), cursorExpense);
+        adapterEarnings = new DetailViewAdapter(getActivity(), cursorEarnings);
 
-        ListView listViewDetails = (ListView) view.findViewById(R.id.listViewDetails);
-        listViewDetails.setAdapter(adapter);
+        ListView listViewExpenses = (ListView) view.findViewById(R.id.listViewExpenses);
+        listViewExpenses.setAdapter(adapterExpense);
+
+        ListView listViewEarnings = (ListView) view.findViewById(R.id.listViewEarnings);
+        listViewEarnings.setAdapter(adapterEarnings);
 
         return  view;
     }

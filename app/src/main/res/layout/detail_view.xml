@@ -1,11 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/cardEarnings"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewDetails"
-        android:padding="20dp" />
+        android:layout_width="match_parent"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:background="@android:color/transparent"
+        android:paddingBottom="0dp"
+        android:elevation="5dp"
+        android:paddingTop="0dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:background="@drawable/custom_button_drawable"
+            android:id="@+id/cardHeaderEarnings"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5000 /-"
+                android:ems="10"
+                android:id="@+id/editTextEarningsValue"
+                android:enabled="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/textView3" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="^"
+                android:id="@+id/buttonEarnings"
+                android:background="@android:color/transparent"
+                android:layout_alignTop="@+id/textView3"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Earnings"
+                android:gravity="center_vertical"
+                android:id="@+id/textView3"
+                android:paddingLeft="15dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/buttonEarnings"
+                android:enabled="false" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/cardHeaderEarnings"
+            android:id="@+id/cardFooterEarnings"
+            android:visibility="gone">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listViewEarnings"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:padding="15dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/cardExpenses"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:background="@android:color/transparent"
+        android:paddingBottom="0dp"
+        android:elevation="5dp"
+        android:paddingTop="0dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:background="@drawable/custom_button_drawable"
+            android:id="@+id/cardHeaderExpenses"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5000 /-"
+                android:ems="10"
+                android:id="@+id/editTextExpensesValue"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:enabled="true"
+                android:layout_toStartOf="@+id/textView4" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="^"
+                android:id="@+id/buttonExpenses"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Expenses"
+                android:gravity="center_vertical"
+                android:id="@+id/textView4"
+                android:paddingLeft="15dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/buttonExpenses"
+                android:enabled="false" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/cardHeaderExpenses"
+            android:id="@+id/cardFooterExpenses"
+            android:visibility="gone">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listViewExpenses"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:padding="15dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </LinearLayout>
