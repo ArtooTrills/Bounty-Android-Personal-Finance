@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_budget_set">No Budget Set</string>
+    <string name="set_month_and_category_wise_budget">Set monthly and category wise budget here.</string>
+    <string name="click_to_add_budget">To set total budget tap \"Set a Budget\" in blue, for category wise budget click the Green + button</string>
+
+
+</resources>

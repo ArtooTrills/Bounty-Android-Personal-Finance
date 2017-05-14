@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <!-- App default colors-->
+    <color name="PrimaryColor">#2196F3</color>
+    <color name="PrimaryDarkColor">#1976D2</color>
+    <color name="trakr">#c9c750</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="green">#00a877</color>
+    <color name="background">#eeeeee</color>
+    <color name="theme_green_expense">#28af81</color>
+    <color name="theme_blue_document">#03a9f4</color>
+    <color name="divider_account_credit">@color/text_metallic</color>
+    <color name="theme_blue_document_90alpha">#f103a9f4</color>
+    <color name="calendar_reminder">#FDD835</color>
+
+    <!-- Progressbar COLORS -->
+    <color name="progress_background">#E3F2FD</color>
+    <color name="progress_fill_under_limit">#2196F3</color>
+    <color name="progress_fill_over_limit">#FF5252</color>
+    <color name="bar_graph_grey">#A1AAB3</color>
+    <color name="bar_graph_highlight">#27AE81</color>
+
+    <!--Text colors-->
+    <color name="text_metallic">#445468</color>
+    <color name="text_metallic_90alpha">#ea445468</color>
+    <color name="text_metallic_20alpha">#11445468</color>
+    <color name="primary_text_87alpha">#df737373</color>
+    <color name="secondary_text_55alpha">#8d737373</color>
+    <color name="tertiary_disabled_text_37alpha">#62737373</color>
+    <color name="text_red">#F4737D</color>
+    <color name="text_green">#33B187</color>
+
+    <color name="fab_button_pressed">#62737373</color>
+    <color name="background_fab_open">#c5ffffff</color>
+
+    <!--Filter colors-->
+    <color name="filter_sidearea_visible">#50ffffff</color>
+    <color name="filter_sidearea_invisible">#00ffffff</color>
+    <color name="filter_text_green">#35cc87</color>
+
+    <!--Landing page colors-->
+    <color name="error_text_color">#F2ACB3</color>
+
+    <!--drawCal colors-->
+    <color name="accent_color">#a1d2f4</color>
+    <color name="date_picker_month_day">#9383c6</color>
+
+    <!-- to be checked later-->
+    <color name="arrow_light_blue">#0097ee</color>
+    <color name="translucent_black_90alpha">#44000000</color>
+
+    <!-- Feedback colors-->
+    <color name="bar_graph_yellow">#f9a825</color>
+
+    <!-- Material DEFAULT colors -->
+
+    <!-- Calendar Theme Colors -->
+    <color name="mdtp_white">#ffffff</color>
+    <color name="mdtp_background_color">@color/mdtp_white</color>
+    <color name="mdtp_numbers_text_color">#ff212121</color>
+
+    <!--Floating Action Button-->
+    <color name="fab_ripple">#F7F7F7</color>
+
+    <!--New Colors Added-->
+    <color name="budget_header">#445569</color>
+
+    <!--Colors for Reminder added by james-->
+    <color name="next_month_color">#CCC3C3</color>
+    <color name="calendar_background_color">#8567d2</color>
+    <color name="calendar_background_light_color">#a48aea</color>
+    <color name="calendar_background_dark_color">#6a52a8</color>
+    <color name="calendar_selected_circle_color">#7058b0</color>
+    <color name="calendar_fab_color">#624c9d</color>
+
+    <!-- notification theme color-->
+    <color name="notification_primary">#f2b145</color>
+    <color name="notification_primary_dark">#c28c37</color>
+
+    <!-- document theme colors-->
+    <color name="document_manager_primary">#2196F3</color>
+    <color name="document_manager_primary_dark">#1976D2</color>
+
+    <!-- dashboard theme color-->
+    <color name="dashboard_primary">#0097A7</color>
+    <color name="dashboard_primary_dark">#00838F</color>
+
+    <!-- Mobile Manager theme color-->
+    <color name="mobile_manager_primary">#FF9800</color>
+    <color name="mobile_manager_primary_dark">#f57c00</color>
+
+    <!--Colors for sign in screen by james-->
+
+    <!--Colors for Expense Manager by james-->
+    <color name="expense_manager_primary">#27AF81</color>
+    <color name="monthly_expense_expanded_color">#445569</color>
+    <color name="expense_manager_primary_dark">#208C68</color>
+
+    <!--Colors for Budget by james-->
+
+    <!--Settings colors added by james-->
+    <color name="settings_primary">#445569</color>
+    <color name="settings_primary_dark">#364353</color>
+
+    <color name="red_circle">#F44336</color>
+
+    <color name="debit_red">#F4737D</color>
+
+    <!--changes by nik on 10/3/16-->
+    <!--Showcase theme colors-->
+    <color name="showcase_primary">#2196F3</color>
+    <color name="showcase_primary_dark">#1976D2</color>
+
+    <color name="offers_accent">#9CCC65</color>
+    <color name="dashboard_blue">#00BCD4</color>
+    <color name="dashboard_red">#EE6E73</color>
+    <color name="transparent">#00000000</color>
+    <color name="shadow">#99000000</color>
+
+    <color name="setting_heading_text">#808080</color>
+    <color name="setting_heading_background">#D3D3D3</color>
+
+    <!--swipable card-->
+    <color name="swipe_card_green">#d0009688</color>
+    <color name="swipe_card_blue">#da2196f3</color>
+    <color name="swipe_card_red">#d6e91e63</color>
+
+    <array name="swipable_card_array">
+        <item>@color/swipe_card_green</item>
+        <item>@color/swipe_card_blue</item>
+        <item>@color/swipe_card_red</item>
+    </array>
+    <!--Progress bar colors for BudgetActivity-->
+    <color name="color1">#00E676</color>
+    <color name="color2">#1DE9B6</color>
+    <color name="color3">#00E5FF</color>
+    <color name="color4">#00B0FF</color>
+    <color name="color5">#FFEA00</color>
+    <color name="color6">#FFC400</color>
+    <color name="color7">#FF9100</color>
+    <color name="color8">#FF5252</color>
+    <color name="green_register">#00BFA5</color>
+
+    <array name="budget_progress_bar_colors">
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+        <item>@color/color7</item>
+        <item>@color/color8</item>
+    </array>
+
+</resources>

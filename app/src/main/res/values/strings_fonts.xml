@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="PROXIMA_NOVA_ALT_REGULAR" translatable="false">fonts/proxima_nova_alt_regular.otf</string>
+    <string name="PROXIMA_NOVA_ALT_SEMIBOLD" translatable="false">fonts/proxima_nova_alt_semibold.otf</string>
+    <string name="PROXIMA_NOVA_REGULAR" translatable="false">fonts/proxima_nova_regular.otf</string>
+    <string name="proxima_nova_alt_semibold" translatable="false">proxima_nova_alt_semibold</string>
+    <string name="proxima_nova_alt_regular" translatable="false">proxima_nova_alt_regular</string>
+    <string name="proxima_nova_regular" translatable="false">proxima_nova_regular</string>
+</resources>

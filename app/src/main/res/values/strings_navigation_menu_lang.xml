@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="drawer_dashboard">Dashboard</string>
+    <string name="drawer_accounts">Accounts</string>
+    <string name="drawer_expense_manager">Expense Manager</string>
+    <string name="drawer_budget">Budget</string>
+    <string name="drawer_event_calendar">Event Calendar</string>
+    <string name="drawer_document_manager">Document Manager</string>
+    <string name="drawer_notifications">Reports</string>
+    <string name="drawer_offers">Offers</string>
+    <string name="drawer_feedback">Feedback</string>
+    <string name="drawer_faqs">FAQs</string>
+    <string name="drawer_save_more_money">Save Money</string>
+    <string name="rate_on_playstore">Rate on PlayStore</string>
+    <string name="settings">Settings</string>
+    <string name="navigation_share_normal">Share</string>
+    <string name="navigation_share_on_whatsapp">Share on Whatsapp</string>
+    <string name="navigation_share_on_facebook">Share on Facebook</string>
+    <string name="navigation_rate_us">Rate Us</string>
+    <string name="trakr_share_message">Please try out my app
+    </string>
+</resources>
