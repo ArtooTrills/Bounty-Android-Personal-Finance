@@ -1,9 +1,12 @@
 package com.example.earthshaker.moneybox.dashboard.activity;
 
 import android.app.Activity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.earthshaker.moneybox.R;
 import com.example.earthshaker.moneybox.common.BaseActivity;
@@ -18,7 +21,7 @@ import de.greenrobot.event.EventBus;
  * Created by earthshaker on 13/5/17.
  */
 
-public class DashboardViewHolder extends BaseHolderEventBus{
+public class DashboardViewHolder extends BaseHolderEventBus {
 
     private Activity mContext;
     private View mParentView;
@@ -60,14 +63,14 @@ public class DashboardViewHolder extends BaseHolderEventBus{
         linearLayout.removeAllViews();
     }
 
-    private void    createFabMenu() {
+    private void createFabMenu() {
         dashboardFabViewHolder = new DashboardFabViewHolder(mParentView);
     }
 
 
     @Override
     protected void refreshData() {
-
+        createCards();
     }
 
     @Override
@@ -78,4 +81,5 @@ public class DashboardViewHolder extends BaseHolderEventBus{
     public DashboardFabViewHolder getFabBuilder() {
         return fabBuilder;
     }
+
 }

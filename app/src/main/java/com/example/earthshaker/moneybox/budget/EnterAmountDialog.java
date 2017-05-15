@@ -40,12 +40,11 @@ public class EnterAmountDialog extends DialogFragment {
     private View view;
     private ImageView categoryIcon;
     private TextView categoryName;
-    private Context context;
+    private static Context context;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.context = context;
     }
 
     @Override
@@ -90,7 +89,8 @@ public class EnterAmountDialog extends DialogFragment {
         }, 300);
     }
 
-    public static EnterAmountDialog newInstance(@NonNull BudgetConfig budgetCategory) {
+    public static EnterAmountDialog newInstance(Context lContext, @NonNull BudgetConfig budgetCategory) {
+        context = lContext;
         EnterAmountDialog fragment = new EnterAmountDialog();
         Bundle args = new Bundle();
         args.putParcelable("budget_category", budgetCategory);
@@ -115,9 +115,13 @@ public class EnterAmountDialog extends DialogFragment {
     private void attachListeners() {
         saveAmount.setOnClickListener(v -> {
             saveAmount();
+            EventBus.getDefault().post(new CategoryEvent.FinishACtivity());
         });
 
-        deleteAmount.setOnClickListener(v -> deleteAmount());
+        deleteAmount.setOnClickListener(v -> {
+            deleteAmount();
+            EventBus.getDefault().post(new CategoryEvent.FinishACtivity());
+        });
         amount.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 InputMethodManager in =

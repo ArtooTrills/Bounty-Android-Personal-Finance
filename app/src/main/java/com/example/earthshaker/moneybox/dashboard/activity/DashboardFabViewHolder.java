@@ -1,13 +1,9 @@
 package com.example.earthshaker.moneybox.dashboard.activity;
 
-import android.app.usage.UsageEvents;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.example.earthshaker.moneybox.R;
-import com.example.earthshaker.moneybox.dashboard.eventbus.DashboardFabEvent;
-import com.example.earthshaker.moneybox.dashboard.eventbus.DashboardFabResponse;
-import com.github.clans.fab.FloatingActionMenu;
+import com.example.earthshaker.moneybox.common.eventbus.CommonEvents;
 
 import de.greenrobot.event.EventBus;
 
@@ -17,13 +13,13 @@ import de.greenrobot.event.EventBus;
 
 public class DashboardFabViewHolder {
 
-    private FloatingActionButton fabBudget, fabTransaction;
-    private FloatingActionMenu fabMenu;
+    private com.github.clans.fab.FloatingActionButton fabBudget, fabTransaction;
+    private com.github.clans.fab.FloatingActionMenu fabMenu;
 
     DashboardFabViewHolder(View parentView) {
-        fabMenu = (FloatingActionMenu) parentView.findViewById(R.id.fab_menu);
-        fabTransaction = (FloatingActionButton) parentView.findViewById(R.id.fab_transaction);
-        fabBudget = (FloatingActionButton) parentView.findViewById(R.id.fab_budget);
+        fabMenu = (com.github.clans.fab.FloatingActionMenu) parentView.findViewById(R.id.fab_menu);
+        fabTransaction = (com.github.clans.fab.FloatingActionButton) parentView.findViewById(R.id.fab_transaction);
+        fabBudget = (com.github.clans.fab.FloatingActionButton) parentView.findViewById(R.id.fab_budget);
         fabMenu.setClosedOnTouchOutside(true);
         setupListener();
 
@@ -39,11 +35,15 @@ public class DashboardFabViewHolder {
 
     private void setupListener() {
 
-        fabMenu.setOnMenuButtonClickListener(l -> closeFab());
+        fabBudget.setOnClickListener(l -> {
+            EventBus.getDefault().post(new CommonEvents.StartAddingBudget());
+            closeFab();
+        });
 
-        fabBudget.setOnClickListener(l -> EventBus.getDefault().post(new DashboardFabEvent(DashboardFabResponse.ADD_BUDGET)));
-
-        fabTransaction.setOnClickListener(l -> EventBus.getDefault().post(new DashboardFabEvent(DashboardFabResponse.ADD_TRANSACTION)));
+        fabTransaction.setOnClickListener(l -> {
+            closeFab();
+            EventBus.getDefault().post(new CommonEvents.StartAddingTransaction());
+        });
 
     }
 }

@@ -14,8 +14,11 @@ import com.example.earthshaker.moneybox.R;
 import com.example.earthshaker.moneybox.budget.eventbus.BudgteEventBus;
 import com.example.earthshaker.moneybox.common.ActivityNavigator;
 import com.example.earthshaker.moneybox.common.BaseActivity;
+import com.example.earthshaker.moneybox.common.TwoButtonDialogListener;
+import com.example.earthshaker.moneybox.common.TwoButtonSimpleDialog;
 import com.example.earthshaker.moneybox.common.callback.ReturnWithParameterCallback;
 import com.example.earthshaker.moneybox.common.dao.CursorHelper;
+import com.example.earthshaker.moneybox.common.eventbus.CommonEvents;
 import com.example.earthshaker.moneybox.dashboard.SmsProcessor;
 import com.example.earthshaker.moneybox.dashboard.eventbus.DashboardEventBus;
 import com.example.earthshaker.moneybox.transaction.eventbus.TransactionsEventBus;
@@ -41,7 +44,7 @@ public class DashboardActivity extends BaseActivity {
         initializeToolbar("Dashboard");
         initializeNavigationMenu();
         dashboardViewHolder = new DashboardViewHolder(this, view);
-        dashboardViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
+        /*dashboardViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));*/
 
     }
 
@@ -52,7 +55,19 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void onEventMainThread(DashboardEventBus.SyncSms syncMsg) {
-        new AsyncCaller().execute();
+        new TwoButtonSimpleDialog(this, "Grant Permission",
+                "Press Ok to let us scan your SMS", "Proceed",
+                "Cancel", new TwoButtonDialogListener() {
+            @Override
+            public void onAccept() {
+                new AsyncCaller().execute();
+            }
+
+            @Override
+            public void onReject() {
+
+            }
+        });
     }
 
     public class AsyncCaller extends AsyncTask<Void, Void, Void> {
@@ -106,11 +121,11 @@ public class DashboardActivity extends BaseActivity {
 
     public static void extractFromCursor(Cursor c) {
         String body = c.getString(c.getColumnIndex("body"));
-
+        long time = c.getLong(c.getColumnIndex("date"));
         if (body.contains("debit")) {
-            DashboardHelper.createTransaction(true, body);
+            DashboardHelper.createTransaction(true, body,time);
         } else if (body.contains("credit")) {
-            DashboardHelper.createTransaction(false, body);
+            DashboardHelper.createTransaction(false, body,time);
         }
     }
 
@@ -118,20 +133,42 @@ public class DashboardActivity extends BaseActivity {
         dashboardViewHolder.refreshData();
     }
 
-    public void onEventMainThread(TransactionsEventBus.OpenTransaction event){
-        ActivityNavigator.openTransactionActivity(this,event.getTransactionConfig());
+    public void onEventMainThread(TransactionsEventBus.OpenTransaction event) {
+        ActivityNavigator.openTransactionActivity(this, event.getTransactionConfig());
     }
 
-    public void onEventMainThread(BudgteEventBus.OpenBudget event){
+    public void onEventMainThread(BudgteEventBus.OpenBudget event) {
         ActivityNavigator.openBudgetActivity(this);
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         DashboardFabViewHolder dashboardFabViewHolder = dashboardViewHolder.getFabBuilder();
         if (dashboardFabViewHolder != null && dashboardFabViewHolder.isFabOpen()) {
             dashboardFabViewHolder.closeFab();
             return;
         }
         super.onBackPressed();
+    }
+
+    public void onEventMainThread(CommonEvents.StartAddingBudget event) {
+        ActivityNavigator.openBudgetActivity(this);
+    }
+
+    public void onEventMainThread(CommonEvents.StartAddingTransaction event) {
+        ActivityNavigator.openTransactionActivity(this, null);
+
+    }
+
+    public void onEventMainThread(CommonEvents.AddTransaction event) {
+        dashboardViewHolder.refreshData();
+    }
+
+    public void onEventMainThread(CommonEvents.AddBudget event){
+        dashboardViewHolder.refreshData();
+    }
+
+    public void onEventMainThread(TransactionsEventBus.OpenAllTxns event) {
+        ActivityNavigator.openTransactionLIstActivity(this);
     }
 }

@@ -25,7 +25,7 @@ public class BudgetActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupUI(R.layout.activity_budget, R.id.parent_coordinator_layout);
-        EventBus.getDefault().register(getResources().getInteger(R.integer.level_1));
+        EventBus.getDefault().register(this,getResources().getInteger(R.integer.level_1));
     }
 
     @Override
@@ -37,18 +37,17 @@ public class BudgetActivity extends BaseActivity {
     @Override
     protected void setupViewHolder(View view) {
         initializeToolbar("Budget");
-        initializeNavigationMenu();
+        onBackArrowUp();
         budgetActivityViewHolder = new BudgetActivityViewHolder(this,view);
-        budgetActivityViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
 
     }
 
     public void onEventMainThread(BudgteEventBus.AddCategoryEvent event){
-        ActivityNavigator.openCategoryActivity(this);
+        ActivityNavigator.openCategoryActivity(this,"budget");
     }
 
     public void onEventMainThread(BudgteEventBus.OpenBudgetDialog event){
-        EnterAmountDialog enterAmountDialog = EnterAmountDialog.newInstance(event.getBudgetConfig());
+        EnterAmountDialog enterAmountDialog = EnterAmountDialog.newInstance(this,event.getBudgetConfig());
         enterAmountDialog.show(getFragmentManager(), "ENTER_AMOUNT_DIALOG");
         getSupportFragmentManager().executePendingTransactions();
     }

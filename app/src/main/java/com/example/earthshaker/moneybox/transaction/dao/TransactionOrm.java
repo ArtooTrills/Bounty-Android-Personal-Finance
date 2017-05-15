@@ -28,7 +28,7 @@ public class TransactionOrm {
         transactionConfig.setDate(cursor.getString(cursor.getColumnIndex(Contract.Transactions.COLLUMN_NAME_DATE)));
         transactionConfig.setAmount(cursor.getDouble(cursor.getColumnIndex(Contract.Transactions.COLUMN_NAME_AMOUNT)));
         transactionConfig.setCategory(cursor.getString(cursor.getColumnIndex(Contract.Transactions.COLUMN_NAME_EXPENSE_CATEGORY)));
-
+        transactionConfig.setId(cursor.getString(cursor.getColumnIndex(Contract.Transactions._ID)));
         return transactionConfig;
     }
 }

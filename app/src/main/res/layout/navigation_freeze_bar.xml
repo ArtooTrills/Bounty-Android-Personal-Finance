@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/document_manager_primary"
     android:baselineAligned="false"
     android:clickable="true"
     android:orientation="horizontal"
@@ -24,49 +24,6 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/navigation_share_normal"
             android:src="@drawable/navigation_drawer_share_smaller"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/drawer_linear_layout_whatsapp"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/navigation_share_on_whatsapp"
-            android:src="@drawable/navigation_drawer_whatsapp"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/drawer_linear_layout_facebook"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="5dp"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/navigation_share_on_facebook"
-            android:src="@drawable/navigation_drawer_facebook"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/drawer_linear_layout_rate_us"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/rate_on_playstore"
-            android:src="@drawable/navigation_drawer_star"
             />
     </LinearLayout>
 </LinearLayout>

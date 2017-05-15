@@ -6,8 +6,11 @@ import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.earthshaker.moneybox.analysis.AnalysisActivity;
+import com.example.earthshaker.moneybox.budget.BudgetActivity;
 import com.example.earthshaker.moneybox.dashboard.activity.DashboardActivity;
 import com.example.earthshaker.moneybox.R;
+import com.example.earthshaker.moneybox.transaction.activity.TransactionLIstActivity;
 
 /**
  * Created by earthshaker on 13/5/17.
@@ -15,7 +18,6 @@ import com.example.earthshaker.moneybox.R;
 
 public class MenuUtils {
 
-    MenuNavigator menuNavigator;
 
     Context context;
 
@@ -24,34 +26,43 @@ public class MenuUtils {
     }
 
 
-    public boolean selectMenuItem(MenuItem menuItem, BaseActivity activity, boolean isTaskRoot) {
+    public static boolean selectMenuItem(MenuItem menuItem, BaseActivity activity, boolean isTaskRoot) {
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
 
             case R.id.dashboard:
                 if (!(activity instanceof DashboardActivity)) {
                     if (isTaskRoot) {
-                        menuNavigator.openDashboard(activity);
+                        ActivityNavigator.openDashboard(activity);
                     }
                     activity.finish();
                 }
                 return true;
 
-            case R.id.accounts:
+            case R.id.analysis:
 
-                if (!(activity instanceof AccountDashboardActivity)) {
+                if (!(activity instanceof AnalysisActivity)) {
 
                     if (!isTaskRoot) activity.finish();
                     activity.setBackPressCount(0);
-                    menuNavigator.openAccountDashboard(activity);
+                    ActivityNavigator.openAnalysisActivity(activity);
+                }
+                return true;
+            case R.id.transaction:
+
+                if (!(activity instanceof TransactionLIstActivity)) {
+
+                    if (!isTaskRoot) activity.finish();
+                    activity.setBackPressCount(0);
+                    ActivityNavigator.openTransactionLIstActivity(activity);
                 }
                 return true;
 
-            case R.id.expMgr:
-                if (!(activity instanceof ExpenseDashboardActivity)) {
+            case R.id.budget:
+                if (!(activity instanceof BudgetActivity)) {
                     if (!isTaskRoot) activity.finish();
                     activity.setBackPressCount(0);
-                    menuNavigator.openExpenseDashboard(activity);
+                    ActivityNavigator.openBudgetActivity(activity);
                 }
                 return true;
 
@@ -60,19 +71,4 @@ public class MenuUtils {
                 return true;
         }
     }
-
-    private void setNavigationDrawerHighlight(Activity activity, NavigationView navigationView) {
-        int highlightItem = 0;
-        if (activity instanceof DashboardActivity) {
-            highlightItem = 0;
-        } else if (activity instanceof AnalysisActivity) {
-            highlightItem = 1;
-        } else if (activity instanceof BudgetActivity) {
-            highlightItem = 2;
-        }else if(activity instanceof MessagesActivity)
-        navigationView.getMenu().getItem(highlightItem).setCheckable(true);
-        navigationView.getMenu().getItem(highlightItem).setChecked(true);
-    }
-
-
 }

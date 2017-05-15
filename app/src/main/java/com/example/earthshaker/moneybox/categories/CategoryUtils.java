@@ -21,26 +21,28 @@ public class CategoryUtils {
         categoryConfig.setCategoryName("Food");
         categoryConfigList.add(categoryConfig);
 
+        categoryConfig = new CategoryConfig();
         categoryConfig.setCategoryIcons(R.drawable.exp_others);
         categoryConfig.setCategoryName("Others");
         categoryConfigList.add(categoryConfig);
-
+        categoryConfig = new CategoryConfig();
         categoryConfig.setCategoryIcons(R.drawable.exp_personal);
         categoryConfig.setCategoryName("Personal");
         categoryConfigList.add(categoryConfig);
-
+        categoryConfig = new CategoryConfig();
         categoryConfig.setCategoryIcons(R.drawable.exp_salon);
         categoryConfig.setCategoryName("Salon");
         categoryConfigList.add(categoryConfig);
-
+        categoryConfig = new CategoryConfig();
         categoryConfig.setCategoryIcons(R.drawable.exp_shopping);
         categoryConfig.setCategoryName("Shopping");
         categoryConfigList.add(categoryConfig);
-
+        categoryConfig = new CategoryConfig();
         categoryConfig.setCategoryIcons(R.drawable.exp_transport);
         categoryConfig.setCategoryName("Transport");
         categoryConfigList.add(categoryConfig);
 
         return categoryConfigList;
     }
+
 }

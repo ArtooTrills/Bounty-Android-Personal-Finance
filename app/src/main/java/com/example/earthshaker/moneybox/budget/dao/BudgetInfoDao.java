@@ -19,7 +19,12 @@ public class BudgetInfoDao extends BaseDao {
         List<BudgetConfig> budgetConfigList = new ArrayList<>();
         runRawQuery(BugdetInfoQuery.getAllBudgets(), cursor -> budgetConfigList.add(BudgetOrm.getBudgetConfig(cursor)));
         for (BudgetConfig budgetConfig : budgetConfigList) {
-            budgetConfig.setSpent(TransactionInfoDAo.getAmountFromCategory(budgetConfig.getCategory()));
+            if(!budgetConfig.getCategory().equalsIgnoreCase("All")){
+                budgetConfig.setSpent(TransactionInfoDAo.getAmountFromCategory(budgetConfig.getCategory()));
+            }
+            else{
+                budgetConfig.setSpent(TransactionInfoDAo.getTotalExpense());
+            }
         }
         return budgetConfigList;
     }

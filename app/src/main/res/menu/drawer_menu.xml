@@ -10,17 +10,17 @@
     <item
         android:id="@+id/analysis"
         android:checked="false"
-        android:title="@string/drawer_dashboard" />
+        android:title="Analysis" />
 
     <item
         android:id="@+id/budget"
         android:checked="false"
-        android:title="@string/drawer_dashboard" />
+        android:title="Budget" />
 
     <item
-        android:id="@+id/message"
+        android:id="@+id/transaction"
         android:checked="false"
-        android:title="@string/drawer_dashboard" />
+        android:title="Transactions" />
 
 
 </menu>

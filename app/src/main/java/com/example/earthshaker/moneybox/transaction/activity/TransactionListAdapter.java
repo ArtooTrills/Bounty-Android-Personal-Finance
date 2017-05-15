@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.earthshaker.moneybox.R;
 import com.example.earthshaker.moneybox.common.CategoryUtils;
@@ -67,15 +68,15 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
     public class TransactionListHolder extends RecyclerView.ViewHolder {
 
-        private EditText categoryName, amount;
+        private TextView categoryName, amount;
         private CardView cardView;
         private ImageView categoryLogo;
 
         public TransactionListHolder(View itemView) {
             super(itemView);
             categoryLogo = (ImageView) itemView.findViewById(R.id.categoryIcon);
-            categoryName = (EditText) itemView.findViewById(R.id.categoryName);
-            amount = (EditText) itemView.findViewById(R.id.amount);
+            categoryName = (TextView) itemView.findViewById(R.id.categoryName);
+            amount = (TextView) itemView.findViewById(R.id.amount);
             cardView = (CardView) itemView.findViewById(R.id.cv_transaction);
         }
 

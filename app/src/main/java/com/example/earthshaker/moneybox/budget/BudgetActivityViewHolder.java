@@ -42,7 +42,7 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
     private ProgressBar totalBudgetProgressBar;
     private RecyclerView budgetsRecyclerView;
     private FloatingActionMenu fabMenu;
-    private FloatingActionButton addCategory, addExpense;
+    private FloatingActionButton addCategory;
 
     private Context context;
 
@@ -60,7 +60,6 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
 
 
         addCategory = (FloatingActionButton) view.findViewById(R.id.add_category_fab);
-        addExpense = (FloatingActionButton) view.findViewById(R.id.fab_transaction);
 
         totalBudgetProgressBar = (ProgressBar) view.findViewById(R.id.sb_budget_progress);
         totalBudgetCard = (CardView) view.findViewById(R.id.card_view);
@@ -92,6 +91,12 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
             fabMenu.close(true);
         });
 
+        setBudgetText.setOnClickListener(view -> {
+            BudgetConfig budgetConfig = new BudgetConfig();
+            budgetConfig.setCategory("All");
+            EventBus.getDefault().post(new BudgteEventBus.OpenBudgetDialog(budgetConfig));
+        });
+
     }
 
     private void setDataToView() {
@@ -104,21 +109,20 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
 
             for (BudgetConfig budgetConfig : budgetConfigList) {
                 if (budgetConfig.getCategory().equalsIgnoreCase("All")) {
+                    editAmount.setVisibility(View.GONE);
                     budgetAmountLayout.setVisibility(View.VISIBLE);
                     budgetAmountText.setText(BugdetHelper.getBudgetAmountString(budgetConfig.getSpent(),
                             budgetConfig.getTotalamount()));
                     break;
                 } else
                     budgetAmountLayout.setVisibility(View.GONE);
-
-
             }
             setRecyclerView(budgetConfigList);
         }
     }
 
     private void setRecyclerView(List<BudgetConfig> budgetConfigList) {
-        BudgetListAdapter budgetListAdapter = new BudgetListAdapter(context,budgetConfigList);
+        BudgetListAdapter budgetListAdapter = new BudgetListAdapter(context, budgetConfigList);
         budgetsRecyclerView.setAdapter(budgetListAdapter);
         budgetsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
@@ -129,14 +133,6 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
         FabUtils.setRollingFab(fabMenu, budgetsRecyclerView);
     }
 
-
-    boolean isFabOpened() {
-        return fabMenu != null && fabMenu.isOpened();
-    }
-
-    void closeFabMenu() {
-        fabMenu.close(true);
-    }
     @Override
     protected void refreshData() {
         setDataToView();
@@ -146,6 +142,4 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
     protected void recreateLayout() {
 
     }
-
-
 }

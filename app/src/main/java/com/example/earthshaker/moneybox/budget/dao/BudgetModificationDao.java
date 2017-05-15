@@ -33,5 +33,6 @@ public class BudgetModificationDao extends BaseDao {
     public static void deleteBudget(String category) {
         String where = Contract.Budget.COLUMN_NAME_CATEGORY + " = '" + category + "'";
         DatabaseProvider.provideDatabase().delete(Contract.Budget.TABLE_NAME, where, null);
+        EventBus.getDefault().post(new CommonEvents.AddBudget());
     }
 }

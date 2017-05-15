@@ -12,6 +12,7 @@ public class BudgetConfig implements Parcelable {
     double totalamount;
     double spent;
     String category;
+    String id;
 
     public double getTotalamount() {
         return totalamount;
@@ -37,6 +38,14 @@ public class BudgetConfig implements Parcelable {
         this.category = category;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -47,6 +56,7 @@ public class BudgetConfig implements Parcelable {
         dest.writeDouble(this.totalamount);
         dest.writeDouble(this.spent);
         dest.writeString(this.category);
+        dest.writeString(this.id);
     }
 
     public BudgetConfig() {
@@ -56,9 +66,10 @@ public class BudgetConfig implements Parcelable {
         this.totalamount = in.readDouble();
         this.spent = in.readDouble();
         this.category = in.readString();
+        this.id = in.readString();
     }
 
-    public static final Parcelable.Creator<BudgetConfig> CREATOR = new Parcelable.Creator<BudgetConfig>() {
+    public static final Creator<BudgetConfig> CREATOR = new Creator<BudgetConfig>() {
         @Override
         public BudgetConfig createFromParcel(Parcel source) {
             return new BudgetConfig(source);

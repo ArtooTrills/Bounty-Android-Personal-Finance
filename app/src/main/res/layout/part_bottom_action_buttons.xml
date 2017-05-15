@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_gravity="bottom"
-    android:background="@color/theme_green_expense"
+    android:background="@color/dashboard_blue"
     android:orientation="horizontal"
     >
 

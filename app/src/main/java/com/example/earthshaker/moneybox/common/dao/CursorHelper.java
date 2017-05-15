@@ -33,7 +33,7 @@ public class CursorHelper {
         }
     }
 
-    public void iterateCursor(Cursor c, ParameterCallback<Cursor> callback) {
+    public static void iterateCursor(Cursor c, ParameterCallback<Cursor> callback) {
         // http://stackoverflow.com/questions/14316082/cursor-window-could-not-be-created-from-binder
         try {
             if (c

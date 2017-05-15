@@ -57,6 +57,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
+              android:background="@color/background_fab_open"
               >
 
             <RadioButton
@@ -65,9 +66,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-
                 android:text="Credit"
                 android:textColor="@color/primary_text_87alpha"
+                android:drawableTintMode="add"
                 />
 
             <RadioButton
@@ -76,6 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Debit"
+                android:drawableTintMode="add"
                 android:textColor="@color/primary_text_87alpha"
                 />
           </RadioGroup>

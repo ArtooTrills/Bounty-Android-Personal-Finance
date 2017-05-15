@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.earthshaker.moneybox.common.dao.db.Contract;
 
+import static com.example.earthshaker.moneybox.common.dao.db.Schema.SQL_CREATE_BUDGET;
+import static com.example.earthshaker.moneybox.common.dao.db.Schema.SQL_CREATE_DATABASE_VERION_TABLE;
+import static com.example.earthshaker.moneybox.common.dao.db.Schema.SQL_CREATE_TRANSACTIONS;
+
 /**
  * Created by earthshaker on 14/5/17.
  */
@@ -22,10 +26,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(Contract.Budget.TABLE_NAME);
-        db.execSQL(Contract.Transactions.TABLE_NAME);
-        db.execSQL(Contract.Messages.TABLE_NAME);
-        db.execSQL(Contract.DatabaseVersion.TABLE_NAME);
+        db.execSQL(SQL_CREATE_BUDGET);
+        db.execSQL(SQL_CREATE_TRANSACTIONS);
+        db.execSQL(SQL_CREATE_DATABASE_VERION_TABLE);
         ContentValues cv = new ContentValues();
 
         cv.put(Contract.DatabaseVersion.VERSION, 0);

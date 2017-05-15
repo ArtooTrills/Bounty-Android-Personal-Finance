@@ -30,7 +30,9 @@ public class TransactionLIstActivity extends BaseActivity {
         initializeChildActivityToolbar("Transaction List");
         onBackArrowUp();
         transactionLlistViewHolder = new TransactionLlistViewHolder(this, view);
+/*
         transactionLlistViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
+*/
     }
 
     @Override

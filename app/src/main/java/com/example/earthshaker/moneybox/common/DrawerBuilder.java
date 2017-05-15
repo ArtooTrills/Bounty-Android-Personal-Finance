@@ -7,8 +7,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
+import com.example.earthshaker.moneybox.budget.BudgetActivity;
 import com.example.earthshaker.moneybox.dashboard.activity.DashboardActivity;
 import com.example.earthshaker.moneybox.R;
+import com.example.earthshaker.moneybox.transaction.activity.TransactionLIstActivity;
 
 
 /**
@@ -16,10 +18,6 @@ import com.example.earthshaker.moneybox.R;
  */
 
 public class DrawerBuilder {
-
-    DrawerNavigator drawerNavigator;
-
-    MenuNavigator menuNavigator;
 
     public DrawerBuilder() {
     }
@@ -29,18 +27,14 @@ public class DrawerBuilder {
      * @param drawerLayout   Drawer Layout
      * @param navigationView Navifation View
      */
-    public void build(final BaseActivity activity, final DrawerLayout drawerLayout,
+    public static void build(final BaseActivity activity, final DrawerLayout drawerLayout,
                       NavigationView navigationView) {
         LinearLayout headerView = (LinearLayout) (LayoutInflater.from(activity)
                 .inflate(R.layout.nav_drawer_header, null, false));
         navigationView.addHeaderView(headerView);
 
-        LinearLayout drawerLayoutShare, drawerLayoutFacebook,
-                drawerLayoutWhatsapp, drawerLayoutRateUs;
+        LinearLayout drawerLayoutShare;
         drawerLayoutShare = (LinearLayout) activity.findViewById(R.id.drawer_linear_layout_share);
-        drawerLayoutFacebook = (LinearLayout) activity.findViewById(R.id.drawer_linear_layout_facebook);
-        drawerLayoutWhatsapp = (LinearLayout) activity.findViewById(R.id.drawer_linear_layout_whatsapp);
-        drawerLayoutRateUs = (LinearLayout) activity.findViewById(R.id.drawer_linear_layout_rate_us);
 
         LinearLayout headerLayout =
                 (LinearLayout) headerView.findViewById(R.id.navigation_drawer_layout);
@@ -59,19 +53,6 @@ public class DrawerBuilder {
             drawerLayout.closeDrawers();
         });
 
-
-        drawerLayoutFacebook.setOnClickListener(v -> {
-            drawerNavigator.onFbClicked(activity.getString(R.string.trakr_share_message), activity);
-            drawerLayout.closeDrawers();
-        });
-
-        drawerLayoutWhatsapp.setOnClickListener(v -> {
-            drawerNavigator.onWhatsAppClick(activity.getString(R.string.trakr_share_message), activity);
-            drawerLayout.closeDrawers();
-        });
-
-        drawerLayoutRateUs.setOnClickListener(v -> menuNavigator.openRateUs(activity));
-
     }
 
     private static void setNavigationHeaderColor(BaseActivity activity, LinearLayout headerLayout,
@@ -81,12 +62,12 @@ public class DrawerBuilder {
             headerLayout.setBackgroundColor(ContextCompat.getColor(activity, R.color.dashboard_primary));
             freezbarLayout.setBackgroundColor(
                     ContextCompat.getColor(activity, R.color.dashboard_primary_dark));
-        } else if (activity instanceof ReportActivity) {
+        } else if (activity instanceof TransactionLIstActivity) {
             headerLayout.setBackgroundColor(
                     ContextCompat.getColor(activity, R.color.notification_primary));
             freezbarLayout.setBackgroundColor(
                     ContextCompat.getColor(activity, R.color.notification_primary_dark));
-        } else if (activity instanceof SettingsActivity || activity instanceof ReferralActivity) {
+        } else if (activity instanceof BudgetActivity) {
             headerLayout.setBackgroundColor(ContextCompat.getColor(activity, R.color.settings_primary));
             freezbarLayout.setBackgroundColor(
                     ContextCompat.getColor(activity, R.color.settings_primary_dark));

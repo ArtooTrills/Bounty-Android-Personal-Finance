@@ -9,6 +9,7 @@ import android.view.View;
 import com.example.earthshaker.moneybox.R;
 import com.example.earthshaker.moneybox.budget.BudgetConfig;
 import com.example.earthshaker.moneybox.budget.EnterAmountDialog;
+import com.example.earthshaker.moneybox.budget.eventbus.BudgteEventBus;
 import com.example.earthshaker.moneybox.common.BaseActivity;
 
 import de.greenrobot.event.EventBus;
@@ -25,13 +26,13 @@ public class CategoryActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupUI(R.layout.activity_category, R.id.parent_coordinatior_layout);
-        EventBus.getDefault().register(getResources().getInteger(R.integer.level_1));
+        EventBus.getDefault().register(this, getResources().getInteger(R.integer.level_1));
     }
 
     @Override
     protected void setupViewHolder(View view) {
         selectCategoryViewHolder = new SelectCategoryViewHolder(this, view);
-        selectCategoryViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
+
     }
 
     @Override
@@ -40,15 +41,15 @@ public class CategoryActivity extends BaseActivity {
     }
 
     public void onEventMainThread(CategoryEvent.CategorySelected event) {
-        if (source.equalsIgnoreCase("budget")) {
-
+        if (source != null && source.equalsIgnoreCase("budget")) {
             BudgetConfig budgetConfig = new BudgetConfig();
             budgetConfig.setCategory(event.getCategory());
 
-            EnterAmountDialog enterAmountDialog = EnterAmountDialog.newInstance(budgetConfig);
+            EnterAmountDialog enterAmountDialog = EnterAmountDialog.newInstance(this, budgetConfig);
             enterAmountDialog.show(getFragmentManager(), "ENTER_AMOUNT_DIALOG");
             getSupportFragmentManager().executePendingTransactions();
         }
+
     }
 
     @Override
@@ -56,5 +57,9 @@ public class CategoryActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         selectCategoryViewHolder.unRegisterEventBus();
+    }
+
+    public void onEventMainThread(CategoryEvent.FinishACtivity event) {
+        finish();
     }
 }

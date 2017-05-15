@@ -1,5 +1,6 @@
 package com.example.earthshaker.moneybox.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Canvas;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.ParseException;
@@ -55,13 +58,23 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
             if (mAccentColor != 0) {
                 datePicker.setAccentColor(mAccentColor);
             }
-            AppCompatActivity activity = ((AppCompatActivity) ((ContextWrapper) context).getBaseContext());
+            assert (getActivity(context)) != null;
+            AppCompatActivity activity = ((AppCompatActivity) getActivity(context));
             if (activity != null)
                 datePicker.show(activity.getFragmentManager(), "Datepickerdialog");
             if (customClickListener != null) {
                 customClickListener.onCustomClick();
             }
         });
+    }
+
+    public static Context getActivity(Context context) {
+        if (context instanceof Activity) {
+            return context;
+        } else if (context instanceof ContextThemeWrapper) {
+            return getActivity(((ContextWrapper) context).getBaseContext());
+        }
+        return null;
     }
 
     protected void onDraw(Canvas canvas) {

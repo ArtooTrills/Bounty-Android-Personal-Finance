@@ -58,24 +58,7 @@
                 android:visibility="gone" />
 
 
-            <LinearLayout
-                android:id="@+id/ll_no_budget_set"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="No Budget set. Add using Fab "
-                    android:textAlignment="center"
-                    android:textSize="15sp" />
-            </LinearLayout>
+            <include layout="@layout/no_data_layout"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

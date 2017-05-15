@@ -9,9 +9,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.earthshaker.moneybox.R;
+import com.example.earthshaker.moneybox.categories.CategoryEvent;
 import com.example.earthshaker.moneybox.common.BaseHolderEventBus;
 import com.example.earthshaker.moneybox.transaction.TransactionConfig;
 import com.example.earthshaker.moneybox.transaction.dao.TransactionModificationDao;
+import com.example.earthshaker.moneybox.transaction.eventbus.TransactionsEventBus;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by earthshaker on 15/5/17.
@@ -46,6 +50,8 @@ public class TransactionActivityViewHolder extends BaseHolderEventBus {
         });
 
         delete.setOnClickListener(l -> deleteData());
+
+        category.setOnClickListener(l -> EventBus.getDefault().post(new TransactionsEventBus.OpenCategoryActivity()));
     }
 
     private void deleteData() {
@@ -59,6 +65,7 @@ public class TransactionActivityViewHolder extends BaseHolderEventBus {
         transactionConfig.setDate(date.getText().toString().trim());
         transactionConfig.setExpense(txnTypeRg.getId() == R.id.type_debit);
         if (mTransactionConfig != null && mTransactionConfig.getId() != null) {
+            transactionConfig.setId(mTransactionConfig.getId());
             TransactionModificationDao.editTransaction(transactionConfig);
         } else {
             TransactionModificationDao.saveTransaction(transactionConfig);
@@ -101,5 +108,9 @@ public class TransactionActivityViewHolder extends BaseHolderEventBus {
     @Override
     protected void recreateLayout() {
 
+    }
+
+    public void onEventMainThread(CategoryEvent.CategorySelected event) {
+        category.setText(event.getCategory());
     }
 }

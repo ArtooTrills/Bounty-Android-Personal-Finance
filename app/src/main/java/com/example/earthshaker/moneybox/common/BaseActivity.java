@@ -24,17 +24,11 @@ import org.json.JSONObject;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
-    protected static boolean isLanguageChanged = false;
     public final String TAG = this.getClass().getSimpleName();
     protected Toolbar toolbar;
     protected NavigationView navigationView;
     protected DrawerLayout drawerLayout;
     protected int backPressCount = 0;
-    MenuUtils menuUtils;
-    DrawerBuilder drawerBuilder;
-    BaseActivityNavigators baseActivityNavigator;
-    SharedPrefsUtils sharedPrefsUtils;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,44 +117,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Initializing Drawer Layout and ActionBarToggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        drawerBuilder.build(this, drawerLayout, navigationView);
-        /*createDrawerToolbar(toolbar);*/
+        DrawerBuilder.build(this, drawerLayout, navigationView);
 
         setupNavigation();
     }
-
-    /*private void createDrawerToolbar(Toolbar toolbar) {
-        ActionBarDrawerToggle actionBarDrawerToggle =
-                new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer,
-                        R.string.close_drawer) {
-
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        // Code here will be triggered once the drawer open as we don't want anything to happen so we
-                        // leave this blank
-                        super.onDrawerOpened(drawerView);
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        // Code here will be triggered once the drawer closes as we don't want anything to happen so we
-                        // leave this blank
-                        super.onDrawerClosed(drawerView);
-                    }
-                };
-
-        //Setting the actionbarToggle to drawer layout
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-
-        //calling sync state is necessary or else your hamburger icon wont show up
-        actionBarDrawerToggle.syncState();
-    }*/
 
     private void setupNavigation() {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             //Closing drawer on item click
             drawerLayout.closeDrawers();
-            return menuUtils.selectMenuItem(menuItem, BaseActivity.this, isTaskRoot());
+            return MenuUtils.selectMenuItem(menuItem, BaseActivity.this, isTaskRoot());
         });
     }
 }

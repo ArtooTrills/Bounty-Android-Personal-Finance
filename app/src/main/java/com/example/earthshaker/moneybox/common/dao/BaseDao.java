@@ -21,7 +21,7 @@ public class BaseDao {
     public static void runRawQuery(String query, ParameterCallback<Cursor> callback) {
         try {
             Cursor c = DatabaseProvider.provideDatabase().rawQuery(query, null);
-            cursorHelper.iterateCursor(c, callback);
+            CursorHelper.iterateCursor(c, callback);
         } catch (IllegalStateException e) {
             Log.e(TAG, e.toString());
         }

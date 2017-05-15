@@ -40,6 +40,9 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void attachListener(CategoryConfig categoryConfig) {
-        selectCategory.setOnClickListener(l -> EventBus.getDefault().post(new CategoryEvent.CategorySelected(categoryConfig.getCategoryName())));
+        selectCategory.setOnClickListener(l -> {
+            EventBus.getDefault().post(new CategoryEvent.CategorySelected(categoryConfig.getCategoryName()));
+
+        });
     }
 }

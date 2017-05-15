@@ -11,12 +11,15 @@ public class TransactionInfoQUery {
     public static String getAmount(String categoryName) {
         return "select " + Contract.Transactions.COLUMN_NAME_AMOUNT +
                 " from " + Contract.Transactions.TABLE_NAME +
-                " where " +
-                Contract.Transactions.COLUMN_NAME_EXPENSE_CATEGORY +
+                " where " + Contract.Transactions.COLUMN_NAME_EXPENSE_CATEGORY +
                 " = '" + categoryName + "'";
     }
 
     public static String getTransactionLlist() {
         return "select * from " + Contract.Transactions.TABLE_NAME;
+    }
+
+    public static String getExpnse() {
+        return "select " + Contract.Transactions.COLUMN_NAME_AMOUNT + " from " + Contract.Transactions.TABLE_NAME + " where " + Contract.Transactions.COLUMN_NAME_IS_EXPENSE + "= '1'";
     }
 }

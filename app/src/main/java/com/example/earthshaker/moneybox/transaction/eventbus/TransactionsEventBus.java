@@ -20,4 +20,12 @@ public class TransactionsEventBus {
             this.transactionConfig = transactionConfig;
         }
     }
+
+    public static class OpenAllTxns
+
+    {
+    }
+
+    public static class OpenCategoryActivity {
+    }
 }

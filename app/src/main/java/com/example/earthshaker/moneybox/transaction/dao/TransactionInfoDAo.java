@@ -5,6 +5,7 @@ import com.example.earthshaker.moneybox.common.dao.db.Contract;
 import com.example.earthshaker.moneybox.transaction.TransactionConfig;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 /**
@@ -14,9 +15,22 @@ import java.util.List;
 public class TransactionInfoDAo extends BaseDao {
 
     public static Double getAmountFromCategory(String category) {
-        return getFirstRecord(TransactionInfoQUery.getAmount(category), cursor -> cursor.getDouble(
-                cursor.getColumnIndex(Contract.Transactions.COLUMN_NAME_AMOUNT)));
+        String query = TransactionInfoQUery.getAmount(category);
+        List<Double> amounts = new ArrayList<>();
 
+        runRawQuery(query, c -> amounts.add(0, c.getDouble(0)));
+        return amounts.size() > 0 ? amounts.get(0) : 0d;
+    }
+
+    public static Double getTotalExpense() {
+        String query = TransactionInfoQUery.getExpnse();
+        List<Double> amounts = new ArrayList<>();
+        runRawQuery(query, c -> amounts.add(c.getDouble(0)));
+        Double totalAmount = 0d;
+        for (Double amount : amounts) {
+            totalAmount += amount;
+        }
+        return totalAmount;
     }
 
     public static List<TransactionConfig> getTransactionList() {

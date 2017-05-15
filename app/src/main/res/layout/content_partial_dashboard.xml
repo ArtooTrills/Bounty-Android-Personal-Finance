@@ -12,8 +12,6 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <include layout="@layout/toolbar" />
-
         <android.support.v7.widget.CardView
             android:id="@+id/dashb_sync_card"
             android:layout_width="match_parent"

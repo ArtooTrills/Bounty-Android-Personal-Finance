@@ -10,10 +10,7 @@ public class BugdetInfoQuery {
 
     public static String getAllBudgets() {
         return "select * from " +
-                Contract.Budget.TABLE_NAME +
-                " where " +
-                Contract.Budget.COLUMN_NAME_STATUS +
-                " = 'ACTIVE'";
+                Contract.Budget.TABLE_NAME ;
     }
 
 
