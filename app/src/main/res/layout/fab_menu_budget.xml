@@ -7,13 +7,13 @@
                                          android:clickable="false"
                                          android:src="@drawable/fab_add"
                                          android:visibility="visible"
-                                         fab:fab_colorNormal="@color/theme_green_expense"
+                                         fab:fab_colorNormal="@color/dashboard_blue"
                                          fab:layout_anchor="@+id/viewpager"
                                          fab:layout_anchorGravity="bottom|right"
                                          fab:fab_colorRipple="@color/fab_ripple"
                                          fab:menu_backgroundColor="@color/background_fab_open"
                                          fab:menu_colorNormal="#28af81"
-                                         fab:menu_colorPressed="@color/theme_green_expense"
+                                         fab:menu_colorPressed="@color/arrow_light_blue"
                                          fab:menu_colorRipple="#99FFFFFF"
                                          fab:menu_labels_colorNormal="#333333">
 

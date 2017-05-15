@@ -21,7 +21,7 @@
             android:layout_marginRight="10dp"
             android:padding="5dp"
             android:text="Enter Amount"
-            android:textColor="@color/theme_green_expense"
+            android:textColor="@color/dashboard_blue"
             android:textSize="18sp" />
 
 

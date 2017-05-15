@@ -47,7 +47,7 @@ public class DrawerBuilder {
         drawerLayoutShare.setOnClickListener(v -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, activity.getString(R.string.trakr_share_message));
+            sendIntent.putExtra(Intent.EXTRA_TEXT, activity.getString(R.string.share_message));
             sendIntent.setType("text/plain");
             activity.startActivity(sendIntent);
             drawerLayout.closeDrawers();
@@ -62,15 +62,6 @@ public class DrawerBuilder {
             headerLayout.setBackgroundColor(ContextCompat.getColor(activity, R.color.dashboard_primary));
             freezbarLayout.setBackgroundColor(
                     ContextCompat.getColor(activity, R.color.dashboard_primary_dark));
-        } else if (activity instanceof TransactionLIstActivity) {
-            headerLayout.setBackgroundColor(
-                    ContextCompat.getColor(activity, R.color.notification_primary));
-            freezbarLayout.setBackgroundColor(
-                    ContextCompat.getColor(activity, R.color.notification_primary_dark));
-        } else if (activity instanceof BudgetActivity) {
-            headerLayout.setBackgroundColor(ContextCompat.getColor(activity, R.color.settings_primary));
-            freezbarLayout.setBackgroundColor(
-                    ContextCompat.getColor(activity, R.color.settings_primary_dark));
         }
     }
 }
