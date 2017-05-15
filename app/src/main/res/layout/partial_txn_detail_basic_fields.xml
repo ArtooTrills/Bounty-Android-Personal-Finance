@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/amount_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/rupee"
+            android:hint="Enter Amount"
+            android:inputType="numberDecimal"
+            android:maxLength="15"
+            android:textColor="@color/black"
+            android:textColorHint="@color/secondary_text_55alpha"
+            android:textSize="22sp"
+            tools:font="@string/proxima_nova_alt_semibold"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            >
+
+            <com.example.earthshaker.moneybox.common.DateEditText
+                android:id="@+id/date_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/calendar_edittext"
+                android:hint="Date"
+                android:textColor="@color/black"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/selectCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/category_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:drawableLeft="@drawable/category_edittext"
+            android:focusable="false"
+            android:hint="Select Category"
+            android:textColor="@color/black"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+</LinearLayout>

@@ -1,12 +1,29 @@
 package com.example.earthshaker.moneybox.dashboard.cards.budget;
 
+import android.app.Activity;
+import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.earthshaker.moneybox.R;
+import com.example.earthshaker.moneybox.budget.BudgetActivityViewHolder;
+import com.example.earthshaker.moneybox.budget.BudgetConfig;
+import com.example.earthshaker.moneybox.budget.dao.BudgetInfoDao;
+import com.example.earthshaker.moneybox.budget.eventbus.BudgteEventBus;
+import com.example.earthshaker.moneybox.budget.recyclerview.BudgetListAdapter;
+import com.example.earthshaker.moneybox.budget.recyclerview.BudgetListCardViewHolder;
+import com.example.earthshaker.moneybox.common.ActivityNavigator;
+import com.example.earthshaker.moneybox.common.LayoutNotAddedToXmlException;
+import com.example.earthshaker.moneybox.common.NoDataViewHolder;
 import com.example.earthshaker.moneybox.dashboard.BaseCardViewHolder;
 import com.example.earthshaker.moneybox.dashboard.cards.common.BaseCardHolder;
+import com.example.earthshaker.moneybox.transaction.activity.TransactionListAdapter;
+import com.example.earthshaker.moneybox.transaction.dao.TransactionInfoDAo;
+import com.example.earthshaker.moneybox.transaction.eventbus.TransactionsEventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,135 +36,68 @@ import de.greenrobot.event.EventBus;
  */
 
 public class DashboardBudgetCardViewHolder extends BaseCardViewHolder {
-    private View parentView;
-    private LinearLayout noBudgetLayout;
-    private LinearLayout mCardsContainer;
-    private TextView budgetMonth;
-    private TextView viewAllBudget;
 
-    private List<BudgetListCardViewHolder> budgetHolderList;
-    private int position;
-    private int previousSize;
+    private Activity context;
+    private List<BudgetConfig> budgetConfigs;
+    private RecyclerView recyclerView;
+    private NoDataViewHolder noDataViewHolder;
 
-    DashboardBudgetCardViewHolder(View view, int position) {
-        parentView = view;
-        this.position = position;
+    BudgetListAdapter budgetListAdapter;
+    private TextView viewAll;
 
-        mCardsContainer = (LinearLayout) view.findViewById(R.id.ll_total_budget);
-        noBudgetLayout = (LinearLayout) view.findViewById(R.id.ll_no_budget_set);
+    DashboardBudgetCardViewHolder(Activity context, View view) {
+        this.context = context;
+        recyclerView = (RecyclerView) view.findViewById(R.id.ll_total_budget);
+        viewAll = (TextView) view.findViewById(R.id.tv_view_all_budget);
+        try {
+            noDataViewHolder = new NoDataViewHolder(view, context.getString(R.string.no_budget_set),
+                    context.getString(R.string.set_month_and_category_wise_budget),
+                    context.getString(R.string.click_to_add_budget));
+        } catch (LayoutNotAddedToXmlException e) {
+            String TAG = BudgetActivityViewHolder.class.getSimpleName();
+            Log.e(TAG, e.toString());
+        }
 
-        budgetMonth = (TextView) view.findViewById(R.id.tv_budget_month);
-        viewAllBudget = (TextView) view.findViewById(R.id.tv_view_all_budget);
-        setUpComponent();
-        registerEventBus(context.getResources().getInteger(R.integer.level_0));
+        budgetConfigs = BudgetInfoDao.fetchTopTwoBudgets();
         setUpData();
+        setListener();
+    }
+
+    private void setListener() {
+        viewAll.setOnClickListener(l -> EventBus.getDefault().post(new BudgteEventBus.OpenBudget()));
     }
 
     private void setUpData() {
-        dashboardHelper.setRibbonColor(parentView, R.id.card_ribbon_budget, position);
-        setCurrentMonthText();
-        createIndividualBudgetCard();
-
-        toggleVisibility(mTopThreeBudgets.size() > 0);
-        attachListener();
-    }
-
-    private void setUpComponent() {
-        ComponentFactory.getInstance().removeDashboardBudgetCardComponent();
-        ComponentFactory.getInstance().getDashboardBudgetCardComponent().inject(this);
-    }
-
-    private void setCurrentMonthText() {
-        String currentMonth = DateFormatterConstants.budgetMonthDateFormat.format(new Date());
-        budgetMonth.setText(currentMonth);
-    }
-
-    private void createIndividualBudgetCard() {
-        previousSize = mTopThreeBudgets.size();
-        if (budgetHolderList == null) {
-            budgetHolderList = new ArrayList<>();
+        if (budgetConfigs != null && !budgetConfigs.isEmpty()) {
+            noDataViewHolder.hideNoDataLayout();
+            recyclerView.setVisibility(View.VISIBLE);
+            if (budgetListAdapter == null) {
+                budgetListAdapter = new BudgetListAdapter(context, budgetConfigs);
+                recyclerView.setAdapter(budgetListAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                budgetListAdapter.setData(budgetConfigs);
+            }
         } else {
-            budgetHolderList.clear();
+            noDataViewHolder.showNoDataLayout();
         }
 
-        mCardsContainer.removeAllViews();
-
-        for (BudgetConfig budgetConfig : mTopThreeBudgets) {
-            LinearLayout budgetCard =
-                    (LinearLayout) layoutInflater.inflate(R.layout.part_item_budget_categorywise, null, false);
-
-            BudgetListCardViewHolder dashBudgetHolder = new BudgetListCardViewHolder(budgetCard);
-            dashBudgetHolder.setBudgetCardForNonRecyclerView(budgetConfig, this::onBudgetRowClick);
-
-            budgetHolderList.add(dashBudgetHolder);
-            mCardsContainer.addView(budgetCard);
-        }
-    }
-
-    private void refreshBudgets() {
-        for (int i = 0; i < mTopThreeBudgets.size(); i++) {
-            budgetHolderList.get(i)
-                    .setBudgetCardForNonRecyclerView(mTopThreeBudgets.get(i), this::onBudgetRowClick);
-        }
-    }
-
-    private void onBudgetRowClick(BudgetConfig budgetConfig) {
-        EventBus.getDefault().post(new DashboardBugdetCardEvent(BUDGET_ROW, budgetConfig));
-    }
-
-    private void toggleVisibility(boolean showData) {
-        if (!showData) {
-            mCardsContainer.setVisibility(View.GONE);
-            noBudgetLayout.setVisibility(View.VISIBLE);
-            viewAllBudget.setText(R.string.budget_go_to_budget);
-        } else {
-            mCardsContainer.setVisibility(View.VISIBLE);
-            noBudgetLayout.setVisibility(View.GONE);
-            viewAllBudget.setText(R.string.budget_view_all);
-        }
-    }
-
-    private void attachListener() {
-        parentView.setOnClickListener(v -> {
-            dashboardMixpanelHelper.setupAnalytics(context.getString(R.string.dash_all_budget_click));
-            EventBus.getDefault().post(new DashboardBugdetCardEvent(BUDGET_CARD, null));
-        });
-    }
-
-    public void onEventBackgroundThread(AppCommonEvent.BudgetModifiedEvent budgetModifiedEvent) {
-        refreshData();
-    }
-
-    public void onEventBackgroundThread(
-            AppCommonEvent.TransactionModifiedEvent transactionModifiedEvent) {
-        refreshData();
-    }
-
-    public void onEventMainThread(RefreshBudgetCardLayoutEvent refreshBudgetCardLayoutEvent) {
-        recreateLayout();
-    }
-
-    @Override public void onDestroy() {
-        unRegisterEventBus();
-        ComponentFactory.getInstance().removeDashboardBudgetCardComponent();
-    }
-
-    @Override protected void refreshData() {
-        setUpComponent();
-        EventBus.getDefault().post(new RefreshBudgetCardLayoutEvent());
-    }
-
-    @Override protected void recreateLayout() {
-        toggleVisibility(mTopThreeBudgets.size() > 0);
-        if (previousSize != mTopThreeBudgets.size()) {
-            createIndividualBudgetCard();
-        } else {
-            refreshBudgets();
-        }
-    }
-
-    private class RefreshBudgetCardLayoutEvent {
     }
 
 
+    @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
+    protected void refreshData() {
+        budgetConfigs = BudgetInfoDao.fetchTopTwoBudgets();
+        setUpData();
+    }
+
+    @Override
+    protected void recreateLayout() {
+
+    }
 }

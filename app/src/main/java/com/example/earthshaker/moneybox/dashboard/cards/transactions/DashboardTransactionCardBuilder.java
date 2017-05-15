@@ -3,6 +3,7 @@ package com.example.earthshaker.moneybox.dashboard.cards.transactions;
 import android.app.Activity;
 import android.view.View;
 
+import com.example.earthshaker.moneybox.R;
 import com.example.earthshaker.moneybox.dashboard.cards.common.BaseCardHolder;
 
 /**
@@ -16,6 +17,8 @@ public class DashboardTransactionCardBuilder extends BaseCardHolder {
     }
 
     public static View prepareTransactionCard(Activity context) {
-        context.getLayoutInflater().inflate(R.layout.)
+        View view = context.getLayoutInflater().inflate(R.layout.dashboard_transaction_card,null,false);
+        new DashTxnCardHolder(context,view);
+        return view;
     }
 }

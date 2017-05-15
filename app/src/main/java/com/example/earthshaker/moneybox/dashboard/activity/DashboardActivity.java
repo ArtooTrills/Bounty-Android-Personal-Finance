@@ -1,11 +1,26 @@
 package com.example.earthshaker.moneybox.dashboard.activity;
 
 
+import android.app.ProgressDialog;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.earthshaker.moneybox.R;
+import com.example.earthshaker.moneybox.budget.eventbus.BudgteEventBus;
+import com.example.earthshaker.moneybox.common.ActivityNavigator;
 import com.example.earthshaker.moneybox.common.BaseActivity;
+import com.example.earthshaker.moneybox.common.callback.ReturnWithParameterCallback;
+import com.example.earthshaker.moneybox.common.dao.CursorHelper;
+import com.example.earthshaker.moneybox.dashboard.SmsProcessor;
+import com.example.earthshaker.moneybox.dashboard.eventbus.DashboardEventBus;
+import com.example.earthshaker.moneybox.transaction.eventbus.TransactionsEventBus;
+
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,6 +41,7 @@ public class DashboardActivity extends BaseActivity {
         initializeToolbar("Dashboard");
         initializeNavigationMenu();
         dashboardViewHolder = new DashboardViewHolder(this, view);
+        dashboardViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
 
     }
 
@@ -33,5 +49,89 @@ public class DashboardActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(DashboardEventBus.SyncSms syncMsg) {
+        new AsyncCaller().execute();
+    }
+
+    public class AsyncCaller extends AsyncTask<Void, Void, Void> {
+        ProgressDialog pdLoading = new ProgressDialog(DashboardActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tSyncing...");
+            pdLoading.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            parseSms();
+            //this method will be running on background thread so don't update UI frome here
+            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            //this method will be running on UI thread
+
+            pdLoading.dismiss();
+        }
+
+    }
+
+    private void parseSms() {
+        iterateContent();
+
+    }
+
+
+    public void iterateContent() {
+        try {
+            Cursor cursor = getContentResolver().query(Uri.parse(getString(R.string.sms_inbox_uri)), null, null, null, null);
+            CursorHelper.iterateCursor(cursor);
+            EventBus.getDefault().post(new DashboardEventBus.RefreshDashboard());
+        } catch (Exception e) {
+            Log.e("ContentResolverHelper ", e.getMessage());
+        }
+    }
+
+    public static void extractFromCursor(Cursor c) {
+        String body = c.getString(c.getColumnIndex("body"));
+
+        if (body.contains("debit")) {
+            DashboardHelper.createTransaction(true, body);
+        } else if (body.contains("credit")) {
+            DashboardHelper.createTransaction(false, body);
+        }
+    }
+
+    public void onEventMainThread(DashboardEventBus.RefreshDashboard event) {
+        dashboardViewHolder.refreshData();
+    }
+
+    public void onEventMainThread(TransactionsEventBus.OpenTransaction event){
+        ActivityNavigator.openTransactionActivity(this,event.getTransactionConfig());
+    }
+
+    public void onEventMainThread(BudgteEventBus.OpenBudget event){
+        ActivityNavigator.openBudgetActivity(this);
+    }
+
+    @Override public void onBackPressed() {
+        DashboardFabViewHolder dashboardFabViewHolder = dashboardViewHolder.getFabBuilder();
+        if (dashboardFabViewHolder != null && dashboardFabViewHolder.isFabOpen()) {
+            dashboardFabViewHolder.closeFab();
+            return;
+        }
+        super.onBackPressed();
     }
 }

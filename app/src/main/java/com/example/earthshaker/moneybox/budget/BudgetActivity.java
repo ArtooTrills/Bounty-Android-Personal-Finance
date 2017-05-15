@@ -7,7 +7,10 @@ import android.util.Base64;
 import android.view.View;
 
 import com.example.earthshaker.moneybox.R;
+import com.example.earthshaker.moneybox.budget.eventbus.BudgteEventBus;
+import com.example.earthshaker.moneybox.common.ActivityNavigator;
 import com.example.earthshaker.moneybox.common.BaseActivity;
+import com.example.earthshaker.moneybox.common.eventbus.CommonEvents;
 
 import de.greenrobot.event.EventBus;
 
@@ -39,4 +42,19 @@ public class BudgetActivity extends BaseActivity {
         budgetActivityViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
 
     }
+
+    public void onEventMainThread(BudgteEventBus.AddCategoryEvent event){
+        ActivityNavigator.openCategoryActivity(this);
+    }
+
+    public void onEventMainThread(BudgteEventBus.OpenBudgetDialog event){
+        EnterAmountDialog enterAmountDialog = EnterAmountDialog.newInstance(event.getBudgetConfig());
+        enterAmountDialog.show(getFragmentManager(), "ENTER_AMOUNT_DIALOG");
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
+    public void onEventMainThread(CommonEvents.AddBudget event){
+        budgetActivityViewHolder.refreshData();
+    }
+
 }

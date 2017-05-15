@@ -57,12 +57,13 @@
 
                 <include layout="@layout/no_data_layout" />
 
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/ll_txn_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="10dp" />
+                    android:paddingTop="10dp"
+                    android:visibility="gone"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

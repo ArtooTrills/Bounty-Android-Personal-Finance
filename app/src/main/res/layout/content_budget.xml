@@ -49,8 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
-                        android:textSize="18sp"
-                        app:font="@string/proxima_nova_alt_semibold" />
+                        android:textSize="18sp" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"

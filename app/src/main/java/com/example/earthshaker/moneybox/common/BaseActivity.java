@@ -14,6 +14,9 @@ import android.view.View;
 import com.example.earthshaker.moneybox.dashboard.activity.DashboardActivity;
 import com.example.earthshaker.moneybox.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by earthshaker on 13/5/17.
  */
@@ -80,7 +83,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void setupUI(int layoutId, int viewHolderId) {
         setContentView(layoutId);
+        getIntents();
         setupViewHolder(findViewById(viewHolderId));
+    }
+
+    //Receives the intent values for this activity
+    protected void getIntents() {
+
     }
 
     //initialize the data to the view and other variables
