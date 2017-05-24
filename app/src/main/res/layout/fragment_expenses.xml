@@ -1,0 +1,10 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             style="@style/MatchParent"
+             tools:context="com.examples.ankit.breakpoint.reports.ExpensesFragment">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/expenses_summary_chart"
+        android:layout_gravity="center"
+        style="@style/MatchParent"/>
+</FrameLayout>
