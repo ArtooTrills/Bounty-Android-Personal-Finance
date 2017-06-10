@@ -1,5 +1,6 @@
 package com.example.earthshaker.moneybox;
 
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -29,18 +30,20 @@ public class TransactionTestActivity {
   @Test public void addDetails() throws Exception {
     onView(withId(R.id.amount_et)).check(matches(isDisplayed()))
         .perform(clearText())
-        .perform(typeText("1200"));
+        .perform(typeText("1200"), ViewActions.closeSoftKeyboard());
 
-    onView(withId(R.id.selectCategory)).check(matches(isDisplayed()))
+    onView(withId(R.id.category_text)).check(matches(isDisplayed()))
         .perform(click());
 
 
     onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
         .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+    Thread.sleep(3000);
 
     onView(withId(R.id.save)).check(matches(isDisplayed()))
         .perform(click());
 
+    Thread.sleep(3000);
 
   }
 }
