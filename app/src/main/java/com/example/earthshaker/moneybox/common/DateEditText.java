@@ -47,7 +47,7 @@ public class DateEditText extends AppCompatEditText implements DatePickerDialog.
             Calendar now = Calendar.getInstance();
             if (!StringUtils.isBlank(getText().toString())) {
                 try {
-                    Date date = DateFormatterConstants.reminderDateFormat.parse(getText().toString());
+                    Date date = DateFormatterConstants.transactionDateFormatter.parse(getText().toString());
                     now.setTime(date);
                 } catch (ParseException e) {
                     Log.e("TrakrTimeEditText", e.toString());

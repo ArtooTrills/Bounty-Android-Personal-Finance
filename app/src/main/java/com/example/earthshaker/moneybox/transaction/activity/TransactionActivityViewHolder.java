@@ -4,18 +4,19 @@ import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.earthshaker.moneybox.R;
 import com.example.earthshaker.moneybox.categories.CategoryEvent;
 import com.example.earthshaker.moneybox.common.BaseHolderEventBus;
+import com.example.earthshaker.moneybox.common.DateFormatterConstants;
 import com.example.earthshaker.moneybox.transaction.TransactionConfig;
 import com.example.earthshaker.moneybox.transaction.dao.TransactionModificationDao;
 import com.example.earthshaker.moneybox.transaction.eventbus.TransactionsEventBus;
 
 import de.greenrobot.event.EventBus;
+import java.util.Date;
 
 /**
  * Created by earthshaker on 15/5/17.
@@ -96,6 +97,7 @@ public class TransactionActivityViewHolder extends BaseHolderEventBus {
             delete.setVisibility(View.VISIBLE);
         } else {
             delete.setVisibility(View.GONE);
+            date.setText(DateFormatterConstants.transactionDateFormatter.format(new Date()));
         }
     }
 

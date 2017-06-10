@@ -20,19 +20,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:23.0.1'
+    }
+
 
 }
 
 dependencies {
 
-    def supportLibraryVersion = '25.2.0'
+    def supportLibraryVersion = '23.1.1'
+    def mockitoVersion = '1.6.1'
+    def espressoVersion = '2.2.2'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-
+    //Mocking libraries
+    compile('org.powermock:powermock-api-mockito:' + mockitoVersion) {
+        exclude group: 'org.objenesis'
+    }
+    compile('org.powermock:powermock-module-junit4:' + mockitoVersion) {
+        exclude group: 'org.hamcrest'
+        exclude group: 'org.objenesis'
+    }
 //Support libraries
     compile 'com.android.support:design:' + supportLibraryVersion
     compile 'com.android.support:cardview-v7:' + supportLibraryVersion
@@ -54,5 +67,14 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //Charts
     compile 'org.quanqi:mpandroidchart:1.7.5'
+
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    // Espresso core
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:' + espressoVersion
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:' + espressoVersion
+
+
+
 
 }

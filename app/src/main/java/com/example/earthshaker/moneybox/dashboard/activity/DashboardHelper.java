@@ -19,7 +19,7 @@ public class DashboardHelper {
         TransactionConfig transactionConfig = new TransactionConfig();
         transactionConfig.setAmount(regexGenerator(body));
         transactionConfig.setCategory("Uncategorised");
-        transactionConfig.setDate(DateFormatterConstants.reminderDateFormat.format(new Date(time)));
+        transactionConfig.setDate(DateFormatterConstants.transactionDateFormatter.format(new Date(time)));
         transactionConfig.setExpense(isExpense);
         TransactionModificationDao.saveTransaction(transactionConfig);
     }
