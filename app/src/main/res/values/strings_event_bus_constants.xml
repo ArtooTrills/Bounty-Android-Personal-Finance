@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="level_0">0</integer>
+    <integer name="level_1">1</integer>
+    <integer name="level_2">2</integer>
+    <integer name="level_3">3</integer>
+    <integer name="level_4">4</integer>
+    <integer name="level_5">5</integer>
+    <integer name="level_6">6</integer>
+    <integer name="level_7">7</integer>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.earthshaker.moneybox">
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
+    <application
+        android:name=".common.MoneyBoxApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/money"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/MoneyBoxTheme">
+        <activity
+            android:name=".dashboard.activity.DashboardActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".budget.BudgetActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MoneyBoxTheme" />
+
+        <activity
+            android:name=".transaction.activity.TransactionsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MoneyBoxTheme" />
+
+        <activity
+            android:name=".transaction.activity.TransactionLIstActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MoneyBoxTheme" />
+        <activity
+            android:name=".categories.CategoryActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MoneyBoxTheme" />
+
+        <activity
+            android:name=".analysis.AnalysisActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MoneyBoxTheme" />
+
+    </application>
+
+</manifest>

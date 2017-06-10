@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="dashboard_blue">#00BCD4</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="progress_background">#E3F2FD</color>
+    <color name="progress_fill_under_limit">#2196F3</color>
+    <color name="green">#00a877</color>
+    <color name="theme_green_expense">#28af81</color>
+    <color name="notification_primary">#f2b145</color>
+
+    <color name="dashboard_red">#EE6E73</color>
+    <!-- App default colors-->
+    <color name="PrimaryColor">#2196F3</color>
+    <color name="background">#eeeeee</color>
+    <color name="theme_blue_document">#03a9f4</color>
+    <color name="theme_blue_document_90alpha">#f103a9f4</color>
+
+
+    <!--Text colors-->
+    <color name="text_metallic">#445468</color>
+    <color name="text_metallic_90alpha">#ea445468</color>
+    <color name="text_metallic_20alpha">#11445468</color>
+    <color name="primary_text_87alpha">#df737373</color>
+    <color name="secondary_text_55alpha">#8d737373</color>
+    <color name="tertiary_disabled_text_37alpha">#62737373</color>
+    <color name="text_red">#F4737D</color>
+    <color name="text_green">#33B187</color>
+
+    <color name="fab_button_pressed">#62737373</color>
+    <color name="background_fab_open">#c5ffffff</color>
+
+
+    <color name="accent_color">#a1d2f4</color>
+    <color name="date_picker_month_day">#9383c6</color>
+
+    <color name="arrow_light_blue">#0097ee</color>
+
+
+    <!--Floating Action Button-->
+    <color name="fab_ripple">#F7F7F7</color>
+
+    <!-- document theme colors-->
+    <color name="document_manager_primary">#2196F3</color>
+    <color name="document_manager_primary_dark">#1976D2</color>
+
+    <!-- dashboard theme color-->
+    <color name="dashboard_primary">#0097A7</color>
+    <color name="dashboard_primary_dark">#00838F</color>
+
+    <color name="setting_heading_text">#808080</color>
+    <color name="setting_heading_background">#D3D3D3</color>
+
+    <!--swipable card-->
+    <color name="swipe_card_green">#d0009688</color>
+    <color name="swipe_card_blue">#da2196f3</color>
+    <color name="swipe_card_red">#d6e91e63</color>
+
+</resources>
