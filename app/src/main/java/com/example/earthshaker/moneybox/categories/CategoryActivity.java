@@ -48,7 +48,8 @@ public class CategoryActivity extends BaseActivity {
             EnterAmountDialog enterAmountDialog = EnterAmountDialog.newInstance(this, budgetConfig);
             enterAmountDialog.show(getFragmentManager(), "ENTER_AMOUNT_DIALOG");
             getSupportFragmentManager().executePendingTransactions();
-        }
+        } else
+            finish();
 
     }
 

@@ -24,10 +24,12 @@ public class BudgetModificationDao extends BaseDao {
         if (isEdit) {
             String where = Contract.Budget.COLUMN_NAME_CATEGORY + " = '" + budgetConfig.getCategory() + "'";
             DatabaseProvider.provideDatabase().update(Contract.Budget.TABLE_NAME, cv, where, null);
+            EventBus.getDefault().post(new CommonEvents.BudgetModifiedEvent());
         } else {
             DatabaseProvider.provideDatabase().insert(Contract.Budget.TABLE_NAME, null, cv);
+            EventBus.getDefault().post(new CommonEvents.AddBudget());
+
         }
-        EventBus.getDefault().post(new CommonEvents.AddBudget());
     }
 
     public static void deleteBudget(String category) {

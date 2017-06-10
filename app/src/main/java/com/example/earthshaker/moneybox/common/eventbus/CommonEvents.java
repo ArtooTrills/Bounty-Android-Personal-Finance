@@ -15,4 +15,6 @@ public class CommonEvents {
 
     public static class StartAddingTransaction{}
 
+    public static class BudgetModifiedEvent{}
+
 }

@@ -40,30 +40,6 @@ public class BudgetListCardViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * Sets budget Card on dashboard for non-recycler view
-     *
-     * @param budgetConfig Budget Config
-     * @param callback     Budget config on selection
-     */
-    public void setBudgetCardForNonRecyclerView(BudgetConfig budgetConfig,
-                                                ParameterCallback<BudgetConfig> callback) {
-        setBasicBudgetCard(budgetConfig, callback);
-        // do not remove this as this is not a recycler view
-        // and we need this to populate the progress every time
-        outerLinearLayout.getViewTreeObserver()
-                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT < 16) {
-                            outerLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        } else {
-                            outerLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        }
-                    }
-                });
-    }
-
-    /**
      * Budget Card for recycler View
      *
      * @param budgetConfig Budget Config

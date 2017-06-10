@@ -8,11 +8,18 @@ import com.example.earthshaker.moneybox.common.dao.db.Contract;
 
 public class TransactionInfoQUery {
 
-    public static String getAmount(String categoryName) {
+    public static String getExpenseAmount(String categoryName) {
         return "select " + Contract.Transactions.COLUMN_NAME_AMOUNT +
                 " from " + Contract.Transactions.TABLE_NAME +
                 " where " + Contract.Transactions.COLUMN_NAME_EXPENSE_CATEGORY +
-                " = '" + categoryName + "'";
+                " = '" + categoryName + "' and " + Contract.Transactions.COLUMN_NAME_IS_EXPENSE + " = '1'";
+    }
+
+    public static String getNonExpenseAmount(String categoryName) {
+        return "select " + Contract.Transactions.COLUMN_NAME_AMOUNT +
+                " from " + Contract.Transactions.TABLE_NAME +
+                " where " + Contract.Transactions.COLUMN_NAME_EXPENSE_CATEGORY +
+                " = '" + categoryName + "' and " + Contract.Transactions.COLUMN_NAME_IS_EXPENSE + " != '1'";
     }
 
     public static String getTransactionLlist() {
@@ -20,6 +27,6 @@ public class TransactionInfoQUery {
     }
 
     public static String getExpnse() {
-        return "select " + Contract.Transactions.COLUMN_NAME_AMOUNT + " from " + Contract.Transactions.TABLE_NAME + " where " + Contract.Transactions.COLUMN_NAME_IS_EXPENSE + "= '1'";
+        return "select " + Contract.Transactions.COLUMN_NAME_AMOUNT + " from " + Contract.Transactions.TABLE_NAME + " where " + Contract.Transactions.COLUMN_NAME_IS_EXPENSE + " = '1'";
     }
 }

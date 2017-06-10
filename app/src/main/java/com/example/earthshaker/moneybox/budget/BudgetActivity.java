@@ -36,7 +36,7 @@ public class BudgetActivity extends BaseActivity {
 
     @Override
     protected void setupViewHolder(View view) {
-        initializeToolbar("Budget");
+        initializeChildActivityToolbar("Budget");
         onBackArrowUp();
         budgetActivityViewHolder = new BudgetActivityViewHolder(this,view);
 
@@ -53,6 +53,10 @@ public class BudgetActivity extends BaseActivity {
     }
 
     public void onEventMainThread(CommonEvents.AddBudget event){
+        budgetActivityViewHolder.refreshData();
+    }
+
+    public void onEventMainThread(CommonEvents.BudgetModifiedEvent event){
         budgetActivityViewHolder.refreshData();
     }
 

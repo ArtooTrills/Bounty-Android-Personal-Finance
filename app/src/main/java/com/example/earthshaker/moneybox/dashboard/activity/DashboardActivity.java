@@ -44,7 +44,6 @@ public class DashboardActivity extends BaseActivity {
         initializeToolbar("Dashboard");
         initializeNavigationMenu();
         dashboardViewHolder = new DashboardViewHolder(this, view);
-        /*dashboardViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));*/
 
     }
 
@@ -170,5 +169,9 @@ public class DashboardActivity extends BaseActivity {
 
     public void onEventMainThread(TransactionsEventBus.OpenAllTxns event) {
         ActivityNavigator.openTransactionLIstActivity(this);
+    }
+
+    public void onEventMainThread(CommonEvents.BudgetModifiedEvent event){
+        dashboardViewHolder.refreshData();
     }
 }

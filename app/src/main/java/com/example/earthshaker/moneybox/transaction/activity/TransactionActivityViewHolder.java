@@ -63,7 +63,7 @@ public class TransactionActivityViewHolder extends BaseHolderEventBus {
         transactionConfig.setCategory(category.getText().toString().trim());
         transactionConfig.setAmount(Double.parseDouble(amount.getText().toString().trim()));
         transactionConfig.setDate(date.getText().toString().trim());
-        transactionConfig.setExpense(txnTypeRg.getId() == R.id.type_debit);
+        transactionConfig.setExpense(txnTypeRg.getCheckedRadioButtonId() == R.id.type_debit);
         if (mTransactionConfig != null && mTransactionConfig.getId() != null) {
             transactionConfig.setId(mTransactionConfig.getId());
             TransactionModificationDao.editTransaction(transactionConfig);

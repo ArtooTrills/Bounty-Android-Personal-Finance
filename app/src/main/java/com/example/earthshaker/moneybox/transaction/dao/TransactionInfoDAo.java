@@ -15,11 +15,17 @@ import java.util.List;
 public class TransactionInfoDAo extends BaseDao {
 
     public static Double getAmountFromCategory(String category) {
-        String query = TransactionInfoQUery.getAmount(category);
+
+        String expenseQuery = TransactionInfoQUery.getExpenseAmount(category);
         List<Double> amounts = new ArrayList<>();
 
-        runRawQuery(query, c -> amounts.add(0, c.getDouble(0)));
-        return amounts.size() > 0 ? amounts.get(0) : 0d;
+        runRawQuery(expenseQuery, c -> amounts.add(0, c.getDouble(0)));
+        Double expenseAmount = 0d;
+        for(Double amount:amounts){
+            expenseAmount+=amount;
+        }
+
+        return expenseAmount;
     }
 
     public static Double getTotalExpense() {

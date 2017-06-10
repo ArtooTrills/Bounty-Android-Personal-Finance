@@ -19,6 +19,7 @@ import com.example.earthshaker.moneybox.budget.recyclerview.BudgetListCardViewHo
 import com.example.earthshaker.moneybox.common.ActivityNavigator;
 import com.example.earthshaker.moneybox.common.LayoutNotAddedToXmlException;
 import com.example.earthshaker.moneybox.common.NoDataViewHolder;
+import com.example.earthshaker.moneybox.common.eventbus.CommonEvents;
 import com.example.earthshaker.moneybox.dashboard.BaseCardViewHolder;
 import com.example.earthshaker.moneybox.dashboard.cards.common.BaseCardHolder;
 import com.example.earthshaker.moneybox.transaction.activity.TransactionListAdapter;
@@ -46,6 +47,7 @@ public class DashboardBudgetCardViewHolder extends BaseCardViewHolder {
     private TextView viewAll;
 
     DashboardBudgetCardViewHolder(Activity context, View view) {
+        registerEventBus(context.getResources().getInteger(R.integer.level_2));
         this.context = context;
         recyclerView = (RecyclerView) view.findViewById(R.id.ll_total_budget);
         viewAll = (TextView) view.findViewById(R.id.tv_view_all_budget);
@@ -99,5 +101,9 @@ public class DashboardBudgetCardViewHolder extends BaseCardViewHolder {
     @Override
     protected void recreateLayout() {
 
+    }
+
+    public void onEventMainThread(CommonEvents.BudgetModifiedEvent event) {
+        refreshData();
     }
 }

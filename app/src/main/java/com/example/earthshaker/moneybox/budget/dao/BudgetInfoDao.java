@@ -33,6 +33,14 @@ public class BudgetInfoDao extends BaseDao {
         List<BudgetConfig> budgetConfigList = new ArrayList<>();
         String query = "select * from " + Contract.Budget.TABLE_NAME + " ORDER BY " + Contract.Budget.COLUMN_NAME_AMOUNT + " DESC LIMIT 2";
         runRawQuery(query, cursor -> budgetConfigList.add(BudgetOrm.getBudgetConfig(cursor)));
+        for (BudgetConfig budgetConfig : budgetConfigList) {
+            if(!budgetConfig.getCategory().equalsIgnoreCase("All")){
+                budgetConfig.setSpent(TransactionInfoDAo.getAmountFromCategory(budgetConfig.getCategory()));
+            }
+            else{
+                budgetConfig.setSpent(TransactionInfoDAo.getTotalExpense());
+            }
+        }
         return budgetConfigList;
     }
 }

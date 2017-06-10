@@ -16,33 +16,22 @@ import de.greenrobot.event.EventBus;
 
 public class TransactionLIstActivity extends BaseActivity {
 
-    private TransactionLlistViewHolder transactionLlistViewHolder;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupUI(R.layout.activity_transaction_list, R.id.parent_transaction_list_activity);
-        EventBus.getDefault().register(this, getResources().getInteger(R.integer.level_1));
     }
 
     @Override
     protected void setupViewHolder(View view) {
         initializeChildActivityToolbar("Transaction List");
         onBackArrowUp();
-        transactionLlistViewHolder = new TransactionLlistViewHolder(this, view);
-/*
-        transactionLlistViewHolder.registerEventBus(getResources().getInteger(R.integer.level_1));
-*/
+       new TransactionLlistViewHolder(this, view);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        transactionLlistViewHolder.unRegisterEventBus();
-        EventBus.getDefault().unregister(this);
     }
 
-    public void onEventMainThread(TransactionsEventBus.OpenTransaction event){
-        ActivityNavigator.openTransactionActivity(this,event.getTransactionConfig());
-    }
 }

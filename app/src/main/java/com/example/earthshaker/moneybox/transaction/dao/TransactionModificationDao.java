@@ -21,6 +21,7 @@ public class TransactionModificationDao extends BaseDao {
         ContentValues cv = TransactionOrm.getContentValues(transactionConfig);
         DatabaseProvider.provideDatabase().insert(Contract.Transactions.TABLE_NAME, null, cv);
         EventBus.getDefault().post(new CommonEvents.AddTransaction());
+        EventBus.getDefault().post(new CommonEvents.BudgetModifiedEvent());
     }
 
     public static void editTransaction(TransactionConfig transactionConfig) {
@@ -28,11 +29,13 @@ public class TransactionModificationDao extends BaseDao {
         String where = Contract.Transactions._ID + " = '" + transactionConfig.getId() + "'";
         DatabaseProvider.provideDatabase().update(Contract.Transactions.TABLE_NAME, cv, where, null);
         EventBus.getDefault().post(new CommonEvents.AddTransaction());
+        EventBus.getDefault().post(new CommonEvents.BudgetModifiedEvent());
     }
 
     public static void deleteTransaction(String id) {
         String where = Contract.Transactions._ID + " = '" + id + "'";
         DatabaseProvider.provideDatabase().delete(Contract.Transactions.TABLE_NAME, where, null);
         EventBus.getDefault().post(new CommonEvents.AddTransaction());
+        EventBus.getDefault().post(new CommonEvents.BudgetModifiedEvent());
     }
 }

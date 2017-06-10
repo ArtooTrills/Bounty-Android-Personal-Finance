@@ -115,7 +115,6 @@ public class EnterAmountDialog extends DialogFragment {
     private void attachListeners() {
         saveAmount.setOnClickListener(v -> {
             saveAmount();
-            EventBus.getDefault().post(new CategoryEvent.FinishACtivity());
         });
 
         deleteAmount.setOnClickListener(v -> {
@@ -163,11 +162,12 @@ public class EnterAmountDialog extends DialogFragment {
             double amountValue = Double.parseDouble(amount.getText().toString());
             if (amountValue == 0) {
                 Toast.makeText(context, "Enter Valid Amount", Toast.LENGTH_SHORT).show();
-                return;
+            } else {
+                mBudgetConfig.setTotalamount(amountValue);
+                BudgetModificationDao.saveBudget(mBudgetConfig, isEdit);
+                dismiss();
+                EventBus.getDefault().post(new CategoryEvent.FinishACtivity());
             }
-            mBudgetConfig.setTotalamount(amountValue);
-            BudgetModificationDao.saveBudget(mBudgetConfig, isEdit);
-            dismiss();
         } catch (NumberFormatException e) {
             Toast.makeText(context, "Please enter valid amount", Toast.LENGTH_SHORT).show();
         }

@@ -20,6 +20,7 @@ import com.example.earthshaker.moneybox.common.BaseHolderEventBus;
 import com.example.earthshaker.moneybox.common.FabUtils;
 import com.example.earthshaker.moneybox.common.LayoutNotAddedToXmlException;
 import com.example.earthshaker.moneybox.common.NoDataViewHolder;
+import com.example.earthshaker.moneybox.common.eventbus.CommonEvents;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -42,7 +43,7 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
     private ProgressBar totalBudgetProgressBar;
     private RecyclerView budgetsRecyclerView;
     private FloatingActionMenu fabMenu;
-    private FloatingActionButton addCategory;
+    private FloatingActionButton addCategory,addTransaction;
 
     private Context context;
 
@@ -63,7 +64,7 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
 
         totalBudgetProgressBar = (ProgressBar) view.findViewById(R.id.sb_budget_progress);
         totalBudgetCard = (CardView) view.findViewById(R.id.card_view);
-
+        addTransaction = (FloatingActionButton) view.findViewById(R.id.fab_transaction);
         fabMenu = (FloatingActionMenu) view.findViewById(R.id.fab_menu);
         budgetsRecyclerView = (RecyclerView) view.findViewById(R.id.rv_category_budget_list);
 
@@ -95,6 +96,11 @@ public class BudgetActivityViewHolder extends BaseHolderEventBus {
             BudgetConfig budgetConfig = new BudgetConfig();
             budgetConfig.setCategory("All");
             EventBus.getDefault().post(new BudgteEventBus.OpenBudgetDialog(budgetConfig));
+        });
+
+        addTransaction.setOnClickListener(l->{
+            EventBus.getDefault().post(new CommonEvents.StartAddingTransaction());
+
         });
 
     }
