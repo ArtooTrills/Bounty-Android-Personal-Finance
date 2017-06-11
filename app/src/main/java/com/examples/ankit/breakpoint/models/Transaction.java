@@ -11,7 +11,7 @@ public class Transaction {
     private Date date;
     private double amount;
     private int type; //debit or credit
-    private int expenseOrIncomeType; // 0=Grocery, 1=mobile recharge, 2=utility bill payment etc
+    private int expenseOrIncomeCategory; // 0=Grocery, 1=mobile recharge, 2=utility bill payment etc
     private int mode; // 0=debit card, 1=credit card, 2= wallets
 
     public String getName() {
@@ -46,12 +46,12 @@ public class Transaction {
         this.type = type;
     }
 
-    public int getExpenseOrIncomeType() {
-        return expenseOrIncomeType;
+    public int getExpenseOrIncomeCategory() {
+        return expenseOrIncomeCategory;
     }
 
-    public void setExpenseOrIncomeType(int expenseOrIncomeType) {
-        this.expenseOrIncomeType = expenseOrIncomeType;
+    public void setExpenseOrIncomeCategory(int expenseOrIncomeCategory) {
+        this.expenseOrIncomeCategory = expenseOrIncomeCategory;
     }
 
     public int getMode() {

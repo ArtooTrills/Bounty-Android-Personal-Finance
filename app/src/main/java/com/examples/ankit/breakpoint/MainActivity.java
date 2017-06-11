@@ -12,7 +12,8 @@ import android.widget.FrameLayout;
 
 import com.examples.ankit.breakpoint.agreements.SmsAgreementFragment;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
-import com.examples.ankit.breakpoint.reports.ExpensesFragment;
+import com.examples.ankit.breakpoint.reports.MonthlyExpenseFragment;
+import com.examples.ankit.breakpoint.reports.OverallExpensesFragment;
 import com.examples.ankit.breakpoint.reports.TransactionsFragment;
 import com.examples.ankit.breakpoint.sms.SmsLoadingFragment;
 
@@ -22,14 +23,14 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements SmsAgreementFragment.OnAgreementInteractionListener,
         SmsLoadingFragment.OnSmsLoadingListener, AddExpenseFragment.OnAddExpenseListener,
-        ExpensesFragment.OnExpenseClickListener {
+        OverallExpensesFragment.OnOverallExpenseClickListener {
 
     private static final String TAG = "mainActivity";
     @BindView(R.id.content_fragment)
     FrameLayout mFragmentContainer;
     @BindView(R.id.add_expense)
     FloatingActionButton addExpenseButton;
-    private ExpensesFragment mExpensesFragment;
+    private OverallExpensesFragment mOverallExpensesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         if (userConsent) {
             //this is the case where user already given us permission to read sms.
             fragment = new SmsLoadingFragment();
-            mExpensesFragment = new ExpensesFragment();
+            mOverallExpensesFragment = new OverallExpensesFragment();
 
         } else {
             // show user consent fragment here.
@@ -100,20 +101,27 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         FragmentManager manager = getSupportFragmentManager();
         manager.popBackStack();
         hideFab(false);
-        if(mExpensesFragment == null) {
-            mExpensesFragment = new ExpensesFragment();
-            loadFragment(mExpensesFragment);
+        if(mOverallExpensesFragment == null) {
+            mOverallExpensesFragment = new OverallExpensesFragment();
+            loadFragment(mOverallExpensesFragment);
         }
-        mExpensesFragment.addOrUpdateChart();
+        mOverallExpensesFragment.addOrUpdateChart();
     }
 
     @Override
     public void onExpenseClick(int type) {
-        showListFragment(type);
+//        showListFragment(type);
+        showMonthlyFragment();
     }
 
     private void showExpensesFragment() {
-        loadFragment(mExpensesFragment);
+        loadFragment(mOverallExpensesFragment);
+    }
+
+    private void showMonthlyFragment() {
+        Fragment fragment = new MonthlyExpenseFragment();
+        loadFragment(fragment, true);
+        hideFab(true);
     }
 
     private void showListFragment(int transactionType) {

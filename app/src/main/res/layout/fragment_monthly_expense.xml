@@ -1,0 +1,10 @@
+<FrameLayout style="@style/MatchParent"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             tools:context="com.examples.ankit.breakpoint.reports.MonthlyExpenseFragment">
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/monthly_bar_chart"
+        style="@style/MatchParent"/>
+
+</FrameLayout>

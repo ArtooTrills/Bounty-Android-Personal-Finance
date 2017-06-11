@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Expenses.
  * <p/>
  */
 public class TransactionsFragment extends ListFragment {
