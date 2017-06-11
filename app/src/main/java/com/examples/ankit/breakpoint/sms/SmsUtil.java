@@ -3,15 +3,17 @@ package com.examples.ankit.breakpoint.sms;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.examples.ankit.breakpoint.BreakPointApplication;
 import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.models.Transactions;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
+import com.examples.ankit.breakpoint.utils.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,15 +29,18 @@ public class SmsUtil {
 
     /**
      * Fetch SMS and save into local pref based on transaction type.
-     * */
+     */
     public static Transactions fetchInbox() {
         Transactions transactions = new Transactions();
 
         Uri uriSms = Uri.parse("content://sms/inbox");
         Cursor cursor = BreakPointApplication.getAppContext().getContentResolver()
-                .query(uriSms, new String[]{"_id", "address", "date", "body"}, null, null, "date ASC");
+                .query(uriSms, new String[]{"_id", "address", "date", "body"}, null, null, "date DESC");
         if (cursor != null && cursor.isBeforeFirst()) {
             ArrayList<Transaction> transactionsList = new ArrayList<>();
+            LinkedHashMap<Integer, List<Transaction>> monthlyTransaction = new LinkedHashMap<>();
+            List<Transaction> monthlyList = new ArrayList<>();
+            int currentMonth = -1; // this is for mapping monthly list
             while (cursor.moveToNext()) {
                 String senderAddress = cursor.getString(1);
                 String messageBody = cursor.getString(3);
@@ -45,22 +50,36 @@ public class SmsUtil {
                         Transaction transaction = new Transaction();
                         try {
                             long timestamp = Long.parseLong(cursor.getString(2));
-                            if(timestamp < MyPreferenceManager.getLastTransactionUpdateTime()){
+                            if (timestamp < MyPreferenceManager.getLastTransactionUpdateTime()) {
                                 break;
                             }
                             transaction.setDate(new Date(timestamp));
-                        } catch (NumberFormatException e){
+                            if (currentMonth == -1) {
+                                //this is first time case.
+                                currentMonth = DateUtil.getMonthFromDate(timestamp);
+                            } else if (currentMonth != DateUtil.getMonthFromDate(timestamp)) {
+                                //this is the case when we have reached to another month and needs tosave this list in map.
+                                monthlyList = new ArrayList<>();
+                                currentMonth = DateUtil.getMonthFromDate(timestamp);
+                            }
+                        } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
                         transaction.setAmount(getAmount(messageBody));
                         transaction.setType(transactionType);
                         transactionsList.add(transaction);
+                        monthlyList.add(transaction);
+                        monthlyTransaction.put(currentMonth, monthlyList);
                     }
                 }
             }
 
-            if(!transactionsList.isEmpty()) {
+            if (!transactionsList.isEmpty()) {
                 transactions.setTransactions(transactionsList);
+            }
+
+            if (!monthlyList.isEmpty()) {
+                transactions.setMonthlyTransactions(monthlyTransaction);
             }
             transactions.setLastChecked(System.currentTimeMillis());
         }
@@ -69,7 +88,7 @@ public class SmsUtil {
 
     /**
      * Checks and return if a given SMS is from Special Number
-     * */
+     */
     private static boolean isItTransactionalSms(String senderAddress) {
         if (TextUtils.isEmpty(senderAddress)) {
             return false;
@@ -87,7 +106,7 @@ public class SmsUtil {
 
     /**
      * Returns amount from an SMS.
-     * */
+     */
     private static double getAmount(String messageBody) {
         Pattern regEx
                 = Pattern.compile("(?i)(?:(?:RS|INR|MRP)\\.?\\s?)(\\d+(:?\\,\\d+)?(\\,\\d+)?(\\.\\d{1,2})?)");
@@ -107,7 +126,7 @@ public class SmsUtil {
 
     /**
      * It reads sms body and based on keywords, return transaction type as Expense or Income
-     * */
+     */
     private static int getTransactionType(String messageBody) {
         int transactionType = UNDEFINED;
         if (messageBody.contains("paid") || messageBody.contains("debited") || messageBody.contains("spent") ||

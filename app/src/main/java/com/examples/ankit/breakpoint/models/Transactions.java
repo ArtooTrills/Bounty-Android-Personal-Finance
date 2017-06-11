@@ -1,6 +1,7 @@
 package com.examples.ankit.breakpoint.models;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ import java.util.List;
 public class Transactions {
     private List<Transaction> transactions;
     private long lastChecked;// used to stop SMS processing after this time.
+    private LinkedHashMap<Integer, List<Transaction>> monthlyTransactions;
 
     public List<Transaction> getTransactions() {
         if(transactions == null) {
@@ -28,5 +30,16 @@ public class Transactions {
 
     public void setLastChecked(long lastChecked) {
         this.lastChecked = lastChecked;
+    }
+
+    public LinkedHashMap<Integer, List<Transaction>> getMonthlyTransactions() {
+        if(monthlyTransactions == null) {
+            monthlyTransactions = new LinkedHashMap<>();
+        }
+        return monthlyTransactions;
+    }
+
+    public void setMonthlyTransactions(LinkedHashMap<Integer, List<Transaction>> monthlyTransactions) {
+        this.monthlyTransactions = monthlyTransactions;
     }
 }

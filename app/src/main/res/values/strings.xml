@@ -25,6 +25,7 @@
     <string name="overview">Overview</string>
     <string name="expense">Expenses</string>
     <string name="income">Income</string>
+    <string name="monthly_report">Monthly Report</string>
 
 
     <string-array name="type">

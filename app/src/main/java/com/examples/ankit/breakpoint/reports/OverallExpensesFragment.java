@@ -36,14 +36,14 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExpensesFragment extends Fragment implements OnChartValueSelectedListener {
+public class OverallExpensesFragment extends Fragment implements OnChartValueSelectedListener {
 
-    private OnExpenseClickListener mListener;
+    private OnOverallExpenseClickListener mListener;
 
     @BindView(R.id.expenses_summary_chart)
     PieChart mChart;
 
-    public ExpensesFragment() {
+    public OverallExpensesFragment() {
         // Required empty public constructor
     }
 
@@ -66,8 +66,8 @@ public class ExpensesFragment extends Fragment implements OnChartValueSelectedLi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnExpenseClickListener) {
-            mListener = (OnExpenseClickListener) context;
+        if (context instanceof OnOverallExpenseClickListener) {
+            mListener = (OnOverallExpenseClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnAddExpenseListener");
@@ -214,7 +214,7 @@ public class ExpensesFragment extends Fragment implements OnChartValueSelectedLi
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnExpenseClickListener {
+    public interface OnOverallExpenseClickListener {
         // TODO: Update argument type and name
         void onExpenseClick(int type);
     }
