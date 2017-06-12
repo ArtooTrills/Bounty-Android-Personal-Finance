@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchParent"
+    tools:context="com.examples.ankit.breakpoint.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/content_fragment"
+        style="@style/MatchParent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_expense"
+        android:layout_margin="@dimen/small_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"/>
+</RelativeLayout>
