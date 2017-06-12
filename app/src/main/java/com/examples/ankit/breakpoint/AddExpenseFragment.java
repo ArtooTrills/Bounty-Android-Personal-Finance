@@ -25,6 +25,8 @@ import com.examples.ankit.breakpoint.utils.DateUtil;
 import com.examples.ankit.breakpoint.view.DatePickerFragment;
 
 import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -173,6 +175,14 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
                 transactions = new Transactions();
             }
             transactions.getTransactions().add(0, transaction);
+            transactions.setLastChecked(System.currentTimeMillis());
+
+            int month = DateUtil.getMonthFromDate(mCalendar.getTimeInMillis());
+            LinkedHashMap<Integer, List<Transaction>> existingMonthlyTransactions = transactions.getMonthlyTransactions();
+            List<Transaction> expensesOfMonth = existingMonthlyTransactions.get(month);
+            expensesOfMonth.add(transaction);
+            existingMonthlyTransactions.put(month, expensesOfMonth);
+            transactions.setMonthlyTransactions(existingMonthlyTransactions);
             MyPreferenceManager.setTransactions(transactions);
             if(mListener != null) {
                 mListener.onAddExpense();

@@ -35,7 +35,7 @@ public class SmsUtil {
 
         Uri uriSms = Uri.parse("content://sms/inbox");
         Cursor cursor = BreakPointApplication.getAppContext().getContentResolver()
-                .query(uriSms, new String[]{"_id", "address", "date", "body"}, null, null, "date DESC");
+                .query(uriSms, new String[]{"_id", "address", "date", "body"}, null, null, "date ASC");
         if (cursor != null && cursor.isBeforeFirst()) {
             ArrayList<Transaction> transactionsList = new ArrayList<>();
             LinkedHashMap<Integer, List<Transaction>> monthlyTransaction = new LinkedHashMap<>();
