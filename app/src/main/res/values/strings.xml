@@ -26,6 +26,10 @@
     <string name="expense">Expenses</string>
     <string name="income">Income</string>
     <string name="monthly_report">Monthly Report</string>
+    <string name="expense_notification_title">New Expense</string>
+    <string name="income_notification_title">New Income</string>
+    <string name="expense_notification_body">We have detected a new expense of Rs.</string>
+    <string name="income_notification_body">We have detected a new income of Rs.</string>
 
 
     <string-array name="type">

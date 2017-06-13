@@ -86,6 +86,41 @@ public class SmsUtil {
         return transactions;
     }
 
+    public static Transaction addSingleSmsToTransaction(String address, String messageBody, long timestamp) {
+        Transaction transaction = null;
+        if (TextUtils.isEmpty(address) || TextUtils.isEmpty(messageBody)) {
+            return transaction;
+        }
+        if (isItTransactionalSms(address)) {
+            transaction = new Transaction();
+            int transactionType = getTransactionType(messageBody);
+            if (UNDEFINED != transactionType) {
+                try {
+                    transaction.setDate(new Date(timestamp));
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                transaction.setAmount(getAmount(messageBody));
+                transaction.setType(transactionType);
+                Transactions transactions = MyPreferenceManager.getTransactions();
+                transactions.getTransactions().add(0, transaction);
+                transactions.setLastChecked(System.currentTimeMillis());
+
+                int month = DateUtil.getMonthFromDate(timestamp);
+                LinkedHashMap<Integer, List<Transaction>> existingMonthlyTransactions = transactions.getMonthlyTransactions();
+                List<Transaction> expensesOfMonth = existingMonthlyTransactions.get(month);
+                expensesOfMonth.add(transaction);
+                existingMonthlyTransactions.put(month, expensesOfMonth);
+                transactions.setMonthlyTransactions(existingMonthlyTransactions);
+
+                MyPreferenceManager.setTransactions(transactions);
+            }
+            return transaction;
+        }
+        return transaction;
+    }
+
     /**
      * Checks and return if a given SMS is from Special Number
      */

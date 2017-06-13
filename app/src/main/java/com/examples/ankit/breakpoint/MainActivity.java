@@ -11,11 +11,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.examples.ankit.breakpoint.agreements.SmsAgreementFragment;
+import com.examples.ankit.breakpoint.models.SmsReceivedEvent;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
 import com.examples.ankit.breakpoint.reports.MonthlyExpenseFragment;
 import com.examples.ankit.breakpoint.reports.OverallExpensesFragment;
 import com.examples.ankit.breakpoint.reports.TransactionsFragment;
 import com.examples.ankit.breakpoint.sms.SmsLoadingFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -144,4 +149,22 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         super.onBackPressed();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SmsReceivedEvent event) {
+        if(mOverallExpensesFragment != null) {
+            mOverallExpensesFragment.addOrUpdateChart();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 }
