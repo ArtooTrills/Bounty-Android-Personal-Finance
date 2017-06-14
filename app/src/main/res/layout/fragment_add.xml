@@ -35,6 +35,11 @@
     </android.support.design.widget.TextInputLayout>
     <Spinner
         android:layout_marginBottom="@dimen/small_padding"
+        android:id="@+id/expense_category_spinner"
+        style="@style/Default"/>
+
+    <Spinner
+        android:layout_marginBottom="@dimen/small_padding"
         android:id="@+id/date_spinner"
         style="@style/Default"/>
 

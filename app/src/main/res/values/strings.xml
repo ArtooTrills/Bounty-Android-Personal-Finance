@@ -36,4 +36,17 @@
         <item>Expense</item>
         <item>Income</item>
     </string-array>
+
+    <string-array name="expense_category">
+        <item>Select Category</item>
+        <item>Grocery</item>
+        <item>Fuel</item>
+        <item>Investment</item>
+        <item>Bills/Utilities</item>
+        <item>Travel</item>
+        <item>Insurance</item>
+        <item>Loan</item>
+        <item>Mobile Recharge</item>
+        <item>Other</item>
+    </string-array>
 </resources>
