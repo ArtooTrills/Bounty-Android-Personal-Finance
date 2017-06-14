@@ -102,15 +102,15 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
 
     @Override
     public void onAddExpense() {
-
         FragmentManager manager = getSupportFragmentManager();
         manager.popBackStack();
         hideFab(false);
-        if(mOverallExpensesFragment == null) {
+        if (mOverallExpensesFragment == null) {
             mOverallExpensesFragment = new OverallExpensesFragment();
             loadFragment(mOverallExpensesFragment);
+        } else {
+            mOverallExpensesFragment.addOrUpdateChart();
         }
-        mOverallExpensesFragment.addOrUpdateChart();
     }
 
     @Override
@@ -120,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
     }
 
     private void showExpensesFragment() {
+        if (mOverallExpensesFragment == null) {
+            mOverallExpensesFragment = new OverallExpensesFragment();
+        }
         loadFragment(mOverallExpensesFragment);
     }
 
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SmsReceivedEvent event) {
-        if(mOverallExpensesFragment != null) {
+        if (mOverallExpensesFragment != null) {
             mOverallExpensesFragment.addOrUpdateChart();
         }
     }
