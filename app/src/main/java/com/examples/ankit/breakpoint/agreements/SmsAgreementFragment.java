@@ -76,7 +76,6 @@ public class SmsAgreementFragment extends Fragment {
 
     @OnClick(R.id.txt_accept)
     public void accept(View view){
-        Toast.makeText(getActivity(), "Congrats!", Toast.LENGTH_SHORT).show();
         MyPreferenceManager.setUserConsent(true);
         if (mListener != null) {
             mListener.onAgreementAccepted(true);

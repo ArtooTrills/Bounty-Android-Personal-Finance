@@ -92,9 +92,9 @@ public class SmsUtil {
             return transaction;
         }
         if (isItTransactionalSms(address)) {
-            transaction = new Transaction();
             int transactionType = getTransactionType(messageBody);
             if (UNDEFINED != transactionType) {
+                transaction = new Transaction();
                 try {
                     transaction.setDate(new Date(timestamp));
 
@@ -164,11 +164,11 @@ public class SmsUtil {
      */
     private static int getTransactionType(String messageBody) {
         int transactionType = UNDEFINED;
-        if (messageBody.contains("paid") || messageBody.contains("debited") || messageBody.contains("spent") ||
-                messageBody.contains("purchase") || messageBody.contains("dr")) {
+        if (messageBody.contains("paid") || messageBody.contains("debited")
+                || messageBody.contains("spent") || messageBody.contains("purchase")) {
             transactionType = EXPENSE;
-        } else if (messageBody.contains("credited") || messageBody.contains("cr")
-                || messageBody.contains("received") || messageBody.contains("receive")) {
+        } else if (messageBody.contains("credited") || messageBody.contains("received")
+                || messageBody.contains("receive")) {
             transactionType = INCOME;
         }
 

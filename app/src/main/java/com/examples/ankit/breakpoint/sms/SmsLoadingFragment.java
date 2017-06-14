@@ -46,7 +46,6 @@ public class SmsLoadingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sms_loading, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -71,8 +70,8 @@ public class SmsLoadingFragment extends Fragment {
             if (MyPreferenceManager.getTransactions() != null) {
                 mListener.onSmsLoaded();
             } else {
-                mLoading.setVisibility(View.INVISIBLE);
                 mLoadingText.setText(R.string.no_sms);
+                mLoading.setVisibility(View.INVISIBLE);
             }
         }
     }

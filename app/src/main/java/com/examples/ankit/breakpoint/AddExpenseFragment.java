@@ -24,6 +24,7 @@ import com.examples.ankit.breakpoint.sms.SmsUtil;
 import com.examples.ankit.breakpoint.utils.DateUtil;
 import com.examples.ankit.breakpoint.view.DatePickerFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -180,6 +181,10 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
             int month = DateUtil.getMonthFromDate(mCalendar.getTimeInMillis());
             LinkedHashMap<Integer, List<Transaction>> existingMonthlyTransactions = transactions.getMonthlyTransactions();
             List<Transaction> expensesOfMonth = existingMonthlyTransactions.get(month);
+            if(expensesOfMonth == null) {
+                expensesOfMonth = new ArrayList<>();
+            }
+
             expensesOfMonth.add(transaction);
             existingMonthlyTransactions.put(month, expensesOfMonth);
             transactions.setMonthlyTransactions(existingMonthlyTransactions);
