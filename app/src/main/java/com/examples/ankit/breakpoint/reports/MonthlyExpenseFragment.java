@@ -39,6 +39,7 @@ public class MonthlyExpenseFragment extends Fragment {
     private static final String TAG = "MonthlyExpenseFragment";
     @BindView(R.id.monthly_bar_chart)
     BarChart mChart;
+    private int FirstMonth = -1;
 
     public MonthlyExpenseFragment() {
         // Required empty public constructor
@@ -102,6 +103,9 @@ public class MonthlyExpenseFragment extends Fragment {
             long totalExpenseOfMonth = 0;
             long totalIncomeOfMonth = 0;
             for (Transaction transaction : monthlyTransactions.get(month)) {
+                if(FirstMonth > month){
+                    FirstMonth = month;
+                }
                 if (SmsUtil.EXPENSE == transaction.getType()) {
                     totalExpenseOfMonth += transaction.getAmount();
                 } else if (SmsUtil.INCOME == transaction.getType()) {
@@ -122,13 +126,15 @@ public class MonthlyExpenseFragment extends Fragment {
 
     private void initializeChart(BarDataSet incomeDataSet, BarDataSet expenseDataSet) {
         BarData data = new BarData(incomeDataSet, expenseDataSet);
-        float barWidth = 0.4f;
+        float barWidth = 0.2f;
         data.setBarWidth(barWidth);
         mChart.setData(data);
         float groupSpace = 0.06f;
         float barSpace = 0.02f;
 
-        mChart.groupBars(0, groupSpace, barSpace);
+        if (FirstMonth >= 0) {
+            mChart.groupBars(FirstMonth, groupSpace, barSpace);
+        }
 
         mChart.getData().notifyDataChanged();
         mChart.notifyDataSetChanged();
