@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.models.Transactions;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
-import com.examples.ankit.breakpoint.sms.SmsUtil;
 import com.examples.ankit.breakpoint.utils.DateUtil;
 import com.examples.ankit.breakpoint.view.DatePickerFragment;
 
@@ -43,9 +42,12 @@ import static android.content.ContentValues.TAG;
  * {@link OnAddExpenseListener} interface
  * to handle interaction events.
  */
-public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     private OnAddExpenseListener mListener;
+    @BindView(R.id.expense_category_spinner)
+    Spinner mExpenseCategorySpinner;
+
     @BindView(R.id.date_spinner)
     Spinner mDateSpinner;
 
@@ -77,19 +79,27 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSpinnerText(getString(R.string.expense_date));
+        setExpenseCategorySpinnerText();
         mDateSet = false;
         mCalendar = Calendar.getInstance();
     }
 
     public boolean validateInput() {
         boolean valid = true;
-        if(TextUtils.isEmpty(mExpenseName.getText())){
+        if (TextUtils.isEmpty(mExpenseName.getText())) {
             mExpenseName.setError(getString(R.string.required));
             valid = false;
         }
 
-        if(TextUtils.isEmpty(mExpenseAmount.getText())){
+        if (TextUtils.isEmpty(mExpenseAmount.getText())) {
             mExpenseAmount.setError(getString(R.string.required));
+            valid = false;
+        }
+
+        if (mExpenseCategorySpinner.getSelectedItemPosition() == 0) {
+            TextView textview = (TextView) mExpenseCategorySpinner.getSelectedView();
+            textview.setError(getString(R.string.required));
+            textview.setTextColor(getActivity().getResources().getColor(android.R.color.holo_red_dark));
             valid = false;
         }
 
@@ -148,6 +158,13 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
         setSpinnerText(DateUtil.dateToString(mCalendar.getTime()));
     }
 
+    private void setExpenseCategorySpinnerText() {
+        String[] categoryArray = getResources().getStringArray(R.array.expense_category);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, categoryArray);
+        mExpenseCategorySpinner.setAdapter(adapter);
+    }
+
     private void setSpinnerText(String text) {
         String[] dateArray = {text};
 
@@ -165,14 +182,15 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
     @OnClick(R.id.btn_save_expense)
     public void onClick(View view) {
         Log.e(TAG, "Expense: " + expenseSpinner.getSelectedItemPosition());
-        if(validateInput()){
+        if (validateInput()) {
             Transaction transaction = new Transaction();
             transaction.setType(expenseSpinner.getSelectedItemPosition());
+            transaction.setExpenseOrIncomeCategory(mExpenseCategorySpinner.getSelectedItemPosition());
             transaction.setName(mExpenseName.getText().toString().trim());
             transaction.setAmount(Double.parseDouble(mExpenseAmount.getText().toString().trim()));
             transaction.setDate(mCalendar.getTime());
             Transactions transactions = MyPreferenceManager.getTransactions();
-            if(transactions == null){
+            if (transactions == null) {
                 transactions = new Transactions();
             }
             transactions.getTransactions().add(0, transaction);
@@ -189,7 +207,7 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
             existingMonthlyTransactions.put(month, expensesOfMonth);
             transactions.setMonthlyTransactions(existingMonthlyTransactions);
             MyPreferenceManager.setTransactions(transactions);
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onAddExpense();
             }
         }
