@@ -103,7 +103,7 @@ public class MonthlyExpenseFragment extends Fragment {
             long totalExpenseOfMonth = 0;
             long totalIncomeOfMonth = 0;
             for (Transaction transaction : monthlyTransactions.get(month)) {
-                if(FirstMonth > month){
+                if(FirstMonth <0 || FirstMonth > month){
                     FirstMonth = month;
                 }
                 if (SmsUtil.EXPENSE == transaction.getType()) {
@@ -136,6 +136,11 @@ public class MonthlyExpenseFragment extends Fragment {
             mChart.groupBars(FirstMonth, groupSpace, barSpace);
         }
 
+        mChart.getData().notifyDataChanged();
+        mChart.notifyDataSetChanged();
+    }
+
+    public void addOrUpdateChart(){
         mChart.getData().notifyDataChanged();
         mChart.notifyDataSetChanged();
     }

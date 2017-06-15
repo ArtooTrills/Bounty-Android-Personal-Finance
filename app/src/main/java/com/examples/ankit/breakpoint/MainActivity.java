@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 
 import com.examples.ankit.breakpoint.agreements.SmsAgreementFragment;
 import com.examples.ankit.breakpoint.models.SmsReceivedEvent;
@@ -35,7 +36,10 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
     FrameLayout mFragmentContainer;
     @BindView(R.id.add_expense)
     FloatingActionButton addExpenseButton;
+    @BindView(R.id.expenses_scroll_view)
+    ScrollView mScrollView;
     private OverallExpensesFragment mOverallExpensesFragment;
+    private MonthlyExpenseFragment mMonthlyExpenseFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
             //this is the case where user already given us permission to read sms.
             fragment = new SmsLoadingFragment();
             mOverallExpensesFragment = new OverallExpensesFragment();
+            mMonthlyExpenseFragment = new MonthlyExpenseFragment();
 
         } else {
             // show user consent fragment here.
@@ -70,7 +75,14 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
             fragmentTransaction.addToBackStack(null);
         }
     }
+    private void loadMainScreenFragments(OverallExpensesFragment overallExpensesFragment, MonthlyExpenseFragment monthlyExpenseFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.overall_fragment_container, overallExpensesFragment);
+        fragmentTransaction.replace(R.id.monthly_fragment_container, monthlyExpenseFragment);
+        fragmentTransaction.commitAllowingStateLoss();
 
+    }
     private void hideFab(boolean hide) {
         if (hide) {
             addExpenseButton.setVisibility(View.GONE);
@@ -82,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
     @OnClick(R.id.add_expense)
     public void onClick(View view) {
         hideFab(true);
+        mScrollView.setVisibility(View.GONE);
         AddExpenseFragment fragment = new AddExpenseFragment();
         loadFragment(fragment, true);
 
@@ -107,23 +120,33 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         hideFab(false);
         if (mOverallExpensesFragment == null) {
             mOverallExpensesFragment = new OverallExpensesFragment();
-            loadFragment(mOverallExpensesFragment);
+//            loadFragment(mOverallExpensesFragment);
         } else {
             mOverallExpensesFragment.addOrUpdateChart();
         }
+
+        if(mMonthlyExpenseFragment == null) {
+            mMonthlyExpenseFragment = new MonthlyExpenseFragment();
+        } else {
+            mMonthlyExpenseFragment.addOrUpdateChart();
+        }
+        mScrollView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onExpenseClick(int type) {
-//        showListFragment(type);
-        showMonthlyFragment();
+        mScrollView.setVisibility(View.GONE);
+        showListFragment(type);
     }
 
     private void showExpensesFragment() {
         if (mOverallExpensesFragment == null) {
             mOverallExpensesFragment = new OverallExpensesFragment();
         }
-        loadFragment(mOverallExpensesFragment);
+        if(mMonthlyExpenseFragment == null) {
+            mMonthlyExpenseFragment = new MonthlyExpenseFragment();
+        }
+        loadMainScreenFragments(mOverallExpensesFragment, mMonthlyExpenseFragment);
     }
 
     private void showMonthlyFragment() {
@@ -147,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
             //this is workaround to pop Fragments in AppcompatActivity.
             fm.popBackStack();
             hideFab(false);
+            mScrollView.setVisibility(View.VISIBLE);
             return;
         }
         super.onBackPressed();

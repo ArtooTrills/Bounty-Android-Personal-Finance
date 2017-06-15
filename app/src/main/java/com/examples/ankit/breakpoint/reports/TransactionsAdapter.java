@@ -23,10 +23,12 @@ public class TransactionsAdapter extends BaseAdapter {
     private Activity mActivity;
     private List<Transaction> mTransactions;
     private double total;
+    private String[] mCategories;
 
     public TransactionsAdapter(Activity activity, List<Transaction> transactions) {
         this.mActivity = activity;
         this.mTransactions = transactions;
+        mCategories = activity.getResources().getStringArray(R.array.expense_category);
     }
 
     @Override
@@ -53,6 +55,7 @@ public class TransactionsAdapter extends BaseAdapter {
             holder.transactionAmount = (TextView) convertView.findViewById(R.id.txt_transaction_amount);
             holder.transactionName = (TextView) convertView.findViewById(R.id.txt_transaction_name);
             holder.transactionDate = (TextView) convertView.findViewById(R.id.txt_transaction_date);
+            holder.transactionCategory = (TextView) convertView.findViewById(R.id.txt_transaction_category);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -62,6 +65,12 @@ public class TransactionsAdapter extends BaseAdapter {
         holder.transactionName.setText(transaction.getName());
         holder.transactionAmount.setText(Double.toString(transaction.getAmount()));
         holder.transactionDate.setText(DateUtil.dateToString(transaction.getDate()));
+        int expenseOrIncomeCategory = transaction.getExpenseOrIncomeCategory();
+        if(expenseOrIncomeCategory > 0) {
+            holder.transactionCategory.setText(mCategories[expenseOrIncomeCategory]);
+        } else {
+            holder.transactionCategory.setText("Uncategories");
+        }
         return convertView;
     }
 
@@ -69,5 +78,6 @@ public class TransactionsAdapter extends BaseAdapter {
         private TextView transactionAmount;
         private TextView transactionName;
         private TextView transactionDate;
+        private TextView transactionCategory;
     }
 }

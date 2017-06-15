@@ -68,6 +68,7 @@ public class SmsLoadingFragment extends Fragment {
             }
 
             if (MyPreferenceManager.getTransactions() != null) {
+                mLoading.setVisibility(View.INVISIBLE);
                 mListener.onSmsLoaded();
             } else {
                 mLoadingText.setText(R.string.no_sms);
