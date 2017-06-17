@@ -17,6 +17,7 @@ import com.examples.ankit.breakpoint.sms.SmsUtil;
 import com.examples.ankit.breakpoint.view.DayAxisValueFormatter;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -72,8 +73,10 @@ public class MonthlyExpenseFragment extends Fragment {
         YAxis yLeftAxis = mChart.getAxisLeft();
         yLeftAxis.setDrawZeroLine(false);
         yLeftAxis.setDrawGridLines(false);
+        yLeftAxis.setAxisMinimum(0f);
 
         XAxis xAxis = mChart.getXAxis();
+        xAxis.setAxisMinimum(0f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
@@ -103,7 +106,7 @@ public class MonthlyExpenseFragment extends Fragment {
             long totalExpenseOfMonth = 0;
             long totalIncomeOfMonth = 0;
             for (Transaction transaction : monthlyTransactions.get(month)) {
-                if(FirstMonth <0 || FirstMonth > month){
+                if(FirstMonth < 0 || FirstMonth > month){
                     FirstMonth = month;
                 }
                 if (SmsUtil.EXPENSE == transaction.getType()) {
@@ -126,7 +129,7 @@ public class MonthlyExpenseFragment extends Fragment {
 
     private void initializeChart(BarDataSet incomeDataSet, BarDataSet expenseDataSet) {
         BarData data = new BarData(incomeDataSet, expenseDataSet);
-        float barWidth = 0.2f;
+        float barWidth = 0.4f;
         data.setBarWidth(barWidth);
         mChart.setData(data);
         float groupSpace = 0.06f;
@@ -141,7 +144,6 @@ public class MonthlyExpenseFragment extends Fragment {
     }
 
     public void addOrUpdateChart(){
-        mChart.getData().notifyDataChanged();
-        mChart.notifyDataSetChanged();
+        initializeData();
     }
 }

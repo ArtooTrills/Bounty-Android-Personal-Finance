@@ -85,9 +85,8 @@ public class OverallExpensesFragment extends Fragment implements OnChartValueSel
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
 
-        mChart.setDragDecelerationFrictionCoef(0.95f);
+        mChart.setDragDecelerationFrictionCoef(0.065f);
 
-        mChart.setCenterText(getString(R.string.overview));
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);
@@ -95,16 +94,12 @@ public class OverallExpensesFragment extends Fragment implements OnChartValueSel
         mChart.setTransparentCircleColor(Color.WHITE);
         mChart.setTransparentCircleAlpha(110);
 
-        mChart.setHoleRadius(58f);
+        mChart.setHoleRadius(8f);
         mChart.setTransparentCircleRadius(61f);
-
-        mChart.setDrawCenterText(true);
 
         mChart.setRotationAngle(0);
         // enable rotation of the chart by touch
         mChart.setRotationEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
-        mChart.setHighlightPerTapEnabled(true);
 
         // mChart.setUnit(" €");
         // mChart.setDrawUnitsInChart(true);
@@ -201,6 +196,8 @@ public class OverallExpensesFragment extends Fragment implements OnChartValueSel
         if (mListener != null) {
             mListener.onExpenseClick((int) h.getX());
         }
+        //this is to remove highlight of the current selected pie
+        mChart.highlightValues(null);
     }
 
     @Override

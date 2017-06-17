@@ -82,6 +82,8 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
         setExpenseCategorySpinnerText();
         mDateSet = false;
         mCalendar = Calendar.getInstance();
+        getActivity().setTitle(getString(R.string.add));
+
     }
 
     public boolean validateInput() {

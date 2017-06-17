@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
@@ -16,7 +17,7 @@ import com.examples.ankit.breakpoint.models.SmsReceivedEvent;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
 import com.examples.ankit.breakpoint.reports.MonthlyExpenseFragment;
 import com.examples.ankit.breakpoint.reports.OverallExpensesFragment;
-import com.examples.ankit.breakpoint.reports.TransactionsFragment;
+import com.examples.ankit.breakpoint.reports.TransactionsListFragment;
 import com.examples.ankit.breakpoint.sms.SmsLoadingFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,6 +62,16 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         }
         loadFragment(fragment);
         hideFab(!userConsent);
+        addExpenseButton.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // Giving extra padding 1.5 times because we are getting height of + button which has
+                // margins and custom view to show circle around it.
+
+                mScrollView.setPadding(10, 10, 10, addExpenseButton.getHeight());
+
+            }
+        });
     }
 
     private void loadFragment(Fragment fragment) {
@@ -75,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
             fragmentTransaction.addToBackStack(null);
         }
     }
+
     private void loadMainScreenFragments(OverallExpensesFragment overallExpensesFragment, MonthlyExpenseFragment monthlyExpenseFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -83,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         fragmentTransaction.commitAllowingStateLoss();
 
     }
+
     private void hideFab(boolean hide) {
         if (hide) {
             addExpenseButton.setVisibility(View.GONE);
@@ -120,17 +133,17 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         hideFab(false);
         if (mOverallExpensesFragment == null) {
             mOverallExpensesFragment = new OverallExpensesFragment();
-//            loadFragment(mOverallExpensesFragment);
         } else {
             mOverallExpensesFragment.addOrUpdateChart();
         }
 
-        if(mMonthlyExpenseFragment == null) {
+        if (mMonthlyExpenseFragment == null) {
             mMonthlyExpenseFragment = new MonthlyExpenseFragment();
         } else {
             mMonthlyExpenseFragment.addOrUpdateChart();
         }
         mScrollView.setVisibility(View.VISIBLE);
+        setTitle(R.string.app_name);
     }
 
     @Override
@@ -143,27 +156,21 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
         if (mOverallExpensesFragment == null) {
             mOverallExpensesFragment = new OverallExpensesFragment();
         }
-        if(mMonthlyExpenseFragment == null) {
+        if (mMonthlyExpenseFragment == null) {
             mMonthlyExpenseFragment = new MonthlyExpenseFragment();
         }
+        mScrollView.setVisibility(View.VISIBLE);
         loadMainScreenFragments(mOverallExpensesFragment, mMonthlyExpenseFragment);
     }
 
-    private void showMonthlyFragment() {
-        Fragment fragment = new MonthlyExpenseFragment();
-        loadFragment(fragment, true);
-        hideFab(true);
-    }
-
     private void showListFragment(int transactionType) {
-        Fragment fragment = TransactionsFragment.getInstance(transactionType);
+        Fragment fragment = TransactionsListFragment.getInstance(transactionType);
         loadFragment(fragment, true);
         hideFab(true);
     }
 
     @Override
     public void onBackPressed() {
-
         FragmentManager fm = getSupportFragmentManager();
         float backStackEntryCount = fm.getBackStackEntryCount();
         if (backStackEntryCount >= 1) {
@@ -171,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
             fm.popBackStack();
             hideFab(false);
             mScrollView.setVisibility(View.VISIBLE);
+            setTitle(getString(R.string.app_name));
             return;
         }
         super.onBackPressed();

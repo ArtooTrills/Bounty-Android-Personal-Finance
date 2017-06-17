@@ -30,6 +30,7 @@
     <string name="income_notification_title">New Income</string>
     <string name="expense_notification_body">We have detected a new expense of Rs.</string>
     <string name="income_notification_body">We have detected a new income of Rs.</string>
+    <string name="add">Add</string>
 
 
     <string-array name="type">

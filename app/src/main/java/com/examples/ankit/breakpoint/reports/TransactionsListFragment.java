@@ -11,6 +11,7 @@ import com.examples.ankit.breakpoint.R;
 import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.models.Transactions;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
+import com.examples.ankit.breakpoint.sms.SmsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
  * A fragment representing a list of Expenses.
  * <p/>
  */
-public class TransactionsFragment extends ListFragment {
+public class TransactionsListFragment extends ListFragment {
     private static final String TRANSACTION_TYPE = "transaction_type";
     @BindView(R.id.list)
     ListView mListView;
@@ -35,11 +36,11 @@ public class TransactionsFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TransactionsFragment() {
+    public TransactionsListFragment() {
     }
 
-    public static TransactionsFragment getInstance(int type) {
-        TransactionsFragment fragment = new TransactionsFragment();
+    public static TransactionsListFragment getInstance(int type) {
+        TransactionsListFragment fragment = new TransactionsListFragment();
 
         Bundle bundle = new Bundle();
         bundle.putInt(TRANSACTION_TYPE, type);
@@ -63,6 +64,7 @@ public class TransactionsFragment extends ListFragment {
         initialize();
         mAdapter = new TransactionsAdapter(getActivity(), transactionsList);
         mListView.setAdapter(mAdapter);
+        getActivity().setTitle(transactionsType == SmsUtil.EXPENSE ? getString(R.string.expense) : getString(R.string.income));
     }
 
     private void initializeAdapterList(int transactionsType) {

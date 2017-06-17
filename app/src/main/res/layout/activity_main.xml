@@ -8,12 +8,14 @@
     <FrameLayout
         android:id="@+id/content_fragment"
         style="@style/MatchParent"/>
+
     <ScrollView
         android:id="@+id/expenses_scroll_view"
         style="@style/MatchParent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:visibility="gone">
 
         <LinearLayout
             style="@style/MatchParent"
@@ -43,11 +45,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.5"
+                android:layout_marginBottom="@dimen/medium_padding"
                 android:layout_marginTop="@dimen/small_padding"
+                android:layout_weight="0.5"
                 android:background="@android:color/white"
                 android:elevation="@dimen/medium_padding"
-                android:layout_marginBottom="@dimen/medium_padding"
                 card_view:cardCornerRadius="4dp">
 
                 <FrameLayout
