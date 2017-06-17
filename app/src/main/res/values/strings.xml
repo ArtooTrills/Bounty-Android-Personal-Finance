@@ -32,7 +32,6 @@
     <string name="income_notification_body">We have detected a new income of Rs.</string>
     <string name="add">Add</string>
 
-
     <string-array name="type">
         <item>Expense</item>
         <item>Income</item>

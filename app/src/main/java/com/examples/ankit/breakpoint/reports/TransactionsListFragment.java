@@ -14,6 +14,8 @@ import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
 import com.examples.ankit.breakpoint.sms.SmsUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,6 +81,13 @@ public class TransactionsListFragment extends ListFragment {
                 transactionsList.add(transaction);
             }
         }
+
+        Collections.sort(transactionsList, new Comparator<Transaction>() {
+            @Override
+            public int compare(Transaction transaction1, Transaction transaction2) {
+                return (transaction1.getDate().getTime() > transaction2.getDate().getTime() ? -1 : 1);
+            }
+        });
     }
 
     private void initialize() {
