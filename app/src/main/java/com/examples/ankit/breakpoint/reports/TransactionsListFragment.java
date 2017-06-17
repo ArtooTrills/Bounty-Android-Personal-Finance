@@ -1,5 +1,6 @@
 package com.examples.ankit.breakpoint.reports;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -7,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.examples.ankit.breakpoint.Gson;
 import com.examples.ankit.breakpoint.R;
+import com.examples.ankit.breakpoint.TransactionDetailsActivity;
 import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.models.Transactions;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
@@ -88,6 +91,13 @@ public class TransactionsListFragment extends ListFragment {
                 return (transaction1.getDate().getTime() > transaction2.getDate().getTime() ? -1 : 1);
             }
         });
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Intent intent = new Intent(getActivity(), TransactionDetailsActivity.class);
+        intent.putExtra(TransactionDetailsActivity.TRANSACTION, Gson.getInstance().toJson(transactionsList.get(position)));
+        startActivity(intent);
     }
 
     private void initialize() {

@@ -47,6 +47,7 @@
         <item>Insurance</item>
         <item>Loan</item>
         <item>Mobile Recharge</item>
+        <item>Electricity Bill</item>
         <item>Other</item>
     </string-array>
 </resources>

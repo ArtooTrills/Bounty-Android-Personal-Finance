@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout style="@style/MatchParent"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              tools:context=".TransactionDetailsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_collapseMode="pin">
+
+        <ImageView
+            android:id="@+id/close"
+            style="@style/WrapContent"
+            android:src="@drawable/ic_close_black_24dp"
+            android:tint="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/txt_transaction_name"
+            style="@style/Title"
+            android:paddingLeft="@dimen/small_padding"
+            android:textColor="@android:color/white"
+            tools:text="Name"/>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.design.widget.CoordinatorLayout
+        style="@style/MatchParent">
+
+        <RelativeLayout
+            android:id="@+id/bottom_layout"
+            style="@style/MatchParent">
+
+            <TextView
+                style="@style/Default"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="More details are coming soon here."/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/top_layout"
+            style="@style/WrapContent"
+            android:background="@color/colorPrimary"
+            android:minHeight="120dp"
+            android:paddingTop="@dimen/medium_padding">
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_transaction_category"
+                style="@style/WrapContent"
+                android:layout_marginLeft="@dimen/medium_padding"
+                android:src="@drawable/ic_gas_station"
+                app:backgroundTint="@android:color/white"
+                app:fabSize="mini"/>
+
+            <TextView
+                android:id="@+id/txt_transaction_category_name"
+                style="@style/WrapContent"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_toEndOf="@id/fab_transaction_category"
+                android:text="Category Name"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txt_transaction_date"
+                style="@style/WrapContent"
+                android:layout_below="@id/txt_transaction_category_name"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_toEndOf="@id/fab_transaction_category"
+                android:text="Date"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txt_transaction_amount"
+                style="@style/Default"
+                android:layout_below="@id/txt_transaction_date"
+                android:layout_marginStart="@dimen/large_padding"
+                android:layout_marginTop="@dimen/large_padding"
+                android:layout_toEndOf="@id/fab_transaction_category"
+                android:text="Amount"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/details_amount_font_size"
+                />
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            style="@style/WrapContent"
+            android:layout_margin="@dimen/small_padding"
+            android:padding="@dimen/medium_padding"
+            android:src="@android:drawable/ic_menu_edit"
+            app:backgroundTint="@android:color/white"
+            app:fabSize="normal"
+            app:layout_anchor="@id/top_layout"
+            app:layout_anchorGravity="bottom|right|end"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>
