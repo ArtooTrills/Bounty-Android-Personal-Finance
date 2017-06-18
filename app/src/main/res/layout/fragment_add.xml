@@ -1,0 +1,58 @@
+<LinearLayout style="@style/MatchParent"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:padding="@dimen/small_padding"
+              tools:context="com.examples.ankit.breakpoint.AddExpenseFragment">
+
+    <Spinner
+        android:id="@+id/expense_spinner"
+        style="@style/Default"
+        android:entries="@array/type"/>
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/Default"
+        android:padding="@dimen/tiny_padding">
+
+        <EditText
+            android:id="@+id/et_name"
+            style="@style/Default"
+            android:hint="Name"
+            android:inputType="textCapWords"
+            tools:text="Name"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/Default"
+        android:padding="@dimen/tiny_padding">
+
+        <EditText
+            android:id="@+id/et_amount"
+            style="@style/Default"
+            android:inputType="numberDecimal"
+            android:hint="Amount"
+            tools:text="Amount"/>
+    </android.support.design.widget.TextInputLayout>
+    <Spinner
+        android:layout_marginBottom="@dimen/small_padding"
+        android:id="@+id/expense_category_spinner"
+        style="@style/Default"/>
+
+    <Spinner
+        android:layout_marginBottom="@dimen/small_padding"
+        android:id="@+id/date_spinner"
+        style="@style/Default"/>
+
+    <Button
+        android:layout_marginTop="@dimen/small_padding"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:id="@+id/btn_save_expense"
+        style="@style/Default"
+        android:text="Save"/>
+
+</LinearLayout>

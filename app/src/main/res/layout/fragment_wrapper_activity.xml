@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/Default"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            style="@style/MatchParent"/>
+
+</LinearLayout>
