@@ -54,6 +54,7 @@ public class SmsUtil {
                                 break;
                             }
                             transaction.setDate(new Date(timestamp));
+                            transaction.setId(timestamp);
                             if (currentMonth == -1) {
                                 //this is first time case.
                                 currentMonth = DateUtil.getMonthFromDate(timestamp);

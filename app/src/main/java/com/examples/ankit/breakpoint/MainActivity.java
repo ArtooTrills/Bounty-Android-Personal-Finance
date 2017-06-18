@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 
 import com.examples.ankit.breakpoint.agreements.SmsAgreementFragment;
 import com.examples.ankit.breakpoint.models.SmsReceivedEvent;
+import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
 import com.examples.ankit.breakpoint.reports.MonthlyExpenseFragment;
 import com.examples.ankit.breakpoint.reports.OverallExpensesFragment;
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
     }
 
     @Override
-    public void onAddExpense() {
+    public void onAddExpense(Transaction transaction) {
         FragmentManager manager = getSupportFragmentManager();
         manager.popBackStack();
         hideFab(false);

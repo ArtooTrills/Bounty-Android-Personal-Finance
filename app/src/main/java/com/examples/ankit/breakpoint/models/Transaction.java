@@ -7,12 +7,21 @@ import java.util.Date;
  */
 
 public class Transaction {
+    private long id;
     private String name;
     private Date date;
     private double amount;
     private int type; //debit or credit
     private int expenseOrIncomeCategory; // 1=Grocery, 2=Fuel, 3=Investment, 4=Bills/Utilities, 5=Travel, 6=Insurance, 7=Loan, 8=Mobile Recharge, 9=Other
     private int mode; // 0=debit card, 1=credit card, 2= wallets
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -60,5 +69,20 @@ public class Transaction {
 
     public void setMode(int mode) {
         this.mode = mode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Transaction)) {
+            return false;
+        }
+        Transaction transaction = (Transaction) obj;
+        if (transaction.getId() != id) {
+            return false;
+        }
+        return true;
     }
 }

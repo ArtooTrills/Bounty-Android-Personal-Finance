@@ -43,7 +43,7 @@ import static android.content.ContentValues.TAG;
  * to handle interaction events.
  */
 public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
-
+    private static final String TRANSACTION = "transaction";
     private OnAddExpenseListener mListener;
     @BindView(R.id.expense_category_spinner)
     Spinner mExpenseCategorySpinner;
@@ -52,20 +52,29 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
     Spinner mDateSpinner;
 
     @BindView(R.id.expense_spinner)
-    Spinner expenseSpinner;
+    Spinner mExpenseSpinner;
 
     @BindView(R.id.et_name)
     EditText mExpenseName;
 
     @BindView(R.id.et_amount)
     EditText mExpenseAmount;
+
     private Calendar mCalendar;
     private boolean mDateSet;
+    private Transaction mTransaction;
 
     public AddExpenseFragment() {
         // Required empty public constructor
     }
 
+    public static AddExpenseFragment getInstance(String transaction) {
+        Bundle extra = new Bundle();
+        extra.putString(TRANSACTION, transaction);
+        AddExpenseFragment fragment = new AddExpenseFragment();
+        fragment.setArguments(extra);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,11 +87,30 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setSpinnerText(getString(R.string.expense_date));
-        setExpenseCategorySpinnerText();
-        mDateSet = false;
         mCalendar = Calendar.getInstance();
-        getActivity().setTitle(getString(R.string.add));
+        initializeExpenseCategorySpinnerText();
+
+        if (getArguments() != null && getArguments().containsKey(TRANSACTION)) {
+            //this is the case of edit a transaction.
+            mTransaction = Gson.getInstance().fromJson(getArguments().getString(TRANSACTION), Transaction.class);
+            mExpenseName.setText(mTransaction.getName());
+            setPointerInLast(mExpenseName);
+
+            mExpenseAmount.setText(Double.toString(mTransaction.getAmount()));
+            setPointerInLast(mExpenseAmount);
+
+            mExpenseCategorySpinner.setSelection(mTransaction.getExpenseOrIncomeCategory());
+            mExpenseSpinner.setSelection(mTransaction.getType());
+            mCalendar.setTimeInMillis(mTransaction.getDate().getTime());
+            setSpinnerText(DateUtil.dateToString(mTransaction.getDate()));
+
+            mDateSet = true;
+            getActivity().setTitle(getString(R.string.edit));
+        } else {
+            setSpinnerText(getString(R.string.expense_date));
+            mDateSet = false;
+            getActivity().setTitle(getString(R.string.add));
+        }
 
     }
 
@@ -160,7 +188,7 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
         setSpinnerText(DateUtil.dateToString(mCalendar.getTime()));
     }
 
-    private void setExpenseCategorySpinnerText() {
+    private void initializeExpenseCategorySpinnerText() {
         String[] categoryArray = getResources().getStringArray(R.array.expense_category);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, categoryArray);
@@ -183,10 +211,10 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
 
     @OnClick(R.id.btn_save_expense)
     public void onClick(View view) {
-        Log.e(TAG, "Expense: " + expenseSpinner.getSelectedItemPosition());
         if (validateInput()) {
             Transaction transaction = new Transaction();
-            transaction.setType(expenseSpinner.getSelectedItemPosition());
+            transaction.setId(mCalendar.getTimeInMillis());
+            transaction.setType(mExpenseSpinner.getSelectedItemPosition());
             transaction.setExpenseOrIncomeCategory(mExpenseCategorySpinner.getSelectedItemPosition());
             transaction.setName(mExpenseName.getText().toString().trim());
             transaction.setAmount(Double.parseDouble(mExpenseAmount.getText().toString().trim()));
@@ -195,22 +223,29 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
             if (transactions == null) {
                 transactions = new Transactions();
             }
-            transactions.getTransactions().add(0, transaction);
+            List<Transaction> transactionsList = transactions.getTransactions();
+            if (transactionsList.contains(mTransaction)) {
+                //this will remove if this transaction exists
+                Log.e(TAG, "List contains mTransaction: " + transactionsList.remove(mTransaction));
+            }
+            transactionsList.add(0, transaction);
             transactions.setLastChecked(System.currentTimeMillis());
-
             int month = DateUtil.getMonthFromDate(mCalendar.getTimeInMillis());
             LinkedHashMap<Integer, List<Transaction>> existingMonthlyTransactions = transactions.getMonthlyTransactions();
             List<Transaction> expensesOfMonth = existingMonthlyTransactions.get(month);
-            if(expensesOfMonth == null) {
+            if (expensesOfMonth == null) {
                 expensesOfMonth = new ArrayList<>();
             }
-
+            if (expensesOfMonth.contains(mTransaction)) {
+                //this will remove if this transaction exists in monthly list
+                Log.e(TAG, "monthly List contains mTransaction: " + expensesOfMonth.remove(mTransaction));
+            }
             expensesOfMonth.add(transaction);
             existingMonthlyTransactions.put(month, expensesOfMonth);
             transactions.setMonthlyTransactions(existingMonthlyTransactions);
             MyPreferenceManager.setTransactions(transactions);
             if (mListener != null) {
-                mListener.onAddExpense();
+                mListener.onAddExpense(transaction);
             }
         }
     }
@@ -223,6 +258,13 @@ public class AddExpenseFragment extends Fragment implements DatePickerDialog.OnD
      */
     public interface OnAddExpenseListener {
         // TODO: Update argument type and name
-        void onAddExpense();
+        void onAddExpense(Transaction transaction);
+    }
+
+    /**
+     * This will set pointer in last of given edit text.
+     */
+    private void setPointerInLast(EditText editText) {
+        editText.setSelection(editText.getText().length());
     }
 }

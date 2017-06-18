@@ -24,18 +24,21 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A fragment representing a list of Expenses.
  * <p/>
  */
 public class TransactionsListFragment extends ListFragment {
     private static final String TRANSACTION_TYPE = "transaction_type";
+    private static final int TRANSACTION_DETAILS = 20617;
     @BindView(R.id.list)
     ListView mListView;
 
-    private int transactionsType;
+    private int mTransactionsType;
     private TransactionsAdapter mAdapter;
-    private List<Transaction> transactionsList;
+    private List<Transaction> mTransactionsList;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,27 +68,27 @@ public class TransactionsListFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        transactionsType = getArguments().getInt(TRANSACTION_TYPE);
+        mTransactionsType = getArguments().getInt(TRANSACTION_TYPE);
         initialize();
-        mAdapter = new TransactionsAdapter(getActivity(), transactionsList);
+        mAdapter = new TransactionsAdapter(getActivity(), mTransactionsList);
         mListView.setAdapter(mAdapter);
-        getActivity().setTitle(transactionsType == SmsUtil.EXPENSE ? getString(R.string.expense) : getString(R.string.income));
+        getActivity().setTitle(mTransactionsType == SmsUtil.EXPENSE ? getString(R.string.expense) : getString(R.string.income));
     }
 
     private void initializeAdapterList(int transactionsType) {
         Transactions transactions = MyPreferenceManager.getTransactions();
-        transactionsList = new ArrayList<>();
+        mTransactionsList = new ArrayList<>();
         if (transactions == null && transactions.getTransactions() == null && transactions.getTransactions().isEmpty()) {
             return;
         }
 
         for (Transaction transaction : transactions.getTransactions()) {
             if (transaction.getType() == transactionsType) {
-                transactionsList.add(transaction);
+                mTransactionsList.add(transaction);
             }
         }
 
-        Collections.sort(transactionsList, new Comparator<Transaction>() {
+        Collections.sort(mTransactionsList, new Comparator<Transaction>() {
             @Override
             public int compare(Transaction transaction1, Transaction transaction2) {
                 return (transaction1.getDate().getTime() > transaction2.getDate().getTime() ? -1 : 1);
@@ -96,11 +99,24 @@ public class TransactionsListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), TransactionDetailsActivity.class);
-        intent.putExtra(TransactionDetailsActivity.TRANSACTION, Gson.getInstance().toJson(transactionsList.get(position)));
-        startActivity(intent);
+        intent.putExtra(TransactionDetailsActivity.TRANSACTION, Gson.getInstance().toJson(mTransactionsList.get(position)));
+        startActivityForResult(intent, TRANSACTION_DETAILS);
     }
 
     private void initialize() {
-        initializeAdapterList(transactionsType);
+        initializeAdapterList(mTransactionsType);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (TRANSACTION_DETAILS == requestCode) {
+            if (RESULT_OK == resultCode) {
+                initializeAdapterList(mTransactionsType);
+                mAdapter.setTransactions(mTransactionsList);
+                mAdapter.notifyDataSetChanged();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

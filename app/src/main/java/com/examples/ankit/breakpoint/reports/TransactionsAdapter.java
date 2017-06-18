@@ -31,6 +31,10 @@ public class TransactionsAdapter extends BaseAdapter {
         mCategories = activity.getResources().getStringArray(R.array.expense_category);
     }
 
+    public void setTransactions(List<Transaction> mTransactions) {
+        this.mTransactions = mTransactions;
+    }
+
     @Override
     public int getCount() {
         return mTransactions != null ? mTransactions.size() : 0;

@@ -53,7 +53,7 @@
                 android:id="@+id/fab_transaction_category"
                 style="@style/WrapContent"
                 android:layout_marginLeft="@dimen/medium_padding"
-                android:src="@drawable/ic_gas_station"
+                android:src="@drawable/ic_other"
                 app:backgroundTint="@android:color/white"
                 app:fabSize="mini"/>
 
@@ -89,9 +89,10 @@
 
         <android.support.design.widget.FloatingActionButton
             style="@style/WrapContent"
+            android:id="@+id/fab_edit_transaction"
             android:layout_margin="@dimen/small_padding"
             android:padding="@dimen/medium_padding"
-            android:src="@android:drawable/ic_menu_edit"
+            android:src="@drawable/ic_pencil"
             app:backgroundTint="@android:color/white"
             app:fabSize="normal"
             app:layout_anchor="@id/top_layout"

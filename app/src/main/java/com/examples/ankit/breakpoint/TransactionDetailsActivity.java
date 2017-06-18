@@ -1,13 +1,16 @@
 package com.examples.ankit.breakpoint;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.examples.ankit.breakpoint.common.FragmentWrapperActivity;
 import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.utils.DateUtil;
 import com.examples.ankit.breakpoint.utils.UiUtils;
@@ -22,6 +25,8 @@ import butterknife.OnClick;
 
 public class TransactionDetailsActivity extends AppCompatActivity {
     public final static String TRANSACTION = "transaction";
+    public final static int TRANSACTION_EDIT = 20618;
+
     private final static String NAME = "name";
     private final static String CATEGORY = "category";
     private final static String DATE = "date";
@@ -56,6 +61,10 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         if (getIntent() != null && getIntent().hasExtra(TRANSACTION)) {
             mTransaction = Gson.getInstance().fromJson(getIntent().getExtras().getString(TRANSACTION), Transaction.class);
         }
+        resetFormData();
+    }
+
+    private void resetFormData() {
         String[] mCategories = getResources().getStringArray(R.array.expense_category);
 
         txtTransactionName.setText(mTransaction.getName());
@@ -77,4 +86,23 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         this.finish();
     }
 
+    @OnClick(R.id.fab_edit_transaction)
+    public void onEdit(View view) {
+        Intent intent = new Intent(this, FragmentWrapperActivity.class);
+        intent.putExtra(TransactionDetailsActivity.TRANSACTION, Gson.getInstance().toJson(mTransaction));
+        startActivityForResult(intent, TRANSACTION_EDIT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (TRANSACTION_EDIT == requestCode) {
+            if (RESULT_OK == resultCode) {
+                mTransaction = Gson.getInstance().fromJson(data.getStringExtra(TRANSACTION), Transaction.class);
+                resetFormData();
+                this.setResult(RESULT_OK);
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }
