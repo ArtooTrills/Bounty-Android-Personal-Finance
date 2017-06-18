@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
             //this is workaround to pop Fragments in AppcompatActivity.
             fm.popBackStack();
             hideFab(false);
+            refreshScrollVIew();
             mScrollView.setVisibility(View.VISIBLE);
             setTitle(getString(R.string.app_name));
             return;
@@ -187,8 +188,16 @@ public class MainActivity extends AppCompatActivity implements SmsAgreementFragm
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SmsReceivedEvent event) {
+        refreshScrollVIew();
+    }
+
+    public void refreshScrollVIew() {
         if (mOverallExpensesFragment != null) {
             mOverallExpensesFragment.addOrUpdateChart();
+        }
+
+        if (mMonthlyExpenseFragment != null) {
+            mMonthlyExpenseFragment.addOrUpdateChart();
         }
     }
 

@@ -11,10 +11,13 @@ import android.widget.ListView;
 import com.examples.ankit.breakpoint.Gson;
 import com.examples.ankit.breakpoint.R;
 import com.examples.ankit.breakpoint.TransactionDetailsActivity;
+import com.examples.ankit.breakpoint.models.SmsReceivedEvent;
 import com.examples.ankit.breakpoint.models.Transaction;
 import com.examples.ankit.breakpoint.models.Transactions;
 import com.examples.ankit.breakpoint.prefences.MyPreferenceManager;
 import com.examples.ankit.breakpoint.sms.SmsUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -114,6 +117,7 @@ public class TransactionsListFragment extends ListFragment {
                 initializeAdapterList(mTransactionsType);
                 mAdapter.setTransactions(mTransactionsList);
                 mAdapter.notifyDataSetChanged();
+                EventBus.getDefault().post(new SmsReceivedEvent());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
