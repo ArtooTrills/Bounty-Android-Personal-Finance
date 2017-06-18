@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.examples.ankit.breakpoint.R;
 import com.examples.ankit.breakpoint.models.Transaction;
@@ -17,13 +18,15 @@ import com.examples.ankit.breakpoint.sms.SmsUtil;
 import com.examples.ankit.breakpoint.view.DayAxisValueFormatter;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +90,19 @@ public class MonthlyExpenseFragment extends Fragment {
         Description description = new Description();
         description.setText(getString(R.string.monthly_report));
         mChart.setDescription(description);
-        mChart.setTouchEnabled(false);
         mChart.animateY(2000);
+        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(getActivity(), "Click on overall chart for details", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
     }
 
     private void initializeData() {
@@ -106,7 +120,7 @@ public class MonthlyExpenseFragment extends Fragment {
             long totalExpenseOfMonth = 0;
             long totalIncomeOfMonth = 0;
             for (Transaction transaction : monthlyTransactions.get(month)) {
-                if(FirstMonth < 0 || FirstMonth > month){
+                if (FirstMonth < 0 || FirstMonth > month) {
                     FirstMonth = month;
                 }
                 if (SmsUtil.EXPENSE == transaction.getType()) {
@@ -143,7 +157,7 @@ public class MonthlyExpenseFragment extends Fragment {
         mChart.notifyDataSetChanged();
     }
 
-    public void addOrUpdateChart(){
+    public void addOrUpdateChart() {
         initializeData();
     }
 }
