@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.nazmuddinmavliwala.ewallet.base.presenters.BaseView;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
@@ -29,7 +31,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by nazmuddinmavliwala on 01/06/17.
  */
 
-public abstract class BaseFragment extends Fragment  {
+public abstract class BaseFragment extends Fragment implements BaseView {
 
     private Unbinder unBinder;
     protected CompositeDisposable disposables = new CompositeDisposable();
@@ -96,7 +98,7 @@ public abstract class BaseFragment extends Fragment  {
         }
 
     }
-    
+
 
     protected int getPixelFromDP(int dp) {
         Resources r = getResources();
@@ -118,6 +120,13 @@ public abstract class BaseFragment extends Fragment  {
         subscriptions.unsubscribe();
     }
 
+    @Override
+    public void showLoading() {
 
+    }
 
+    @Override
+    public void hideLoading() {
+
+    }
 }

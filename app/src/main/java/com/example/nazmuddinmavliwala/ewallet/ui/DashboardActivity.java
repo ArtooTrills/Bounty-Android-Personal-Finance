@@ -1,8 +1,10 @@
-package com.example.nazmuddinmavliwala.ewallet;
+package com.example.nazmuddinmavliwala.ewallet.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.nazmuddinmavliwala.ewallet.R;
 
 /**
  * Created by nazmuddinmavliwala on 14/10/2017.
