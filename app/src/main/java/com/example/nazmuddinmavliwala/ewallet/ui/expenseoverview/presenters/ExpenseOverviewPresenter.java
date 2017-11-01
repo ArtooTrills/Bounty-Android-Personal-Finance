@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class ExpenseOverviewPresenter extends BasePresenter<ExpenseOverviewView> {
 
     @Inject
-    public ExpenseOverviewPresenter(ExpenseOverviewView view, ExpenseOverviewUseCase useCase) {
+    public ExpenseOverviewPresenter(ExpenseOverviewView view) {
         super(view);
     }
 }

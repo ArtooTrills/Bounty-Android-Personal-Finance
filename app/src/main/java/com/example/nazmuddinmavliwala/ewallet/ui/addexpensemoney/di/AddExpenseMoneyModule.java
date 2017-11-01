@@ -1,6 +1,6 @@
 package com.example.nazmuddinmavliwala.ewallet.ui.addexpensemoney.di;
 
-import com.example.nazmuddinmavliwala.ewallet.di.identifiers.ChildActivity;
+import com.example.nazmuddinmavliwala.ewallet.app.di.identifiers.ChildActivity;
 import com.example.nazmuddinmavliwala.ewallet.ui.addexpensemoney.views.AddExpenseMoneyActivity;
 
 import dagger.Module;

@@ -8,7 +8,7 @@ import com.example.nazmuddinmavliwala.ewallet.base.presenters.BasePresenter;
 
 public class WalletOverviewPresenter extends BasePresenter<WalletOverviewView> {
 
-    public WalletOverviewPresenter(WalletOverviewView view, WalletOverviewUseCase useCase) {
+    public WalletOverviewPresenter(WalletOverviewView view) {
         super(view);
     }
 }

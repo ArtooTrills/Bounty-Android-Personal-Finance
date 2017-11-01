@@ -1,9 +1,9 @@
 package com.example.nazmuddinmavliwala.ewallet.ui.reports.di;
 
 import com.example.nazmuddinmavliwala.ewallet.ui.reports.views.ReportsFragment;
-import com.example.nazmuddinmavliwala.ewallet.di.components.ApplicationComponent;
-import com.example.nazmuddinmavliwala.ewallet.di.identifiers.ScopedActivity;
-import com.example.nazmuddinmavliwala.ewallet.di.modules.RxModule;
+import com.example.nazmuddinmavliwala.ewallet.app.di.components.ApplicationComponent;
+import com.example.nazmuddinmavliwala.ewallet.app.di.identifiers.ScopedActivity;
+import com.example.nazmuddinmavliwala.ewallet.app.di.modules.RxModule;
 
 import dagger.Component;
 

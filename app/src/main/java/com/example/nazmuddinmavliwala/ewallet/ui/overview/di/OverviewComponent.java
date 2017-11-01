@@ -1,9 +1,9 @@
 package com.example.nazmuddinmavliwala.ewallet.ui.overview.di;
 
-import com.example.nazmuddinmavliwala.ewallet.ui.overview.views.OverviewFragment;
-import com.example.nazmuddinmavliwala.ewallet.di.components.ApplicationComponent;
-import com.example.nazmuddinmavliwala.ewallet.di.identifiers.ScopedActivity;
-import com.example.nazmuddinmavliwala.ewallet.di.modules.RxModule;
+import com.example.nazmuddinmavliwala.ewallet.ui.overview.views.fragments.OverviewFragment;
+import com.example.nazmuddinmavliwala.ewallet.app.di.components.ApplicationComponent;
+import com.example.nazmuddinmavliwala.ewallet.app.di.identifiers.ScopedActivity;
+import com.example.nazmuddinmavliwala.ewallet.app.di.modules.RxModule;
 
 import dagger.Component;
 
@@ -16,7 +16,8 @@ import dagger.Component;
         dependencies = ApplicationComponent.class,
         modules = {
                 RxModule.class,
-                OverviewModule.class
+                OverviewModule.class,
+                ConverterModule.class
         }
 )
 public interface OverviewComponent {

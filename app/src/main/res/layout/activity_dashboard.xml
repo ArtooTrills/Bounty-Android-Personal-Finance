@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.aasaanjobs.partnerexternal.base.views.widgets.SwipeControlViewPager
+    <com.example.nazmuddinmavliwala.ewallet.base.SwipeControlViewPager
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/vp_dashboard"
         android:layout_marginBottom="60dp"
@@ -22,6 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill"
+            app:titleTextColor="@color/white"
+            app:title="Wallet"
             android:layout_gravity="fill"/>
 
 

@@ -1,8 +1,9 @@
 package com.example.nazmuddinmavliwala.ewallet.ui.transactions.presenter;
 
+import com.example.domain.interactors.Transaction;
+import com.example.domain.interactors.TransactionUseCase;
 import com.example.nazmuddinmavliwala.ewallet.base.presenters.BasePresenter;
-import com.example.nazmuddinmavliwala.ewallet.domain.model.Transactions;
-import com.example.nazmuddinmavliwala.ewallet.ui.transactions.models.TransactionsData;
+import com.example.nazmuddinmavliwala.ewallet.ui.transactions.models.TransactionVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,13 @@ import rx.Subscriber;
 
 public class TransactionsPresenter extends BasePresenter<TransactionsView> {
 
-    private TransactionUseCase useCase;
-    private TransactionsDomainToVOConverter converter;
+    private final TransactionUseCase useCase;
+    private final TransactionDomainVOConverter converter;
 
     @Inject
     public TransactionsPresenter(TransactionsView view,
                                  TransactionUseCase useCase,
-                                 TransactionsDomainToVOConverter converter) {
+                                 TransactionDomainVOConverter converter) {
         super(view);
         this.useCase = useCase;
         this.converter = converter;
@@ -31,7 +32,7 @@ public class TransactionsPresenter extends BasePresenter<TransactionsView> {
 
     public void fetchTransactions() {
         this.view.showLoading();
-        this.useCase.fetchTransactions(new Subscriber<List<Transactions>>() {
+        this.useCase.fetchTransactions(new Subscriber<List<Transaction>>() {
             @Override
             public void onCompleted() {
 
@@ -40,20 +41,18 @@ public class TransactionsPresenter extends BasePresenter<TransactionsView> {
             @Override
             public void onError(Throwable e) {
                 view.hideLoading();
+                view.showError();
             }
 
             @Override
-            public void onNext(List<Transactions> transactions) {
+            public void onNext(List<Transaction> transactions) {
                 view.hideLoading();
-                if (transactions.size() > 0) {
-
-                } else {
-                    List<TransactionsData> transactionsData = new ArrayList<>();
-                    for (Transactions transaction : transactions) {
-                        transactionsData.add(converter.convert(transaction));
-                    }
-                    view.appendTransactions(transactionsData);
+                view.showDataView();
+                List<TransactionVO> transactionVOS = new ArrayList<>();
+                for (Transaction transaction : transactions) {
+                    transactionVOS.add(converter.convert(transaction));
                 }
+                view.bind(transactionVOS);
             }
         });
     }

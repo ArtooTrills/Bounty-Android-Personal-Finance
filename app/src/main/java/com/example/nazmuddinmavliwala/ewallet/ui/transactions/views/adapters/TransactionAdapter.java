@@ -2,10 +2,9 @@ package com.example.nazmuddinmavliwala.ewallet.ui.transactions.views.adapters;
 
 import android.content.Context;
 
-import com.example.nazmuddinmavliwala.ewallet.AdapterDelegate;
-import com.example.nazmuddinmavliwala.ewallet.ui.transactions.views.adapterdelegates.CreditDelegate;
-import com.example.nazmuddinmavliwala.ewallet.ui.transactions.views.adapterdelegates.DebitDelegate;
-import com.example.nazmuddinmavliwala.ewallet.ReactiveRecyclerAdapter;
+import com.example.nazmuddinmavliwala.ewallet.base.views.AdapterDelegate;
+import com.example.nazmuddinmavliwala.ewallet.base.views.ReactiveRecyclerAdapter;
+import com.example.nazmuddinmavliwala.ewallet.ui.transactions.views.adapterdelegates.TransactionDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,7 @@ import java.util.List;
 
 public class TransactionAdapter extends ReactiveRecyclerAdapter {
 
-    private static final int CREDIT = 1;
-    private static final int DEBIT = 2;
+    private static final int TRANSACTION = 1;
 
     public TransactionAdapter(Context context) {
         super(context);
@@ -26,8 +24,7 @@ public class TransactionAdapter extends ReactiveRecyclerAdapter {
     @Override
     protected List<AdapterDelegate> initAdapterDelegates() {
         List<AdapterDelegate> adapterDelegates = new ArrayList<>();
-        adapterDelegates.add(new CreditDelegate(CREDIT,this.context));
-        adapterDelegates.add(new DebitDelegate(DEBIT,this.context));
+        adapterDelegates.add(new TransactionDelegate(TRANSACTION,this.context));
         return adapterDelegates;
     }
 }

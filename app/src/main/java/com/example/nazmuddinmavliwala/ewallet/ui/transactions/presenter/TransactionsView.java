@@ -1,6 +1,7 @@
 package com.example.nazmuddinmavliwala.ewallet.ui.transactions.presenter;
 
 import com.example.nazmuddinmavliwala.ewallet.base.presenters.BaseView;
+import com.example.nazmuddinmavliwala.ewallet.ui.transactions.models.TransactionVO;
 import com.example.nazmuddinmavliwala.ewallet.ui.transactions.models.TransactionsData;
 
 import java.util.List;
@@ -10,5 +11,10 @@ import java.util.List;
  */
 
 public interface TransactionsView extends BaseView {
-    void appendTransactions(List<TransactionsData> transactionsData);
+
+    void showError();
+
+    void showDataView();
+
+    void bind(List<TransactionVO> transactionVOS);
 }
