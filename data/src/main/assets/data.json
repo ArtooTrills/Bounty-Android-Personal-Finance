@@ -1,0 +1,70 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "transaction_type": 1,
+      "transaction_amount": 10000,
+      "expense_type": "food"
+    },
+    {
+      "id": 2,
+      "transaction_type": 0,
+      "transaction_amount": 3000,
+      "expense_type": "movies"
+    },
+    {
+      "id": 3,
+      "transaction_type": 1,
+      "transaction_amount": 1200,
+      "expense_type": "personal"
+    },
+    {
+      "id": 4,
+      "transaction_type": 0,
+      "transaction_amount": 102000,
+      "expense_type": "others"
+    },
+    {
+      "id": 5,
+      "transaction_type": 1,
+      "transaction_amount": 12000,
+      "expense_type": "food"
+    },
+    {
+      "id": 6,
+      "transaction_type": 1,
+      "transaction_amount": 100,
+      "expense_type": "loan"
+    },
+    {
+      "id": 7,
+      "transaction_type": 0,
+      "transaction_amount": 10300,
+      "expense_type": "others"
+    },
+    {
+      "id": 8,
+      "transaction_type": 1,
+      "transaction_amount": 10000,
+      "expense_type": "food"
+    },
+    {
+      "id": 9,
+      "transaction_type": 0,
+      "transaction_amount": 130,
+      "expense_type": "fuel"
+    },
+    {
+      "id": 10,
+      "transaction_type": 0,
+      "transaction_amount": 12333,
+      "expense_type": "fuel"
+    },
+    {
+      "id": 11,
+      "transaction_type": 1,
+      "transaction_amount": 10000,
+      "expense_type": "food"
+    }
+  ]
+}

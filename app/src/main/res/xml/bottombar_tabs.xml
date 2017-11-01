@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_overview"
+        icon="@drawable/drawable_overview"
+        title="Overview"/>
+
+    <tab
+        id="@+id/tab_transactions"
+        icon="@drawable/drawable_transactions"
+        title="Transactions"/>
+
+    <tab
+        id="@+id/tab_reports"
+        icon="@drawable/drawable_reports"
+        title="Reports"/>
+
+</tabs>
