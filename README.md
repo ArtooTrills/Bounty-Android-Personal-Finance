@@ -1,30 +1,44 @@
 Bounty-Android-Personal-Finance
 ===============================
 
+
+
 We are all on a tight budget. We know we need to be saving money but we just don't know where it disappears. It's first of the month, I have received my salary ... It's 5th of the month, and most of it has disappeared!
 
-Doesn't this sound familiar? The first step is to bring in visibility into your income and expenses. Instead of manually inputing this data, we can extract this data from SMS and emails. (Any other sources?!)
+Doesn't this sound familiar? The first step is to bring in visibility into your income and expenses. Instead of manually inputing this data, we can extract this data from SMS and emails.
 
-Today there are quite a few apps (mobile or web) that allow you to do this, but we want to see your take on this problem.
+This is Simple (yet functional) Personal Finance app in Android written in Kotlin. 
 
-Your task is to build a simple (yet functional) Personal Finance app using Android. Remember we are going to evaluate you on the following parameters:
- * How you think and how creative you are
- * How you code - structure, comments, and efficiency
- * And how quickly can you learn
+### Language used
+1. Kotlin
+1. Java
 
-Here are a few points to get you started below. Be creative in your approach.
+### Libraries used
+1. Android Architecture Components
+1. Room Persistence
+1. RxJava2
+1. Dagger2
+1. Hellocharts-android (Graph)
+1. 
 
-* A screen that takes your consent before reading your SMS
-* A screen that allows you to manual add income or expenses
-* A screen that show you report / summary / visualization. Think interaction here.
+#### Instructions to run the app:
+1. Download the code.
+1. Open the project in Android Studio 3.0 or later.
+1. Let it download artifacts.
+1. Run the app.
 
-If you are going for the kill and you really want to wow us:
 
-1. Material Design
-2. Animation 
-3. Server side synchronization. Parse or FireBase could be simple solutions.
+#### Yet to complete points
+1. Yearly graph, monthly graph representation
+1. Budget implementation, setting/updating budget for month wise (save in database)
+1. Read In coming SMS and save in database with showing notification
+1. Pagination for expense list
+1. Expense list for month/year wise 
+1. Improve expense information extraction algorithm from SMS
+1. Add Category for expense
+1. Add Firebase database
 
-### Final Words
-When you are done, please just create a pull request on this repo. We would like you to come in and present your code to the whole team. 
-
-May the force be with you!
+#### Things not working properly (Half cooked)
+1. Graph representation of expense
+1. Add Budget
+1. Expense information extraction algorithm from SMS

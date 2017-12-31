@@ -5,16 +5,14 @@ import android.arch.lifecycle.ViewModel
 import com.chandilsachin.personal_finance.dagger.MyApplication
 import com.chandilsachin.personal_finance.database.LocalRepo
 import com.chandilsachin.personal_finance.database.entities.Expense
-import com.chandilsachin.personal_finance.eventBus.UpdateExpenseEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
-import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 /**
  * Created by sachin on 30/12/17.
  */
 
-class AddExpenseViewModel: ViewModel() {
+class AddExpenseViewModel : ViewModel() {
 
     @Inject
     lateinit var localRepo: LocalRepo

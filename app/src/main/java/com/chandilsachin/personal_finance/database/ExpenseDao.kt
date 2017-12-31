@@ -27,7 +27,7 @@ interface ExpenseDao {
     @Query("SELECT * FROM ${Constants.TABLE_EXPENSES} ORDER BY ${Constants.TIMESTAMP} DESC")
     fun queryAll():Flowable<List<Expense>>
 
-    @Query("SELECT DISTINCT SUM(${Constants.AMOUNT}) as ${Constants.TOTAL_SPEND}, strftime('%m', ${Constants.TIMESTAMP}) as ${Constants.MONTH} FROM ${Constants.TABLE_EXPENSES} GROUP BY strftime('%m', ${Constants.TIMESTAMP}) ORDER BY strftime('%m', ${Constants.TIMESTAMP}) DESC limit 5")
+    @Query("SELECT DISTINCT strftime('%m', ${Constants.TIMESTAMP}) as ${Constants.MONTH}, SUM(${Constants.AMOUNT}) as ${Constants.TOTAL_SPEND} FROM ${Constants.TABLE_EXPENSES} GROUP BY strftime('%m', ${Constants.TIMESTAMP}) ORDER BY strftime('%m', ${Constants.TIMESTAMP}) DESC limit 5")
     fun queryLast12MonthExpense():Flowable<List<MonthSpendData>>
 
     @Query("SELECT * FROM ${Constants.TABLE_EXPENSES} WHERE ${Constants.SPEND_ID}=:arg0")
