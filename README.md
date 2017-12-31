@@ -19,7 +19,6 @@ This is Simple (yet functional) Personal Finance app in Android written in Kotli
 1. RxJava2
 1. Dagger2
 1. Hellocharts-android (Graph)
-1. 
 
 #### Instructions to run the app:
 1. Download the code.
