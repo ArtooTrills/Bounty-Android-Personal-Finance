@@ -43,6 +43,8 @@
                         android:id="@+id/etSpendRemark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="text"
                         android:layout_gravity="end"
                         android:layout_marginStart="8dp"
                         android:hint="@string/where_did_you_spend" />
@@ -94,14 +96,13 @@
 
                 <TextView
                     android:id="@+id/tvExpenseTimestamp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:paddingBottom="10dp"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
                     android:paddingTop="10dp"
-                    android:text="Today, 6:52 PM"
                     android:textColor="@color/colorSecondaryText" />
 
             </LinearLayout>

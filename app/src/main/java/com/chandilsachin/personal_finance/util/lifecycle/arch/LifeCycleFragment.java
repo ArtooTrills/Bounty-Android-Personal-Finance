@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.chandilsachin.personal_finance.R;
+
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -58,6 +60,12 @@ public abstract class LifeCycleFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         activity.setTitle(stringRes);
+    }
+
+    public void setUpToolbar(Toolbar toolbar){
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.setTitle(R.string.app_name);
     }
 
     public void setUpToolbar(Toolbar toolbar, String title){

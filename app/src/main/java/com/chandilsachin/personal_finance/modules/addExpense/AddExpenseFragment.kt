@@ -55,11 +55,13 @@ class AddExpenseFragment : LifeCycleFragment() {
             viewModel.expenseDetailsLiveData.observe(this, Observer {
                 it?.let {
                     setExpendDetailsToUi(it)
-                    mCalendarTimestamp.timeInMillis = it.timestamp
+                    mCalendarTimestamp.timeInMillis = it.timestamp.time
                 }
             })
 
             viewModel.getExpenseDetails(mExpenseId)
+        }else{
+            tvExpenseTimestamp.text = Date(mCalendarTimestamp.timeInMillis).getPrettyDate(context)
         }
     }
 
@@ -98,9 +100,23 @@ class AddExpenseFragment : LifeCycleFragment() {
             super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun validateInputs(): Boolean{
+        var res = true
+        if(etSpendRemark.text.isEmpty()) {
+            res = false
+            showToast("Remark can't be empty!")
+        }
+        else if(etSpendAmount.text.isEmpty()) {
+            res = false
+            showToast("Amount can't be empty!")
+        }
+        return res
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menuEdit -> {
+                if(!validateInputs()) return true
                 val expense = getExpendDetailsFromUi()
                 expense.spendId = mExpenseId
                 viewModel.updateExpense(expense)
@@ -108,6 +124,7 @@ class AddExpenseFragment : LifeCycleFragment() {
                 return true;
             }
             R.id.menuAdd -> {
+                if(!validateInputs()) return true
                 viewModel.addExpense(getExpendDetailsFromUi())
                 activity?.onBackPressed()
                 return true;
@@ -118,13 +135,13 @@ class AddExpenseFragment : LifeCycleFragment() {
 
     fun getExpendDetailsFromUi(): Expense {
         return Expense(etSpendRemark.text.toString(), etSpendAmount.text.toString().toFloat(),
-                switchSpend.isChecked, mCalendarTimestamp.timeInMillis)
+                switchSpend.isChecked, mCalendarTimestamp.time)
     }
 
     fun setExpendDetailsToUi(expense: Expense) {
         etSpendRemark.setText(expense.remark)
         etSpendAmount.setText(expense.amount.toString())
-        tvExpenseTimestamp.setText(Date(expense.timestamp).getPrettyDate(context))
+        tvExpenseTimestamp.setText(Date(expense.timestamp.time).getPrettyDate(context))
         switchSpend.isChecked = expense.spend
     }
 

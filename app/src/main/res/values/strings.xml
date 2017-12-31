@@ -11,4 +11,10 @@
     <string name="count_in_total_spends">Count in total spends</string>
     <string name="add">Add</string>
     <string name="edit">Edit</string>
+    <string name="setBudget">Set Budget</string>
+    <string name="enter_budget">Enter Budget</string>
+    <string name="use_same_budget_for_up_coming_months">Use same budget for up-coming months?</string>
+    <string name="loading_spends">Loading spends...</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="skip">Skip</string>
 </resources>

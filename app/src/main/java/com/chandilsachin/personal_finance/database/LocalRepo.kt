@@ -2,6 +2,7 @@ package com.chandilsachin.personal_finance.database
 
 import com.chandilsachin.personal_finance.dagger.MyApplication
 import com.chandilsachin.personal_finance.database.entities.Expense
+import com.chandilsachin.personal_finance.database.entities.MonthSpendData
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -39,7 +40,11 @@ class LocalRepo {
     }
 
     fun getAllExpense(fetchedCount: Int): Flowable<ArrayList<Expense>> {
-        return dao.queryAll(fetchedCount).subscribeOn(Schedulers.computation()).map { ArrayList(it) }
+        return dao.queryAll(/*fetchedCount*/).subscribeOn(Schedulers.computation()).map { ArrayList(it) }
+    }
+
+    fun getLast12MonthExpense(): Flowable<ArrayList<MonthSpendData>> {
+        return dao.queryLast12MonthExpense().subscribeOn(Schedulers.computation()).map { ArrayList(it) }
     }
 
     fun getExpenseDetails(expenseId: Long): Single<Expense> {

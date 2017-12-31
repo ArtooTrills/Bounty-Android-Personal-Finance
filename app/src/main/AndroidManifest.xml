@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chandilsachin.personal_finance">
 
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
     <application
         android:name=".dagger.MyApplication"
         android:allowBackup="true"

@@ -17,6 +17,8 @@ open class Constants{
         const val TIMESTAMP = "timestamp"
         const val SPEND = "spend"
 
+        const val TOTAL_SPEND = "total_spend"
+        const val MONTH = "month"
 
         const val SYNC = "sync"
     }

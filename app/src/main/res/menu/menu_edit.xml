@@ -4,6 +4,7 @@
     <item
         android:id="@+id/menuEdit"
         app:showAsAction="always"
+        android:icon="@mipmap/ic_edit"
         android:title="@string/edit"/>
 
 </menu>

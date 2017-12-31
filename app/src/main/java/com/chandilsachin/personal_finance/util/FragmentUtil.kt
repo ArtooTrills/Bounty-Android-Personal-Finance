@@ -10,16 +10,16 @@ import com.chandilsachin.personal_finance.R
 /**
  * Created by sachin on 28/5/17.
  */
-fun <T: ViewModel> Fragment.initViewModel(c:Class<T>):T{
+fun <T : ViewModel> Fragment.initViewModel(c: Class<T>): T {
     val model = ViewModelProviders.of(this).get(c)
     return model
 }
 
-fun Fragment.loadFragment(containerId:Int, fragment: Fragment){
+fun Fragment.loadFragment(containerId: Int, fragment: Fragment) {
     loadFragment(containerId, fragment, activity as AppCompatActivity)
 }
 
-fun Fragment.loadFragmentSlideUp(containerId:Int, fragment: Fragment){
+fun Fragment.loadFragmentSlideUp(containerId: Int, fragment: Fragment) {
     activity!!.supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up,
                     R.anim.slide_out_down, R.anim.slide_in_down)
@@ -27,22 +27,28 @@ fun Fragment.loadFragmentSlideUp(containerId:Int, fragment: Fragment){
             .addToBackStack(null).commit()
 }
 
-fun loadFragment(containerId:Int, fragment: Fragment, activity: AppCompatActivity){
-    activity.supportFragmentManager.beginTransaction().replace(containerId, fragment)
-            .addToBackStack(null).commit()
+fun loadFragment(containerId: Int, fragment: Fragment, activity: AppCompatActivity) {
+    loadFragment(containerId, fragment, activity, true)
+}
+
+fun loadFragment(containerId: Int, fragment: Fragment, activity: AppCompatActivity, addToBackStack: Boolean) {
+    val transaction = activity.supportFragmentManager.beginTransaction()
+    transaction.replace(containerId, fragment)
+    if (addToBackStack)
+        transaction.addToBackStack(null)
+    transaction.commit()
 }
 
 
-
-fun Fragment.setSupportActionBar(toolbar: Toolbar){
+fun Fragment.setSupportActionBar(toolbar: Toolbar) {
     (activity as AppCompatActivity).setSupportActionBar(toolbar)
 }
 
-fun Fragment.setDisplayHomeAsUpEnabled(value:Boolean){
+fun Fragment.setDisplayHomeAsUpEnabled(value: Boolean) {
     (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(value)
 }
 
-fun Fragment.getAppCompactActivity():AppCompatActivity{
+fun Fragment.getAppCompactActivity(): AppCompatActivity {
     return activity as AppCompatActivity
 }
 

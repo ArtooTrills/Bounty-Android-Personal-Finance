@@ -55,7 +55,7 @@ class ExpenseListAdapter(context: Context?, var list: ArrayList<Expense>) : Recy
         fun bind(item: Expense){
             itemView.tvFace.text = item.remark[0].toString()
             itemView.tvRemarks.text = item.remark
-            itemView.tvTimestamp.text = Date(item.timestamp).getPrettyDate(itemView.tvTimestamp.context)
+            itemView.tvTimestamp.text = Date(item.timestamp.time).getPrettyDate(itemView.tvTimestamp.context)
             itemView.tvAmount.text = "\u20B9 ${item.amount}"
             itemView.ivPocketSpend.setImageResource(if (item.spend) R.mipmap.ic_wallet else R.mipmap.ic_wallet_disabled)
         }

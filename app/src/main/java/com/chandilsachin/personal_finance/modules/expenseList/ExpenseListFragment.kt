@@ -10,19 +10,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateUtils
 import android.view.View
 import com.chandilsachin.personal_finance.R
-import com.chandilsachin.personal_finance.eventBus.UpdateExpenseEvent
 import com.chandilsachin.personal_finance.modules.addExpense.AddExpenseFragment
+import com.chandilsachin.personal_finance.modules.setBudget.SetBudgetFragment
 import com.chandilsachin.personal_finance.util.initViewModel
 import com.chandilsachin.personal_finance.util.lifecycle.arch.LifeCycleFragment
 import com.chandilsachin.personal_finance.util.loadFragmentSlideUp
-import com.jjoe64.graphview.series.BarGraphSeries
-import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.fragment_expense_list.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
+import lecho.lib.hellocharts.model.*
 import java.util.*
 import kotlin.collections.ArrayList
+import lecho.lib.hellocharts.view.LineChartView
 
 
 class ExpenseListFragment : LifeCycleFragment() {
@@ -48,7 +46,10 @@ class ExpenseListFragment : LifeCycleFragment() {
 
     override fun init(v: View?, savedInstanceState: Bundle?) {
 
-        setUpToolbar(main_toolbar, DateUtils.formatDateTime(context, Date().time, 2))
+        setUpToolbar(main_toolbar, DateUtils.formatDateTime(context, Date().time, DateUtils.FORMAT_SHOW_DATE or
+                DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_ALL))
+
+        main_collapsing.setExpandedTitleColor(Color.TRANSPARENT)
 
         linearLayoutManager = LinearLayoutManager(context)
         rvExpenseLise.layoutManager = linearLayoutManager
@@ -56,20 +57,6 @@ class ExpenseListFragment : LifeCycleFragment() {
         expenseListAdapter = ExpenseListAdapter(context, ArrayList())
         rvExpenseLise.adapter = expenseListAdapter
 
-        var series: BarGraphSeries<DataPoint> = BarGraphSeries(arrayOf(
-                DataPoint(0.0, 1.0),
-                DataPoint(1.0, 5.0),
-                DataPoint(2.0, 3.0),
-                DataPoint(3.0, 2.0),
-                DataPoint(4.0, 6.0)
-        ))
-        series.isDrawValuesOnTop = true
-        series.valuesOnTopColor = Color.BLACK
-        series.spacing = 2
-        series.dataWidth = 0.5
-        series.isAnimated = true
-
-        graphExpense.addSeries(series)
     }
 
     override fun initLoadViews() {
@@ -86,6 +73,18 @@ class ExpenseListFragment : LifeCycleFragment() {
         })
 
         viewModel.getExpenseList()
+
+        graphExpense.isInteractive = false
+        viewModel.graphDataLiveData.observe(this, Observer {
+
+            val chartData = ColumnChartData(it)
+            chartData.axisXBottom = Axis(viewModel.axisXValue)
+            //chartData.axisYLeft = Axis().setMaxLabelChars(2)
+            graphExpense.columnChartData = chartData
+
+        })
+
+        viewModel.generateMonthlyGraph()
     }
 
     /*@Subscribe
@@ -122,6 +121,10 @@ class ExpenseListFragment : LifeCycleFragment() {
                     AddExpenseFragment.newInstanceToEdit(it.spendId))
         }
 
+        btnAddBudget.setOnClickListener {
+            loadFragmentSlideUp(R.id.frameLayoutFragmentContainer,
+                    SetBudgetFragment.newInstance())
+        }
         btnAddExpense.setOnClickListener {
             loadFragmentSlideUp(R.id.frameLayoutFragmentContainer,
                     AddExpenseFragment.newInstanceToAdd())
