@@ -42,3 +42,13 @@ This is Simple (yet functional) Personal Finance app in Android written in Kotli
 1. Graph representation of expense
 1. Add Budget
 1. Expense information extraction algorithm from SMS
+
+
+#### Screenshots
+
+
+<img height="450px" src="screenshots/1.png" />
+<img height="450px" src="screenshots/2.png" />
+<img height="450px" src="screenshots/3.png" />
+<img height="450px" src="screenshots/4.png" />
+<img height="450px" src="screenshots/5.png" />
