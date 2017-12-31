@@ -113,12 +113,12 @@ class ReadMessageViewModel : ViewModel() {
             }
             info.remark = info.remark.trim()
             var amount = Regex("(?i)(?:(?:RS|INR|MRP)(\\.?)\\s?)(\\d+(:?\\,\\d+)?(\\,\\d+)?(\\.\\d{1,2})?)").find(body)?.value
-            info.amount = amount?.let { Regex("\\d+").find(amount)?.value?.toFloat() }!!
+            info.amount = amount?.let { Regex("[\\d\\.]+").find(amount)?.value?.toFloat() }!!
             return info
         }
     }
 
-
+""
 
     data class SMSInfo(var remark: String, var spend: Boolean, var amount: Float)
 
