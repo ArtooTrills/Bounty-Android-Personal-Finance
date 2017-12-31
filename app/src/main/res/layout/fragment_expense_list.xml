@@ -1,0 +1,81 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayoutExpenseList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main_collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <lecho.lib.hellocharts.view.ColumnChartView
+                android:id="@+id/graphExpense"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_margin="5dp"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                app:layout_collapseMode="parallax" />
+
+            <include layout="@layout/toolbar_layout" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:text="@string/your_spends"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAddExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/add_expense"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText" />
+
+            <Button
+                android:id="@+id/btnAddBudget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/btnAddExpense"
+                android:text="@string/setBudget"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText" />
+
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvExpenseLise"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+</android.support.design.widget.CoordinatorLayout>
