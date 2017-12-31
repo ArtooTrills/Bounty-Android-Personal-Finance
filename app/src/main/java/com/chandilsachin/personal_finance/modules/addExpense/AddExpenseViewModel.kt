@@ -5,7 +5,9 @@ import android.arch.lifecycle.ViewModel
 import com.chandilsachin.personal_finance.dagger.MyApplication
 import com.chandilsachin.personal_finance.database.LocalRepo
 import com.chandilsachin.personal_finance.database.entities.Expense
+import com.chandilsachin.personal_finance.eventBus.UpdateExpenseEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
+import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 /**
@@ -30,7 +32,9 @@ class AddExpenseViewModel: ViewModel() {
 
     fun updateExpense(expense: Expense) {
         localRepo.updateExpense(expense)
-                .subscribe()
+                .subscribe({ _ ->
+                    //EventBus.getDefault().post(UpdateExpenseEvent())
+                })
     }
 
     fun getExpenseDetails(expenseId: Long) {

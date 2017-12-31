@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.2"
@@ -101,6 +102,7 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.11'
 
     implementation 'com.jjoe64:graphview:4.2.1'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
     // test dependency
     testImplementation 'junit:junit:4.12'

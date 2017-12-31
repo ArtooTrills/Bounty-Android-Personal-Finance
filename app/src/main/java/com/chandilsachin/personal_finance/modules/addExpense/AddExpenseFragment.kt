@@ -18,7 +18,6 @@ import com.chandilsachin.personal_finance.util.lifecycle.arch.LifeCycleFragment
 import kotlinx.android.synthetic.main.fragment_add_expense.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import java.util.*
-import kotlin.math.exp
 
 
 class AddExpenseFragment : LifeCycleFragment() {
@@ -70,7 +69,7 @@ class AddExpenseFragment : LifeCycleFragment() {
         }
     }
 
-    fun showDatePicker(){
+    fun showDatePicker() {
         var datePickerDialog = DatePickerDialog(context,
                 DatePickerDialog.OnDateSetListener { datePicker: DatePicker, y: Int, m: Int, d: Int ->
                     mCalendarTimestamp.set(y, m, d)
@@ -80,7 +79,7 @@ class AddExpenseFragment : LifeCycleFragment() {
         datePickerDialog.show()
     }
 
-    fun showTimePicker(){
+    fun showTimePicker() {
         var timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { timePicker, hour, minutes ->
             mCalendarTimestamp.set(Calendar.HOUR_OF_DAY, hour)
             mCalendarTimestamp.set(Calendar.MINUTE, minutes)

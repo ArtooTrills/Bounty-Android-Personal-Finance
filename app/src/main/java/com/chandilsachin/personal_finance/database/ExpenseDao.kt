@@ -2,6 +2,7 @@ package com.chandilsachin.personal_finance.database
 
 import android.arch.persistence.room.*
 import com.chandilsachin.personal_finance.database.entities.Expense
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -22,8 +23,8 @@ interface ExpenseDao {
     @Delete
     fun delete(expense: Expense): Int
 
-    @Query("SELECT * FROM ${Constants.TABLE_EXPENSES} ORDER BY ${Constants.TIMESTAMP} LIMIT 20 OFFSET :arg0")
-    fun queryAll(fetchedCount: Int):Single<List<Expense>>
+    @Query("SELECT * FROM ${Constants.TABLE_EXPENSES} ORDER BY ${Constants.TIMESTAMP} DESC LIMIT 20 OFFSET :arg0")
+    fun queryAll(fetchedCount: Int):Flowable<List<Expense>>
 
     @Query("SELECT * FROM ${Constants.TABLE_EXPENSES} WHERE ${Constants.SPEND_ID}=:arg0")
     fun query(expenseId: Long):Single<Expense>

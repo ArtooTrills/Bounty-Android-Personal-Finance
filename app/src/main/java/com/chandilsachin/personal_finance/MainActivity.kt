@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loadFragment(R.id.frameLayoutFragmentContainer,
-                ExpenseListFragment.newInstance("",""), this)
+                ExpenseListFragment.newInstance(), this)
     }
 
     override fun onBackPressed() {
