@@ -1,7 +1,7 @@
 Bounty-Android-Personal-Finance
 ===============================
 
-
+[![CircleCI](https://circleci.com/gh/chandilsachin/Bounty-Android-Personal-Finance.svg?style=svg)](https://circleci.com/gh/chandilsachin/Bounty-Android-Personal-Finance)
 
 We are all on a tight budget. We know we need to be saving money but we just don't know where it disappears. It's first of the month, I have received my salary ... It's 5th of the month, and most of it has disappeared!
 

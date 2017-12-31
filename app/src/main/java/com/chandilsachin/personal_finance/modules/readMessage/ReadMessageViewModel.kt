@@ -8,12 +8,11 @@ import android.net.Uri
 import android.util.Log
 import com.chandilsachin.personal_finance.dagger.MyApplication
 import com.chandilsachin.personal_finance.database.LocalRepo
-import com.chandilsachin.personal_finance.database.Preferences
 import com.chandilsachin.personal_finance.database.entities.Expense
-import io.reactivex.*
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -118,17 +117,6 @@ class ReadMessageViewModel : ViewModel() {
         }
     }
 
-""
-
     data class SMSInfo(var remark: String, var spend: Boolean, var amount: Float)
-
-//Info: CASH-ATM/AXIS BANK LIMITED/PUNE/SAMBHAJI CHOWK
-    // Info: INB/117184729/TATA DOCOMO CDMA(BILLDE/
-    //Info: INB/116498073/TATA DOCOMO (BILL DESK)
-    // Info: INB/116574287/PAYU.IN/
-    // Info: INB/119668474/INDIAN RAILWAY CORPORAT/
-    // Info: INB/119744697/PAYTM MOBILE SOLUTIONS/
-    // Info: MOB/TPFT/JAY KISHOR DWIV/914010007272344
-    //  Info: INB/IFT/JAY KISHOR DWIVEDI/
 
 }
