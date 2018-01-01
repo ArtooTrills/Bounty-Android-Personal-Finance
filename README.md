@@ -30,7 +30,6 @@ This is Simple (yet functional) Personal Finance app in Android written in Kotli
 #### Yet to complete points
 1. Yearly graph, monthly graph representation
 1. Budget implementation, setting/updating budget for month wise (save in database)
-1. Read In coming SMS and save in database with showing notification
 1. Pagination for expense list
 1. Expense list for month/year wise 
 1. Improve expense information extraction algorithm from SMS
@@ -40,7 +39,7 @@ This is Simple (yet functional) Personal Finance app in Android written in Kotli
 #### Things not working properly (Half cooked)
 1. Graph representation of expense
 1. Add Budget
-1. Expense information extraction algorithm from SMS
+1. Expense information extraction algorithm from SMS (Only works for Axis bank for now)
 
 
 #### Screenshots
