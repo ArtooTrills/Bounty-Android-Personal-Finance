@@ -28,6 +28,11 @@ class AddExpenseViewModel : ViewModel() {
                 .subscribe()
     }
 
+    fun addExpenses(expenses: List<Expense>) {
+        localRepo.addExpenses(expenses)
+                .subscribe()
+    }
+
     fun updateExpense(expense: Expense) {
         localRepo.updateExpense(expense)
                 .subscribe({ _ ->

@@ -27,6 +27,12 @@ class LocalRepo {
         }.subscribeOn(Schedulers.computation())
     }
 
+    fun addExpenses(expenses: List<Expense>): Single<Boolean> {
+        return Single.create <Boolean>{
+            it.onSuccess(dao.insert(expenses).size == expenses.size)
+        }.subscribeOn(Schedulers.computation())
+    }
+
     fun updateExpense(expense: Expense): Single<Boolean> {
         return Single.create<Boolean> {
             it.onSuccess(dao.update(expense) != -1)
