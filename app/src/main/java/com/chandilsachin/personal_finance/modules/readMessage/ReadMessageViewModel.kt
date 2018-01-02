@@ -66,13 +66,15 @@ class ReadMessageViewModel : ViewModel() {
                     smsReadCount++
                     val body = cursor.getString(5)
                     if(body.toLowerCase().contains("debited") || body.toLowerCase().contains("purchased")) {
-
-                        var (remark, spend, amount) = extractSMSInfo(body)
-                        if(remark.isNotEmpty() && amount > 0) {
-                            val expense = Expense(remark, amount, spend, java.util.Date(cursor.getLong(4)))
-                            subscriber.onNext(expense)
-                            Log.w("READ", "${amount}- (${remark}) - ${body}")
+                        val smsInfo = extractSMSInfo(body)
+                        smsInfo?.apply {
+                            if(remark.isNotEmpty() && amount > 0) {
+                                val expense = Expense(remark, amount, spend, java.util.Date(cursor.getLong(4)))
+                                subscriber.onNext(expense)
+                                Log.w("READ", "${amount}- (${remark}) - ${body}")
+                            }
                         }
+
                     }else
                         Log.w("READ", "${body}")
                 }
@@ -83,7 +85,7 @@ class ReadMessageViewModel : ViewModel() {
 
     companion object {
 
-        fun extractSMSInfo(body: String): SMSInfo{
+        fun extractSMSInfo(body: String): SMSInfo?{
 
             val info = SMSInfo("",true, 0f)
             if(body.contains("INB")) {
@@ -112,7 +114,11 @@ class ReadMessageViewModel : ViewModel() {
             }
             info.remark = info.remark.trim()
             var amount = Regex("(?i)(?:(?:RS|INR|MRP)(\\.?)\\s?)(\\d+(:?\\,\\d+)?(\\,\\d+)?(\\.\\d{1,2})?)").find(body)?.value
-            info.amount = amount?.let { Regex("[\\d\\.]+").find(amount)?.value?.toFloat() }!!
+            try {
+                info.amount = amount?.let { Regex("[\\d\\.]+").find(amount)?.value?.toFloat() }!!
+            }catch(e: NumberFormatException){
+                return null
+            }
             return info
         }
     }

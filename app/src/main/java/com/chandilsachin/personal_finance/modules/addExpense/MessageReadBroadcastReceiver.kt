@@ -19,9 +19,12 @@ class MessageReadBroadcastReceiver : BroadcastReceiver() {
             val expenseList = mutableListOf<Expense>()
             for (smsMessage in Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
                 val messageBody = smsMessage.messageBody
-                val (remark, spend, amount) = ReadMessageViewModel.extractSMSInfo(messageBody)
-                val expense = Expense(remark, amount, spend, Date(smsMessage.timestampMillis))
-                expenseList.add(expense)
+                val info = ReadMessageViewModel.extractSMSInfo(messageBody)
+                info?.apply {
+                    val expense = Expense(remark, amount, spend, Date(smsMessage.timestampMillis))
+                    expenseList.add(expense)
+                }
+
             }
 
             val viewModel = AddExpenseViewModel()

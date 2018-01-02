@@ -31,6 +31,9 @@ class ReadMessageViewModelTest {
 
         listSms.add("Your a/c 000000 is debited INR 2157.67 on 13-09-2015 08:57:00 Info: PUR/D MART AVENUE/PUNE/D MART AVENUE")
         listResult.add(ReadMessageViewModel.SMSInfo("D MART AVENUE",true,2157.67f))
+
+        listSms.add("BUY ALPSMOTOR (538423) CMP Rs 27 TARGET Rs 35,40,45 STOP LOSS Rs 25 PRICE GO UP DAILY 5 to 10%")
+        listResult.add(ReadMessageViewModel.SMSInfo("D MART AVENUE",true,2157.67f))
     }
 
     @After
